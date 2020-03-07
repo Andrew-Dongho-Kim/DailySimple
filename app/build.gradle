@@ -5,7 +5,6 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 28
 
-
     defaultConfig {
         applicationId "com.dd.android.dailysimple"
         minSdkVersion 23
@@ -18,11 +17,14 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
+    databinding {
+        enabled = true
+    }
 }
 
 dependencies {
