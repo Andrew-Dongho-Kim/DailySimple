@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/home_view_pager_fragment">
+
+    <fragment
+        android:id="@+id/home_view_pager_fragment"
+        android:name="com.dd.android.dailysimple.schedule.HomeViewPagerFragment"
+        tools:layout="@layout/fragment_view_pager">
+        <action
+            android:id="@+id/home_to_group_schedule_detail_fragment"
+            app:destination="@id/group_schedule_detail_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/group_schedule_detail_fragment"
+        android:name="com.dd.android.dailysimple.schedule.group.detail.GroupScheduleDetailFragment"
+        tools:layout="@layout/fragment_group_schedule_detail">
+        <argument
+            android:name="groupScheduleId"
+            app:argType="long" />
+    </fragment>
+
+</navigation>

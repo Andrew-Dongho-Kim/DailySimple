@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">DailySimple</string>
 
+    <string name="group_schedule">Group Schedule</string>
+    <string name="daily_schedule">Daily Schedule</string>
+
     <string name="schedule_overview">Schedule Overview</string>
     <string name="schedule_title">Schedule Title</string>
 </resources>
