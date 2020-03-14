@@ -1,6 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/day_1"
+        style="@style/UxCommonDpTextStyleTinySmall"
+        android:layout_width="@dimen/ux_common_check_box_size"
+        android:layout_height="@dimen/ux_common_check_box_size"
+        android:gravity="center"
+        android:text="일"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/day_2"
+        android:layout_width="@dimen/ux_common_check_box_size"
+        android:layout_height="@dimen/ux_common_check_box_size"
+        android:gravity="center"
+        android:text="월"
+        app:layout_constraintEnd_toStartOf="@id/day_1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/day_3"
+        android:layout_width="@dimen/ux_common_check_box_size"
+        android:layout_height="@dimen/ux_common_check_box_size"
+        android:gravity="center"
+        android:text="화"
+        app:layout_constraintEnd_toStartOf="@id/day_2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/day_4"
+        android:layout_width="@dimen/ux_common_check_box_size"
+        android:layout_height="@dimen/ux_common_check_box_size"
+        android:gravity="center"
+        android:text="수"
+        app:layout_constraintEnd_toStartOf="@id/day_3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/day_5"
+        android:layout_width="@dimen/ux_common_check_box_size"
+        android:layout_height="@dimen/ux_common_check_box_size"
+        android:gravity="center"
+        android:text="목"
+        app:layout_constraintEnd_toStartOf="@id/day_4"
+        app:layout_constraintTop_toTopOf="parent" />
+    
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_input_add"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

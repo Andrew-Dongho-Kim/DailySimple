@@ -25,6 +25,11 @@
         <item name="android:textColor">@color/ux_common_text_color</item>
     </style>
 
+    <style name="UxCommonDpTextStyleTinySmall">
+        <item name="android:textSize">@dimen/ux_common_text_size_dp_tiny_small</item>
+        <item name="android:textColor">@color/ux_common_text_color</item>
+    </style>
+
     <style name="UxCommonDpTextStyleTinyBig">
         <item name="android:textSize">@dimen/ux_common_text_size_dp_tiny_big</item>
         <item name="android:textColor">@color/ux_common_text_color</item>

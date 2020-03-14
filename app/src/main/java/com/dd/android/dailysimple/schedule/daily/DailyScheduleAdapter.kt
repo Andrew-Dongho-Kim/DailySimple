@@ -14,6 +14,9 @@ class DailyScheduleAdapter : RecyclerView.Adapter<DailyScheduleItemViewHolder>()
             )
         )
 
+    override fun getItemViewType(position: Int): Int {
+        return super.getItemViewType(position)
+    }
 
     override fun onBindViewHolder(holder: DailyScheduleItemViewHolder, position: Int) {
     }
