@@ -13,6 +13,8 @@
         <item name="android:colorAccent">@color/colorAccent</item>
         <item name="android:navigationBarColor">@color/ux_common_background</item>
         <item name="android:statusBarColor">@color/ux_common_background</item>
+        <item name="android:windowLightNavigationBar">@bool/windowLightNavigationBar</item>
+        <item name="android:windowLightStatusBar">@bool/windowLightStatusBar</item>
     </style>
 
     <style name="UxCommonSpTextStyleNormal">
@@ -22,11 +24,6 @@
 
     <style name="UxCommonDpTextStyleNormal">
         <item name="android:textSize">@dimen/ux_common_text_size_dp_normal</item>
-        <item name="android:textColor">@color/ux_common_text_color</item>
-    </style>
-
-    <style name="UxCommonDpTextStyleTinyBig">
-        <item name="android:textSize">@dimen/ux_common_text_size_dp_tiny_big</item>
         <item name="android:textColor">@color/ux_common_text_color</item>
     </style>
 </resources>

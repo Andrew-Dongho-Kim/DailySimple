@@ -6,6 +6,7 @@
         android:id="@+id/schedule_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/ux_common_background"
         android:clipToPadding="false"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"

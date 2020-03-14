@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="list_item_margin_vertical">10dp</dimen>
+    <dimen name="ux_common_view_margin_vertical">10dp</dimen>
 
-    <dimen name="ux_common_text_size_dp_1">15dp</dimen>
+    <dimen name="ux_common_text_size_sp_normal">15sp</dimen>
+
+    <dimen name="ux_common_text_size_dp_tiny_big">18dp</dimen>
+    <dimen name="ux_common_text_size_dp_normal">15dp</dimen>
+    <dimen name="ux_common_text_size_dp_tiny_small">12dp</dimen>
 </resources>

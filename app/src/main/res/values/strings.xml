@@ -3,7 +3,13 @@
 
     <string name="group_schedule">Group Schedule</string>
     <string name="daily_schedule">Daily Schedule</string>
+    <string name="setting">Settings</string>
 
     <string name="schedule_overview">Schedule Overview</string>
     <string name="schedule_title">Schedule Title</string>
+
+    <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="server_client_id">183375368543-5c4bvvi46o274fblap14fqr0h1c3pj0e.apps.googleusercontent.com</string>
 </resources>
