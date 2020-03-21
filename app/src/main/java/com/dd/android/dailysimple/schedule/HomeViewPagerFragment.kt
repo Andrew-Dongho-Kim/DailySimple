@@ -2,7 +2,6 @@ package com.dd.android.dailysimple.schedule
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,8 +33,6 @@ class HomeViewPagerFragment : Fragment() {
         bind.accountViewModel = ViewModelProvider(activity).get(GoogleAccountViewModel::class.java)
         bind.lifecycleOwner = viewLifecycleOwner
 
-        Log.e("TEST-DH", "FRAGMENT VIEWMODEL : ${bind.accountViewModel}")
-
         initToolbar()
         initViewPager()
 
@@ -45,10 +42,12 @@ class HomeViewPagerFragment : Fragment() {
     private fun initToolbar() {
         activity.setSupportActionBar(bind.toolbar)
         activity.supportActionBar?.apply {
-            setDisplayShowCustomEnabled(true)
-            setDisplayShowTitleEnabled(false)
+            setDisplayShowCustomEnabled(false)
+            setDisplayShowTitleEnabled(true)
             setDisplayHomeAsUpEnabled(false)
+            title = activity.getString(R.string.app_name)
         }
+        setHasOptionsMenu(true)
     }
 
     private fun initViewPager() {

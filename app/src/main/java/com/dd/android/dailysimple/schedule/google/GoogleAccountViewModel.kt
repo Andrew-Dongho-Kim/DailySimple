@@ -1,16 +1,20 @@
 package com.dd.android.dailysimple.schedule.google
 
 import android.app.Application
-import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
+import com.dd.android.dailysimple.R
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 
 class GoogleAccountViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _name = MutableLiveData<String>()
-    val name: LiveData<String> = _name
+    val name = liveData<String> {
+        emit(application.getString(R.string.guest))
+        emitSource(_name)
+    }
 
     private val _email = MutableLiveData<String>()
     val email: LiveData<String> = _email

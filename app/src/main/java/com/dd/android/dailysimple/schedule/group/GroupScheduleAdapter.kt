@@ -5,29 +5,25 @@ import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.databinding.GroupScheduleCardItemBinding
 import com.dd.android.dailysimple.schedule.HomeViewPagerFragmentDirections
+import com.dd.android.dailysimple.schedule.common.recycler.ViewHolder2
 
-class GroupScheduleAdapter : RecyclerView.Adapter<ScheduleCardItemViewHolder>() {
+class GroupScheduleAdapter : RecyclerView.Adapter<ViewHolder2>() {
 
     var onItemClickListener: View.OnClickListener? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ) =
-        ScheduleCardItemViewHolder(
-            GroupScheduleCardItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                .apply {
-                    root.setOnClickListener(onItemClickListener)
-                }
-        )
+    ) = ViewHolder2(parent, R.layout.group_schedule_card_item, viewType)
 
-    override fun onBindViewHolder(holder: ScheduleCardItemViewHolder, position: Int) {
-        holder.bind
+    override fun onBindViewHolder(holder: ViewHolder2, position: Int) {
+        holder.itemClickListener = onItemClickListener
     }
 
     override fun getItemCount(): Int {
@@ -56,9 +52,4 @@ class ScheduleCardItemDecoration(
         super.getItemOffsets(outRect, view, parent, state)
         outRect.top = context.resources.getDimensionPixelSize(R.dimen.list_item_margin_vertical)
     }
-}
-
-class ScheduleCardItemViewHolder(
-    val bind: GroupScheduleCardItemBinding
-) : RecyclerView.ViewHolder(bind.root) {
 }

@@ -17,13 +17,4 @@
         <item name="android:windowLightStatusBar">@bool/windowLightStatusBar</item>
     </style>
 
-    <style name="UxCommonSpTextStyleNormal">
-        <item name="android:textSize">@dimen/ux_common_text_size_sp_normal</item>
-        <item name="android:textColor">@color/ux_common_text_color</item>
-    </style>
-
-    <style name="UxCommonDpTextStyleNormal">
-        <item name="android:textSize">@dimen/ux_common_text_size_dp_normal</item>
-        <item name="android:textColor">@color/ux_common_text_color</item>
-    </style>
 </resources>

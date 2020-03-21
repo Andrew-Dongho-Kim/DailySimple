@@ -11,6 +11,10 @@ import android.util.Log
 import androidx.annotation.IntDef
 import androidx.core.content.ContentResolverCompat
 import androidx.core.os.CancellationSignal
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
+import com.dd.android.dailysimple.schedule.common.DateUtils
 import com.dd.android.dailysimple.schedule.provider.calendar.EventReminderMethod.Companion.ALERT
 import com.dd.android.dailysimple.schedule.provider.calendar.EventReminderMethod.Companion.DEFAULT
 import com.dd.android.dailysimple.schedule.provider.calendar.EventReminderMethod.Companion.EMAIL
@@ -45,7 +49,6 @@ data class EventReminder(
 class CalendarProviderHelper(
     private val context: Context
 ) {
-
     private val cancelSignal by lazy { CancellationSignal() }
 
     fun addEvents(activity: Activity, event: CalendarEvent) =
@@ -88,28 +91,53 @@ class CalendarProviderHelper(
             }
         )
 
-        if (cursor.moveToFirst()) {
-            do {
-                Log.d(LOG_TAG, "  Title:${cursor.getString(1)}")
-                Log.d(LOG_TAG, "  Begin:${cursor.getLong(2)}")
-                Log.d(LOG_TAG, "  End:${cursor.getLong(3)}")
-                Log.d(LOG_TAG, "  Location:${cursor.getString(4)}")
-                Log.d(LOG_TAG, "  Description:${cursor.getString(5)}")
-            } while (cursor.moveToNext())
-        }
+//        if (cursor.moveToFirst()) {
+//            do {
+//                Log.d(LOG_TAG, "  Title:${cursor.getString(1)}")
+//                Log.d(LOG_TAG, "  Begin:${cursor.getLong(2)}")
+//                Log.d(LOG_TAG, "  End:${cursor.getLong(3)}")
+//                Log.d(LOG_TAG, "  Location:${cursor.getString(4)}")
+//                Log.d(LOG_TAG, "  Description:${cursor.getString(5)}")
+//            } while (cursor.moveToNext())
+//        }
     }
 
-    fun getEvents(
-        beginTime: Long, endTime: Long
-    ): Cursor {
+    fun getTodayEvents() = getEvents(DateUtils.today(), DateUtils.todayAfter(1))
+
+    fun getEvents(beginTime: Long, endTime: Long): LiveData<List<CalendarModel>> {
         val uriBuilder = Instances.CONTENT_URI.buildUpon()
         ContentUris.appendId(uriBuilder, beginTime)
         ContentUris.appendId(uriBuilder, endTime)
 
-        return ContentResolverCompat.query(
+        Log.d("TEST-DH", "${Date(beginTime)}")
+        Log.d("TEST-DH", "${Date(endTime)}")
+
+        val cursor = ContentResolverCompat.query(
             context.contentResolver,
-            uriBuilder.build(), INSTANCE_PROJECTION, null, null, null, cancelSignal
+            uriBuilder.build(), INSTANCE_PROJECTION,
+            null, null, null, cancelSignal
         )
+
+        Log.e("TEST-DH", "Cursor count: ${cursor.count}")
+        return liveData {
+            val list = mutableListOf<CalendarModel>()
+            if (cursor.moveToFirst()) {
+                do {
+                    list.add(
+                        CalendarModel(
+                            id= 1000L, // TODO
+                            title = cursor.getString(Instances.TITLE),
+                            begin = cursor.getLong(Instances.BEGIN),
+                            end = cursor.getLong(Instances.END),
+                            description = cursor.getString(Instances.DESCRIPTION),
+                            color = cursor.getInt(Instances.DISPLAY_COLOR)
+                        )
+                    )
+                } while (cursor.moveToNext())
+                Log.d("TEST-DH", "List:$list, Size:${list.size}")
+            }
+            emit(list as List<CalendarModel>)
+        }
     }
 
     fun dumpCalendar(accountName: String, accountType: String) {
@@ -141,6 +169,15 @@ class CalendarProviderHelper(
             cancelSignal
         )
 
+    private fun Cursor.getInt(columnName: String) =
+        getInt(getColumnIndex(columnName))
+
+    private fun Cursor.getLong(columnName: String) =
+        getLong(getColumnIndex(columnName))
+
+    private fun Cursor.getString(columnName: String) =
+        getString(getColumnIndex(columnName))
+
 
     companion object {
         private val INSTANCE_PROJECTION = arrayOf(
@@ -149,7 +186,8 @@ class CalendarProviderHelper(
             Instances.BEGIN,
             Instances.END,
             Instances.EVENT_LOCATION,
-            Instances.DESCRIPTION
+            Instances.DESCRIPTION,
+            Instances.DISPLAY_COLOR
         )
 
         private val CALENDAR_PROJECTION = arrayOf(

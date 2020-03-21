@@ -1,41 +1,31 @@
 package com.dd.android.dailysimple.schedule
 
-import android.Manifest
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import androidx.annotation.RequiresPermission
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.executor.GlideExecutor.UncaughtThrowableStrategy.LOG
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.schedule.common.BaseActivity
 import com.dd.android.dailysimple.schedule.google.GoogleAccountController
 import com.dd.android.dailysimple.schedule.google.GoogleAccountViewModel
-import com.dd.android.dailysimple.schedule.google.SignInOutResult
+import com.dd.android.dailysimple.schedule.google.SignedState
 import com.dd.android.dailysimple.schedule.provider.calendar.CalendarProviderHelper
-import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.auth.api.signin.GoogleSignInResult
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
-import com.google.api.client.util.ExponentialBackOff
-import com.google.api.services.calendar.Calendar
-import com.google.api.services.calendar.CalendarScopes
-
-private const val REQUEST_GOOGLE_PLAY_SERVICES = 1001
-
+import java.util.*
+import javax.inject.Inject
+import javax.inject.Named
 
 class HomeActivity : BaseActivity() {
 
     private val accountController = GoogleAccountController(this)
+
+    @Inject
+    lateinit var appContext: Context
+
+    @Inject
+    lateinit var pref:SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,9 +36,10 @@ class HomeActivity : BaseActivity() {
             Observer {
                 it.result?.signInAccount?.let { account ->
                     viewModel.update(account)
-                    Log.d("TEST-DH", "ViewModel:$viewModel, ${account.displayName}, ${account.email}")
                 }
             })
+
+        (application as DailySimpleApplication).appComponent.inject(this)
 
         test()
     }
@@ -56,8 +47,19 @@ class HomeActivity : BaseActivity() {
 
     fun test() {
         val calendarHelper = CalendarProviderHelper(applicationContext)
-        calendarHelper.dumpCalendar("nazcazon5638@gmail.com", "com.google")
-        calendarHelper.dumpEvents()
+        calendarHelper.getTodayEvents(
+
+        ).observe(this, Observer {
+            Log.e("TEST-DH", "Calendar: ${it}")
+        })
+//
+//        val date = Date(2011, 3, 3)
+//        Calendar.getInstance().time = date
+//
+//        Calendar.getInstance().add(Calendar.YEAR, 1)
+//
+//        Log.d("TEST-DH", "Calendar1:${date}")
+//        Log.d("TEST-DH", "Calendar2:${Calendar.getInstance()}")
     }
 
 }

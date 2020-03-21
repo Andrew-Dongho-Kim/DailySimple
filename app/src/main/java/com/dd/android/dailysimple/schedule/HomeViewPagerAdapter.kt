@@ -3,7 +3,7 @@ package com.dd.android.dailysimple.schedule
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.schedule.daily.DailyScheduleFragment
+import com.dd.android.dailysimple.schedule.daily.DailyFragment
 import com.dd.android.dailysimple.schedule.group.CreateGroupScheduleFragment
 import com.dd.android.dailysimple.schedule.group.GroupScheduleFragment
 
@@ -20,9 +20,9 @@ val TabTitleResId = arrayOf(
 class HomeViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     private val fragmentCreators: Map<Int, () -> Fragment> = mapOf(
-        DAILY_SCHEDULE_PAGE_INDEX to { DailyScheduleFragment() },
+        DAILY_SCHEDULE_PAGE_INDEX to { DailyFragment() },
         GROUP_SCHEDULE_PAGE_INDEX to { GroupScheduleFragment() },
-        SETTINGS_PAGE_INDEX to { CreateGroupScheduleFragment() }
+        SETTINGS_PAGE_INDEX to { SettingFragment() }
     )
 
     override fun getItemCount() = fragmentCreators.size

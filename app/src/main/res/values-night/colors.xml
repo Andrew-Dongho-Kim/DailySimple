@@ -6,5 +6,7 @@
     <color name="colorAccent">#5a9bff</color>
 
     <color name="ux_common_background">#010101</color>
+    <color name="ux_common_view_background">@color/app_black</color>
+
     <color name="ux_common_text_color">#fafafa</color>
 </resources>

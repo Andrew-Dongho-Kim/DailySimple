@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">DailySimple</string>
 
-    <string name="group_schedule">Group Schedule</string>
-    <string name="daily_schedule">Daily Schedule</string>
+    <string name="group_schedule">Group</string>
+    <string name="daily_schedule">Daily</string>
     <string name="setting">Settings</string>
 
     <string name="schedule_overview">Schedule Overview</string>
@@ -11,5 +11,37 @@
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
 
-    <string name="server_client_id">183375368543-5c4bvvi46o274fblap14fqr0h1c3pj0e.apps.googleusercontent.com</string>
+    <string name="title">Title</string>
+    <string name="share">Share</string>
+    <string name="memo">Memo</string>
+    <string name="start">Begin</string>
+    <string name="end">End</string>
+
+    <string name="guest">No signed in</string>
+
+    <string name="january">JAN</string>
+    <string name="february">FEB</string>
+    <string name="march">MAR</string>
+    <string name="april">APR</string>
+    <string name="may">MAY</string>
+    <string name="june">JUN</string>
+    <string name="july">JUL</string>
+    <string name="august">AUG</string>
+    <string name="september">SEP</string>
+    <string name="october">OCT</string>
+    <string name="november">NOV</string>
+    <string name="december">DEC</string>
+
+    <string name="sunday">SU</string>
+    <string name="monday">MO</string>
+    <string name="tuesday">TU</string>
+    <string name="wednesday">WE</string>
+    <string name="thursday">TH</string>
+    <string name="friday">FR</string>
+    <string name="saturday">SA</string>
+
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+
+    <string name="make_a_habit">Make a habit</string>
 </resources>

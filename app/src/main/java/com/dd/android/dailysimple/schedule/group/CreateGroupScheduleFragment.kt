@@ -33,14 +33,11 @@ class CreateGroupScheduleFragment : Fragment() {
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         initToolbar()
     }
 
     private fun initToolbar() {
         activity.setSupportActionBar(bind.toolbar)
-
         activity.supportActionBar?.apply {
             setDisplayShowCustomEnabled(true)
             setDisplayShowTitleEnabled(false)
