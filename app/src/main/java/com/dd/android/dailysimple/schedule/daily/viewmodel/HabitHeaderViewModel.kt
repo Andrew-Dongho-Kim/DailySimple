@@ -76,7 +76,7 @@ data class HabitHeaderItemModel(private val app: Application, private val length
 
 }
 
-private val DAYS = listOf(
+val DAYS = listOf(
     R.string.sunday,
     R.string.monday,
     R.string.tuesday,
@@ -86,7 +86,7 @@ private val DAYS = listOf(
     R.string.saturday
 )
 
-private val MONTHS = listOf(
+val MONTHS = listOf(
     R.string.january,
     R.string.february,
     R.string.march,

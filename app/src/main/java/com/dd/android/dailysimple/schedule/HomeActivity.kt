@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.load.engine.executor.GlideExecutor.UncaughtThrowableStrategy.LOG
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.schedule.common.BaseActivity
+import com.dd.android.dailysimple.schedule.common.DateUtils
 import com.dd.android.dailysimple.schedule.google.GoogleAccountController
 import com.dd.android.dailysimple.schedule.google.GoogleAccountViewModel
 import com.dd.android.dailysimple.schedule.google.SignedState
@@ -25,7 +26,7 @@ class HomeActivity : BaseActivity() {
     lateinit var appContext: Context
 
     @Inject
-    lateinit var pref:SharedPreferences
+    lateinit var pref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,14 +53,11 @@ class HomeActivity : BaseActivity() {
         ).observe(this, Observer {
             Log.e("TEST-DH", "Calendar: ${it}")
         })
-//
-//        val date = Date(2011, 3, 3)
-//        Calendar.getInstance().time = date
-//
-//        Calendar.getInstance().add(Calendar.YEAR, 1)
-//
-//        Log.d("TEST-DH", "Calendar1:${date}")
-//        Log.d("TEST-DH", "Calendar2:${Calendar.getInstance()}")
+
+
+
+        Log.d("TEST-DH", "Calendar1:${Date(DateUtils.today())}")
+        Log.d("TEST-DH", "Calendar2:${Date(DateUtils.todayAfter(1))}")
     }
 
 }

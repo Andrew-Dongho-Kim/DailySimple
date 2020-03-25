@@ -27,7 +27,7 @@ private annotation class DailyScheduleViewType {
     }
 }
 
-class DailyHabitHeaderHolder(parent: ViewGroup) : ViewHolder2(
+open class DailyHabitHeaderHolder(parent: ViewGroup) : ViewHolder2(
     parent,
     R.layout.daily_schedule_header_item,
     BR.viewModel
@@ -35,7 +35,7 @@ class DailyHabitHeaderHolder(parent: ViewGroup) : ViewHolder2(
 
 class DailyHabitItemHolder(parent: ViewGroup) : ViewHolder2(
     parent,
-    R.layout.daily_schedule_card_item,
+    R.layout.daily_habit_item,
     BR.viewModel
 )
 

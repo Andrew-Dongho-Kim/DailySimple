@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="itemModel"
+            type="com.dd.android.dailysimple.schedule.daily.DateDayItemModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/date"
+            style="@style/UxCommonDpHeaderTextStyleNormal"
+            android:layout_width="@dimen/ux_common_check_box_size"
+            android:layout_height="@dimen/ux_common_check_box_size"
+            android:layout_marginEnd="3dp"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@{itemModel.date}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/day"
+            style="@style/UxCommonDpHeaderTextStyleNormal"
+            android:layout_width="@dimen/ux_common_check_box_size"
+            android:layout_height="@dimen/ux_common_check_box_size"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@{itemModel.day}"
+            app:layout_constraintEnd_toEndOf="@id/date"
+            app:layout_constraintStart_toStartOf="@id/date"
+            app:layout_constraintTop_toBottomOf="@id/date" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

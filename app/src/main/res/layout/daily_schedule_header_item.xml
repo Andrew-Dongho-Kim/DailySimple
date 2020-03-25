@@ -163,7 +163,7 @@
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:onClick="@{viewModel::addDailySchedule}"
-            android:src="@drawable/ic_add_black_24dp"
+            android:src="@drawable/ic_add_black"
             android:tint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="@id/day_0"
             app:layout_constraintStart_toStartOf="parent"

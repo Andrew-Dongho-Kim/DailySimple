@@ -6,6 +6,9 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,6 +17,7 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.Observer
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.databinding.FragmentGroupScheduleBinding
 import com.dd.android.dailysimple.schedule.common.BaseFragment
 import com.dd.android.dailysimple.schedule.daily.viewmodel.HabitHeaderViewModel
@@ -25,7 +29,7 @@ class DailyFragment : BaseFragment<FragmentGroupScheduleBinding>() {
 
     private val timeReceiver = TimeReceiver(this)
 
-    override val layout: Int = com.dd.android.dailysimple.R.layout.fragment_group_schedule
+    override val layout: Int = R.layout.fragment_group_schedule
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,7 +37,7 @@ class DailyFragment : BaseFragment<FragmentGroupScheduleBinding>() {
         lifecycle.addObserver(timeReceiver)
 
         val adapter2 = DailyScheduleAdapter(viewLifecycleOwner)
-        with(bind.scheduleList) {
+        with(bind.recycler) {
             layoutManager = LinearLayoutManager(activity)
             adapter = adapter2
 
@@ -50,6 +54,16 @@ class DailyFragment : BaseFragment<FragmentGroupScheduleBinding>() {
                 ScheduleCardItemDecoration(activity)
             )
         }
+
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.daily_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return super.onOptionsItemSelected(item)
     }
 
 }

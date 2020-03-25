@@ -34,7 +34,7 @@ class GroupScheduleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(bind.scheduleList) {
+        with(bind.recycler) {
             layoutManager = LinearLayoutManager(activity)
             adapter =
                 GroupScheduleAdapter()

@@ -33,7 +33,7 @@ class HomeViewPagerFragment : Fragment() {
         bind.accountViewModel = ViewModelProvider(activity).get(GoogleAccountViewModel::class.java)
         bind.lifecycleOwner = viewLifecycleOwner
 
-        initToolbar()
+//        initToolbar()
         initViewPager()
 
         return bind.root
