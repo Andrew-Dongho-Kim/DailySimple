@@ -15,6 +15,22 @@
         <item name="android:statusBarColor">@color/ux_common_background</item>
     </style>
 
+    <style name="ToolbarTitleStyleParent">
+        <item name="android:shadowDx">0.5</item>
+        <item name="android:shadowDy">0.5</item>
+        <item name="android:shadowRadius">0.5</item>
+        <item name="android:shadowColor">@color/ux_common_view_background</item>
+    </style>
+
+    <style name="CollapsingTitleStyle" parent="ToolbarTitleStyleParent">
+        <item name="android:textColor">@color/ux_common_text_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ExpandedTitleStyle" parent="ToolbarTitleStyleParent">
+        <item name="android:textColor">@android:color/transparent</item>
+    </style>
+
     <style name="UxCommonSpTextStyleNormal">
         <item name="android:textSize">@dimen/ux_common_text_size_sp_normal</item>
         <item name="android:textColor">@color/ux_common_text_color</item>

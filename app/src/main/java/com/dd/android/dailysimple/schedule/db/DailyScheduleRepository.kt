@@ -13,18 +13,12 @@ class DailyScheduleRepository(
 ) {
 
     val allHabits = dailyHabitDao.getAllHabits()
-//        .toLiveData(
-//        Config(
-//            pageSize = 60,
-//            enablePlaceholders = true,
-//            maxSize = 200
-//        )
-//    )
-
 
     fun getHabit(id: Long) = dailyHabitDao.getHabit(id)
 
-    suspend fun insert(schedule: DailyHabit) =
-        dailyHabitDao.insert(schedule)
+    suspend fun insert(habit: DailyHabit) =
+        dailyHabitDao.insert(habit)
 
+    suspend fun update(habit: DailyHabit)
+        = dailyHabitDao.update(habit)
 }

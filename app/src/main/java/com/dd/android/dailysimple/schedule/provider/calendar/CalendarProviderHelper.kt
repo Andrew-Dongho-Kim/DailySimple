@@ -12,7 +12,6 @@ import androidx.annotation.IntDef
 import androidx.core.content.ContentResolverCompat
 import androidx.core.os.CancellationSignal
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.dd.android.dailysimple.schedule.common.DateUtils
 import com.dd.android.dailysimple.schedule.provider.calendar.EventReminderMethod.Companion.ALERT
@@ -109,32 +108,28 @@ class CalendarProviderHelper(
         ContentUris.appendId(uriBuilder, beginTime)
         ContentUris.appendId(uriBuilder, endTime)
 
-        Log.d("TEST-DH", "${Date(beginTime)}")
-        Log.d("TEST-DH", "${Date(endTime)}")
-
         val cursor = ContentResolverCompat.query(
             context.contentResolver,
             uriBuilder.build(), INSTANCE_PROJECTION,
             null, null, null, cancelSignal
         )
 
-        Log.e("TEST-DH", "Cursor count: ${cursor.count}")
         return liveData {
             val list = mutableListOf<CalendarModel>()
             if (cursor.moveToFirst()) {
                 do {
                     list.add(
                         CalendarModel(
-                            id= 1000L, // TODO
+                            id = 1000L, // TODO
                             title = cursor.getString(Instances.TITLE),
-                            begin = cursor.getLong(Instances.BEGIN),
-                            end = cursor.getLong(Instances.END),
+                            begin = Date(cursor.getLong(Instances.BEGIN)),
+                            end = Date(cursor.getLong(Instances.END)),
                             description = cursor.getString(Instances.DESCRIPTION),
-                            color = cursor.getInt(Instances.DISPLAY_COLOR)
+                            color = cursor.getInt(Instances.DISPLAY_COLOR),
+                            locale = context.resources.configuration.locale
                         )
                     )
                 } while (cursor.moveToNext())
-                Log.d("TEST-DH", "List:$list, Size:${list.size}")
             }
             emit(list as List<CalendarModel>)
         }

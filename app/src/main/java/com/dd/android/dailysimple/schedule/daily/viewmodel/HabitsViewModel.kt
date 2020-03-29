@@ -18,7 +18,7 @@ class HabitsViewModel(application: Application) : AndroidViewModel(application) 
     val allHabits = repository.allHabits
 
 
-    fun getSchedule(id: Long) = repository.getHabit(id)
+    fun getHabit(id: Long) = repository.getHabit(id)
 
     /**
      * The implementation of insert() in the database is completely hidden from the UI.
@@ -29,6 +29,5 @@ class HabitsViewModel(application: Application) : AndroidViewModel(application) 
      */
     fun insert(schedule: DailyHabit) = viewModelScope.launch {
         Log.d("TEST-DH", "Insert : $schedule, ${repository.insert(schedule)}")
-
     }
 }

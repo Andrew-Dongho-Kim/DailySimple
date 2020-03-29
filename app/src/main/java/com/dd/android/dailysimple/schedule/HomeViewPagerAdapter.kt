@@ -17,8 +17,13 @@ val TabTitleResId = arrayOf(
     R.string.setting
 )
 
-class HomeViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+val TabIconResId = arrayOf(
+    R.drawable.ic_daily,
+    R.drawable.ic_group,
+    R.drawable.ic_settings
+)
 
+class HomeViewPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     private val fragmentCreators: Map<Int, () -> Fragment> = mapOf(
         DAILY_SCHEDULE_PAGE_INDEX to { DailyFragment() },
         GROUP_SCHEDULE_PAGE_INDEX to { GroupScheduleFragment() },

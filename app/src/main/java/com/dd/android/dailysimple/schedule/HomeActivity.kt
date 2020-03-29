@@ -51,13 +51,8 @@ class HomeActivity : BaseActivity() {
         calendarHelper.getTodayEvents(
 
         ).observe(this, Observer {
-            Log.e("TEST-DH", "Calendar: ${it}")
+//            Log.e("TEST-DH", "Calendar: ${it}")
         })
-
-
-
-        Log.d("TEST-DH", "Calendar1:${Date(DateUtils.today())}")
-        Log.d("TEST-DH", "Calendar2:${Date(DateUtils.todayAfter(1))}")
     }
 
 }

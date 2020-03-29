@@ -1,31 +1,47 @@
 package com.dd.android.dailysimple.schedule.daily
 
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.databinding.FragmentCreateDailyScheduleBinding
+import com.dd.android.dailysimple.databinding.FragmentMakeDailyScheduleBinding
 import com.dd.android.dailysimple.schedule.common.BaseFragment
 import com.dd.android.dailysimple.schedule.daily.viewmodel.HabitsViewModel
 import com.dd.android.dailysimple.schedule.db.DailyHabit
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 
-class CreateHabitFragment : BaseFragment<FragmentCreateDailyScheduleBinding>() {
+private const val ARG_ID = "dailyScheduleId"
 
-    override val layout: Int = R.layout.fragment_create_daily_schedule
+class MakeAndEditHabitFragment : BaseFragment<FragmentMakeDailyScheduleBinding>() {
+
+    private val viewModel by viewModels<HabitsViewModel>()
+
+    override val layout: Int = R.layout.fragment_make_daily_schedule
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initToolbar()
-        initColorPicker()
+        setUpModel()
+        setUpToolbar()
+        setUpColorPicker()
     }
 
-    private fun initToolbar() {
+    private fun setUpModel() {
+        (arguments?.get(ARG_ID) as? Long)?.let { id ->
+            if (id == -1L) return
+
+            viewModel.getHabit(id).observe(viewLifecycleOwner, Observer {
+                bind.model = it
+            })
+        }
+    }
+
+    private fun setUpToolbar() {
         activity.setSupportActionBar(bind.toolbar)
         activity.supportActionBar?.apply {
             setDisplayShowCustomEnabled(false)
@@ -33,10 +49,11 @@ class CreateHabitFragment : BaseFragment<FragmentCreateDailyScheduleBinding>() {
             setDisplayHomeAsUpEnabled(true)
             title = activity.getString(R.string.make_a_habit)
         }
+
         setHasOptionsMenu(true)
     }
 
-    private fun initColorPicker() {
+    private fun setUpColorPicker() {
         bind.colorPicker.setOnClickListener {
             ColorPickerDialog.newBuilder()
                 .create()
@@ -44,6 +61,7 @@ class CreateHabitFragment : BaseFragment<FragmentCreateDailyScheduleBinding>() {
                     setColorPickerDialogListener(object : ColorPickerDialogListener {
                         override fun onDialogDismissed(dialogId: Int) {}
                         override fun onColorSelected(dialogId: Int, color: Int) {
+                            Log.e("TEST-DH", color.toString())
                             bind.colorPicker.imageTintList = ColorStateList.valueOf(color)
                         }
                     })
@@ -59,13 +77,15 @@ class CreateHabitFragment : BaseFragment<FragmentCreateDailyScheduleBinding>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.done -> {
-                ViewModelProvider(activity).get(HabitsViewModel::class.java).insert(
+                viewModel.insert(
                     DailyHabit(
-                        id = 0,
+                        id = bind.model?.id ?: 0,
                         title = bind.titleEditor.text.toString(),
-                        color = bind.colorPicker.imageTintList!!.defaultColor
+                        color = bind.colorPicker.imageTintList!!.defaultColor,
+                        memo = bind.memoEditor.text.toString()
                     )
                 )
+
                 popBackStack()
                 true
             }

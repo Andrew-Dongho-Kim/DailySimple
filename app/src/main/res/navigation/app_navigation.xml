@@ -14,19 +14,19 @@
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"/>
+            app:popExitAnim="@android:anim/slide_out_right" />
 
         <action
-            android:id="@+id/home_to_daily_schedule_detail_fragment"
+            android:id="@+id/home_to_daily_habit_detail_fragment"
             app:destination="@id/daily_schedule_detail_fragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"/>
+            app:popExitAnim="@android:anim/slide_out_right" />
 
         <action
             android:id="@+id/home_to_create_daily_schedule_fragment"
-            app:destination="@id/create_daily_schedule_fragment"
+            app:destination="@id/make_and_edit_habit_fragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
@@ -52,7 +52,11 @@
     </fragment>
 
     <fragment
-        android:id="@+id/create_daily_schedule_fragment"
-        android:name="com.dd.android.dailysimple.schedule.daily.CreateHabitFragment"
-        tools:layout="@layout/fragment_create_daily_schedule" />
+        android:id="@+id/make_and_edit_habit_fragment"
+        android:name="com.dd.android.dailysimple.schedule.daily.MakeAndEditHabitFragment"
+        tools:layout="@layout/fragment_make_daily_schedule">
+        <argument
+            android:name="dailyScheduleId"
+            app:argType="long" />
+    </fragment>
 </navigation>

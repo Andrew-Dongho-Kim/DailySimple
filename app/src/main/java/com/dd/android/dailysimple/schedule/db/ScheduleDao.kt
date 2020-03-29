@@ -1,10 +1,7 @@
 package com.dd.android.dailysimple.schedule.db
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 //@Dao
 //interface GroupDailyScheduleJoinDao {
@@ -35,6 +32,9 @@ interface DailyHabitDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg habits: DailyHabit): List<Long>
+
+    @Update
+    suspend fun update(vararg habits: DailyHabit)
 
     @Query("SELECT * FROM daily_habit")
     fun getAllHabits(): LiveData<List<DailyHabit>>//DataSource.Factory<Int, DailySchedule>

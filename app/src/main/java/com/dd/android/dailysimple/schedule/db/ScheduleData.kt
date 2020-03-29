@@ -1,10 +1,11 @@
 package com.dd.android.dailysimple.schedule.db
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
+import androidx.room.PrimaryKey
 import com.dd.android.dailysimple.schedule.common.recycler.ItemModel
-import com.dd.android.dailysimple.schedule.common.room.RoomTypeConverter
-import java.util.*
 
 const val UNKNOWN_ID = -1L
 

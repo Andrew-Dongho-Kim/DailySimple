@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.dd.android.dailysimple.schedule.daily.viewmodel.HabitHeaderItemModel" />
@@ -13,33 +14,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="5dp">
+        android:paddingEnd="10dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/checked_recycler_view"
-            android:layout_width="32dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/daily_habit_day_date_item"/>
+            tools:listitem="@layout/daily_habit_day_date_item" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/month"
             style="@style/UxCommonDpTextStyleTinySmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/round_app_primary_color_bacground"
+            android:background="@drawable/round_app_primary_color_background"
+            android:gravity="center"
+            android:lines="2"
             android:paddingStart="5dp"
             android:paddingTop="0dp"
             android:paddingEnd="5dp"
             android:paddingBottom="0dp"
-            android:text="@{viewModel.month}"
+            android:text="@{viewModel.year+'\n'+viewModel.month}"
             android:textColor="@color/app_white"
-            app:layout_constraintBottom_toBottomOf="@id/checked_recycler_view"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/checked_recycler_view"
-            app:layout_constraintTop_toTopOf="@id/checked_recycler_view" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

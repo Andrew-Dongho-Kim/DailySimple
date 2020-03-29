@@ -3,16 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="itemModel"
-            type="com.dd.android.dailysimple.schedule.daily.DateDayItemModel" />
+            type="com.dd.android.dailysimple.schedule.daily.DayDateItemModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:paddingStart="5dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="5dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/date"
@@ -23,7 +26,9 @@
             android:gravity="center"
             android:singleLine="true"
             android:text="@{itemModel.date}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="@{itemModel.holiday ? @android:color/holo_red_dark : @color/ux_common_text_color}"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/day"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,6 +40,8 @@
             android:gravity="center"
             android:singleLine="true"
             android:text="@{itemModel.day}"
+            android:textColor="@{itemModel.holiday ? @android:color/holo_red_dark : @color/ux_common_text_color}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/date"
             app:layout_constraintStart_toStartOf="@id/date"
             app:layout_constraintTop_toBottomOf="@id/date" />

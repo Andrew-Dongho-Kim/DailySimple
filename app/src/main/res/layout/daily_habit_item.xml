@@ -9,94 +9,126 @@
             type="com.dd.android.dailysimple.schedule.db.DailyHabit" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="@color/ux_common_view_background"
-        app:cardCornerRadius="20dp">
+        android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/swipe_root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:cardCornerRadius="20dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/done_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_check_black"
+                    android:tint="@color/app_white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/done_text"
+                    style="@style/UxCommonDpTextStyleNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/done"
+                    android:textColor="@color/app_white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/done_icon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/edit_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_edit"
+                    android:tint="@color/app_white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/edit_text"
+                    style="@style/UxCommonDpTextStyleNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/edit"
+                    android:textColor="@color/app_white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/edit_icon"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/item_root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="10dp"
-            android:paddingTop="5dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="5dp">
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/ux_common_view_background"
+            app:cardCornerRadius="20dp">
 
-            <ProgressBar
-                android:id="@+id/circle_progress"
-                style="?android:progressBarStyleHorizontal"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:max="100"
-                android:progress="100"
-                android:progressDrawable="@drawable/progress_circle"
-                android:progressTint="@{viewModel.color}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/UxCommonDpTextStyleNormal"
-                android:layout_width="0dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:ellipsize="marquee"
-                android:maxLines="2"
-                android:text="@{viewModel.title}"
-                app:layout_constraintBottom_toBottomOf="@id/circle_progress"
-                app:layout_constraintEnd_toStartOf="@id/check_1"
-                app:layout_constraintStart_toEndOf="@id/circle_progress"
-                app:layout_constraintTop_toTopOf="@id/circle_progress" />
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp">
 
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/check_5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@{viewModel.color}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_check_black"
+                    android:tint="@{viewModel.color}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/check_4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@{viewModel.color}"
-                android:checked="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/check_5"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ProgressBar
+                    android:id="@+id/circle_progress"
+                    style="?android:progressBarStyleHorizontal"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:max="100"
+                    android:progress="100"
+                    android:progressDrawable="@drawable/progress_circle"
+                    android:secondaryProgress="20"
+                    android:secondaryProgressTint="@{viewModel.color}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/check_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@{viewModel.color}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/check_4"
-                app:layout_constraintTop_toTopOf="parent" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/UxCommonDpTextStyleNormal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:ellipsize="marquee"
+                    android:maxLines="2"
+                    android:text="@{viewModel.title}"
+                    app:layout_constraintBottom_toBottomOf="@id/circle_progress"
+                    app:layout_constraintEnd_toStartOf="@id/circle_progress"
+                    app:layout_constraintStart_toEndOf="@id/check"
+                    app:layout_constraintTop_toTopOf="@id/circle_progress" />
 
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/check_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@{viewModel.color}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/check_3"
-                app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/check_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@{viewModel.color}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/check_2"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
+    </FrameLayout>
 </layout>
