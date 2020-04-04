@@ -6,8 +6,8 @@ import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.dd.android.dailysimple.common.recycler.ItemModel
-import com.dd.android.dailysimple.schedule.daily.DayDateDataSource
-import com.dd.android.dailysimple.schedule.daily.DayDateItemModel
+import com.dd.android.dailysimple.daily.DayDateDataSource
+import com.dd.android.dailysimple.daily.DayDateItemModel
 import com.dd.android.dailysimple.db.AppDatabase
 import com.dd.android.dailysimple.db.DailyHabit
 import com.dd.android.dailysimple.db.DailyHabitRepository

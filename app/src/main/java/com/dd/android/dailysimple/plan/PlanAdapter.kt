@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.schedule.HomeViewPagerFragmentDirections
+import com.dd.android.dailysimple.HomeViewPagerFragmentDirections
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
 
 class GroupScheduleAdapter : RecyclerView.Adapter<ViewHolder2>() {

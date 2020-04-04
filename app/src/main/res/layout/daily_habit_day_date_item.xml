@@ -6,7 +6,7 @@
 
         <variable
             name="itemModel"
-            type="com.dd.android.dailysimple.schedule.daily.DayDateItemModel" />
+            type="com.dd.android.dailysimple.daily.DayDateItemModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

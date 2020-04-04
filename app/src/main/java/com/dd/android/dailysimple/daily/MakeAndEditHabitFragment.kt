@@ -12,7 +12,7 @@ import androidx.lifecycle.Observer
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.databinding.FragmentMakeDailyScheduleBinding
 import com.dd.android.dailysimple.common.BaseFragment
-import com.dd.android.dailysimple.schedule.daily.viewmodel.HabitViewModel
+import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
 import com.dd.android.dailysimple.db.DailyHabit
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener

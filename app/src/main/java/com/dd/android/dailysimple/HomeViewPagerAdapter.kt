@@ -2,7 +2,7 @@ package com.dd.android.dailysimple
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.dd.android.dailysimple.schedule.daily.DailyFragment
+import com.dd.android.dailysimple.daily.DailyFragment
 import com.dd.android.dailysimple.plan.PlanFragment
 
 const val DAILY_SCHEDULE_PAGE_INDEX = 0

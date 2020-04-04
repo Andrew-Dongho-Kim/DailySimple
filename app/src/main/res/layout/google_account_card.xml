@@ -6,7 +6,7 @@
 
         <variable
             name="accountViewModel"
-            type="com.dd.android.dailysimple.schedule.google.GoogleAccountViewModel" />
+            type="com.dd.android.dailysimple.google.GoogleAccountViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

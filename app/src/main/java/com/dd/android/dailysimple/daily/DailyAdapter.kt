@@ -1,5 +1,6 @@
 package com.dd.android.dailysimple.daily
 
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IntDef
@@ -16,17 +17,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.databinding.DailyHabitHeaderItemBinding
 import com.dd.android.dailysimple.databinding.DailyHabitItem2Binding
-import com.dd.android.dailysimple.schedule.HomeViewPagerFragmentDirections
+import com.dd.android.dailysimple.HomeViewPagerFragmentDirections
 import com.dd.android.dailysimple.common.di.appDb
 import com.dd.android.dailysimple.common.recycler.ItemModel
 import com.dd.android.dailysimple.common.recycler.RecyclerViewAdapter2
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
-import com.dd.android.dailysimple.schedule.daily.DailyScheduleViewType.Companion.DAILY_COMMON
-import com.dd.android.dailysimple.schedule.daily.DailyScheduleViewType.Companion.DAILY_HEADER
-import com.dd.android.dailysimple.schedule.daily.DailyScheduleViewType.Companion.TODO_COMMON
-import com.dd.android.dailysimple.schedule.daily.DailyScheduleViewType.Companion.TODO_HEADER
-import com.dd.android.dailysimple.schedule.daily.viewmodel.HabitHeaderItemModel
-import com.dd.android.dailysimple.schedule.daily.viewmodel.TodoHeaderItemModel
+import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.DAILY_COMMON
+import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.DAILY_HEADER
+import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.TODO_COMMON
+import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.TODO_HEADER
+import com.dd.android.dailysimple.daily.viewmodel.HabitHeaderItemModel
+import com.dd.android.dailysimple.daily.viewmodel.TodoHeaderItemModel
 import com.dd.android.dailysimple.db.CheckStatus
 import com.dd.android.dailysimple.provider.calendar.TodoItemModel
 
@@ -51,32 +52,43 @@ open class DailyHabitHeaderHolder(
     ) {
 
     private val adapter = DayDateAdapter(lifecycleOwner)
-
     private val layoutManager = LinearLayoutManager(parent.context).apply {
         orientation = RecyclerView.HORIZONTAL
         reverseLayout = true
     }
+    private val slaveRecyclerViewList = mutableListOf<RecyclerView>()
 
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             model?.refresh(
                 layoutManager.findFirstCompletelyVisibleItemPosition()
             )
+            slaveRecyclerViewList.forEach {
+                it.scrollBy(dx, dy)
+            }
         }
 
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {}
     }
 
     private val observer = Observer<PagedList<DayDateItemModel>> { adapter.submitList(it) }
-
     private var model: HabitHeaderItemModel? = null
 
     init {
         bindAs<DailyHabitHeaderItemBinding>().checkedRecyclerView.apply {
             adapter = this@DailyHabitHeaderHolder.adapter
             layoutManager = this@DailyHabitHeaderHolder.layoutManager
+            removeOnScrollListener(scrollListener)
             addOnScrollListener(scrollListener)
         }
+    }
+
+    fun addSlaveRecyclerView(recyclerView: RecyclerView) {
+        slaveRecyclerViewList.add(recyclerView)
+    }
+
+    fun removeSlaveRecyclerView(recyclerView: RecyclerView) {
+        slaveRecyclerViewList.remove(recyclerView)
     }
 
     override fun bindTo(itemModel: ItemModel) {
@@ -96,7 +108,6 @@ class DailyHabitItemHolder(
     R.layout.daily_habit_item2,
     BR.viewModel
 ) {
-
     private val binding = bindAs<DailyHabitItem2Binding>()
     private val adapter = CheckStatusAdapter(lifecycleOwner)
     private val layoutManager = LinearLayoutManager(parent.context).apply {
@@ -104,10 +115,11 @@ class DailyHabitItemHolder(
         reverseLayout = true
     }
 
+    var checkedListRecycler:RecyclerView? = null
     private var liveDataAdapter: LiveData<PagedList<CheckStatus>>? = null
     private val observerAdapter = Observer<PagedList<CheckStatus>> { adapter.submitList(it) }
 
-    private var liveDataRoom:LiveData<List<CheckStatus>>? = null
+    private var liveDataRoom: LiveData<List<CheckStatus>>? = null
     private val observerRoom = Observer<List<CheckStatus>> {
         liveDataAdapter?.removeObserver(observerAdapter)
         liveDataAdapter = LivePagedListBuilder(
@@ -126,6 +138,9 @@ class DailyHabitItemHolder(
         binding.checkedRecyclerView.apply {
             adapter = this@DailyHabitItemHolder.adapter
             layoutManager = this@DailyHabitItemHolder.layoutManager
+            removeOnItemTouchListener(onBlockItemTouch)
+            addOnItemTouchListener(onBlockItemTouch)
+            checkedListRecycler = this
         }
     }
 
@@ -151,6 +166,14 @@ class DailyHabitItemHolder(
                 HomeViewPagerFragmentDirections.homeToDailyHabitDetailFragment(it.getTag(ID_TAG) as Long)
             )
         }
+        private val onBlockItemTouch = object : RecyclerView.OnItemTouchListener {
+            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+
+            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                return true
+            }
+            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+        }
     }
 }
 
@@ -169,13 +192,30 @@ class DailyAdapter(
     private val lifecycleOwner: LifecycleOwner
 ) : RecyclerViewAdapter2(lifecycleOwner) {
 
+    private var habitHeaderHolder: DailyHabitHeaderHolder? = null
+
     override fun onCreateViewHolder2(parent: ViewGroup, viewType: Int) =
         when (viewType) {
             TODO_HEADER -> DailyTodoHeaderHolder(parent)
             TODO_COMMON -> DailyTodoItemHolder(parent)
-            DAILY_HEADER -> DailyHabitHeaderHolder(parent, lifecycleOwner)
+            DAILY_HEADER -> DailyHabitHeaderHolder(parent, lifecycleOwner).also {
+                habitHeaderHolder = it
+            }
             else -> DailyHabitItemHolder(parent, lifecycleOwner)
         }
+
+    override fun onBindViewHolder(holder: ViewHolder2, position: Int) {
+        super.onBindViewHolder(holder, position)
+
+        // How to remove un-visible slave recycler view for checked list ?
+        when (holder) {
+            is DailyHabitItemHolder -> {
+                holder.checkedListRecycler?.let {
+                    habitHeaderHolder?.addSlaveRecyclerView(it)
+                }
+            }
+        }
+    }
 
     override fun getItemViewType(position: Int): Int {
         return when (items[position]) {

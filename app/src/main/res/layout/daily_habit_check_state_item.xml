@@ -6,7 +6,7 @@
 
         <variable
             name="checkStatus"
-            type="com.dd.android.dailysimple.schedule.db.CheckStatus" />
+            type="com.dd.android.dailysimple.db.CheckStatus" />
     </data>
 
     <FrameLayout

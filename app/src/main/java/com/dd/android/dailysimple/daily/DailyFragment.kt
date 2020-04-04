@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.databinding.FragmentScheduleCommonBinding
-import com.dd.android.dailysimple.schedule.HomeViewPagerFragmentDirections
+import com.dd.android.dailysimple.HomeViewPagerFragmentDirections
 import com.dd.android.dailysimple.common.BaseFragment
 import com.dd.android.dailysimple.plan.ScheduleCardItemDecoration
 

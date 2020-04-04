@@ -6,8 +6,8 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.recycler.ItemModel
-import com.dd.android.dailysimple.schedule.daily.viewmodel.HabitViewModel
-import com.dd.android.dailysimple.schedule.daily.viewmodel.TodoViewModel
+import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
+import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
 
 private const val TAG = "ItemModel"
 private const val HABITS = "Habit"
