@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/home_view_pager_fragment"
-        android:name="com.dd.android.dailysimple.schedule.HomeViewPagerFragment"
+        android:name="com.dd.android.dailysimple.HomeViewPagerFragment"
         tools:layout="@layout/fragment_view_pager">
         <action
             android:id="@+id/home_to_group_schedule_detail_fragment"
@@ -35,7 +35,7 @@
 
     <fragment
         android:id="@+id/group_schedule_detail_fragment"
-        android:name="com.dd.android.dailysimple.schedule.group.detail.GroupScheduleDetailFragment"
+        android:name="com.dd.android.dailysimple.plan.detail.PlanDetailFragment"
         tools:layout="@layout/fragment_group_schedule_detail">
         <argument
             android:name="groupScheduleId"
@@ -45,7 +45,7 @@
     <fragment
         android:id="@+id/daily_schedule_detail_fragment"
         android:name="com.dd.android.dailysimple.schedule.daily.detail.DailyDetailFragment"
-        tools:layout="@layout/fragment_daily_schedule_detail">
+        tools:layout="@layout/fragment_daily_habit_detail">
         <argument
             android:name="dailyScheduleId"
             app:argType="long" />

@@ -22,6 +22,22 @@
         <item name="android:shadowColor">@color/ux_common_view_background</item>
     </style>
 
+    <style name="AppTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorHeight">0dp</item>
+        <item name="tabPaddingStart">6dp</item>
+        <item name="tabPaddingEnd">6dp</item>
+        <item name="tabIconTint">@color/tab_text_color</item>
+        <item name="tabBackground">?attr/selectableItemBackground</item>
+        <item name="tabTextAppearance">@style/TabTextStyle</item>
+        <item name="tabSelectedTextColor">@color/colorPrimary</item>
+        <item name="tabIndicatorColor">@android:color/transparent</item>
+    </style>
+
+    <style name="TabTextStyle" parent="UxCommonDpHeaderTextStyleNormal">
+        <item name="android:textColor">@color/tab_text_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="CollapsingTitleStyle" parent="ToolbarTitleStyleParent">
         <item name="android:textColor">@color/ux_common_text_color</item>
         <item name="android:textStyle">bold</item>
@@ -43,16 +59,6 @@
 
     <style name="UxCommonDpHeaderTextStyleTinyBig">
         <item name="android:textSize">@dimen/ux_common_text_size_dp_tiny_big</item>
-        <item name="android:textColor">@color/ux_common_text_color</item>
-    </style>
-
-    <style name="UxCommonDpHeaderTextStyleBig">
-        <item name="android:textSize">@dimen/ux_common_text_size_dp_big</item>
-        <item name="android:textColor">@color/ux_common_text_color</item>
-    </style>
-
-    <style name="UxCommonSpHeaderTextStyleNormal">
-        <item name="android:textSize">@dimen/ux_common_text_size_sp_normal</item>
         <item name="android:textColor">@color/ux_common_text_color</item>
     </style>
 

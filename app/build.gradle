@@ -92,6 +92,9 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"
     implementation "androidx.paging:paging-common-ktx:$pagingVersion"
 
+    // Setting
+    implementation "androidx.preference:preference:$preferenceVersion"
+
     // Android Test
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

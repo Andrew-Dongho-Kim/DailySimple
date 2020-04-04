@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="account_category"
+        android:title="@string/account">
+        <Preference
+            android:key="profile"
+            android:title="@string/profile" />
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        android:key="general_category"
+        android:title="@string/general">
+        <SwitchPreferenceCompat
+            android:key="notification"
+            android:title="Notification" />
+
+        <Preference
+            android:key="about"
+            android:title="@string/about_dailysimple" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

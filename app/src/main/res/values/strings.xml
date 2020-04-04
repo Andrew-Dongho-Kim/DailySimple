@@ -5,15 +5,18 @@
     <string name="daily_schedule">Daily</string>
     <string name="setting">Settings</string>
 
+    <string name="account">Account</string>
+    <string name="profile">Profile</string>
+    <string name="general">General</string>
+    <string name="about_dailysimple">About Daily Simple</string>
+
     <string name="schedule_overview">Schedule Overview</string>
-    <string name="schedule_title">Schedule Title</string>
 
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
     <string name="edit">Edit</string>
 
     <string name="title">Title</string>
-    <string name="share">Share</string>
     <string name="memo">Memo</string>
     <string name="start">Begin</string>
     <string name="end">End</string>
@@ -43,7 +46,6 @@
     <string name="saturday">SA</string>
 
     <string name="today">Today</string>
-    <string name="tomorrow">Tomorrow</string>
 
     <string name="make_a_habit">Make a habit</string>
 </resources>

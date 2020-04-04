@@ -43,11 +43,11 @@
                     android:background="@android:color/transparent"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
-                    app:scrimAnimationDuration="200"
                     app:collapsedTitleTextAppearance="@style/CollapsingTitleStyle"
                     app:contentScrim="@color/ux_common_background"
                     app:expandedTitleTextAppearance="@style/ExpandedTitleStyle"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                    app:scrimAnimationDuration="200"
                     app:title="@string/app_name"
                     app:toolbarId="@id/toolbar">
 
@@ -72,11 +72,13 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
+            style="@style/AppTabLayout"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/home_coordinator_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

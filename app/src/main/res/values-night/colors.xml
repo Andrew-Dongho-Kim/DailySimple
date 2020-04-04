@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#5a9bff</color>
-    <color name="colorPrimaryDim">#66227aff</color>
     <color name="colorPrimaryDark">#5a9bff</color>
     <color name="colorAccent">#5a9bff</color>
 
@@ -9,4 +8,6 @@
     <color name="ux_common_view_background">@color/app_black</color>
 
     <color name="ux_common_text_color">#fafafa</color>
+    <color name="tab_text_color">#7f7f7f</color>
+    <color name="ux_common_view_dim">#3f3f3f</color>
 </resources>

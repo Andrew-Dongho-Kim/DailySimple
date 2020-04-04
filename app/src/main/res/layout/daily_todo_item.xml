@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.dd.android.dailysimple.schedule.provider.calendar.CalendarModel" />
+            type="com.dd.android.dailysimple.schedule.provider.calendar.TodoItemModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -32,7 +32,9 @@
                 android:background="@android:color/transparent"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
+                app:collapsedTitleTextAppearance="@style/CollapsingTitleStyle"
                 app:contentScrim="@color/ux_common_background"
+                app:expandedTitleTextAppearance="@style/ExpandedTitleStyle"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:scrimAnimationDuration="200"
                 app:toolbarId="@id/toolbar">
@@ -42,8 +44,8 @@
                     android:layout_height="200dp"
                     app:layout_collapseMode="parallax"
                     app:lottie_autoPlay="true"
-                    app:lottie_loop="true"
-                    app:lottie_rawRes="@raw/habit_main2" />
+                    app:lottie_loop="false"
+                    app:lottie_rawRes="@raw/habit_main" />
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -88,6 +90,7 @@
                         app:layout_constraintTop_toTopOf="@id/title_editor" />
 
                     <androidx.appcompat.widget.AppCompatEditText
+                        style="@style/UxCommonDpTextStyleNormal"
                         android:id="@+id/title_editor"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -150,6 +153,7 @@
                         app:layout_constraintTop_toTopOf="@id/memo_editor" />
 
                     <androidx.appcompat.widget.AppCompatEditText
+                        style="@style/UxCommonDpTextStyleNormal"
                         android:id="@+id/memo_editor"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
