@@ -13,7 +13,7 @@ class PlanDetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View =
-        LayoutInflater.from(context).inflate(R.layout.fragment_group_schedule_detail, container, false)
+        LayoutInflater.from(context).inflate(R.layout.fragment_plan_detail, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

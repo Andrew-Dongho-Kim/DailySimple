@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">DailySimple</string>
 
-    <string name="group_schedule">Group</string>
-    <string name="daily_schedule">Daily</string>
+    <string name="plan">Plan</string>
+    <string name="daily">Daily</string>
     <string name="setting">Settings</string>
 
     <string name="account">Account</string>
@@ -18,10 +18,24 @@
 
     <string name="title">Title</string>
     <string name="memo">Memo</string>
+    <string name="alarm">Alarm</string>
+    <string name="repeat">Repeat</string>
     <string name="start">Begin</string>
     <string name="end">End</string>
+    <string name="time">Time</string>
+    <string name="power">Power</string>
 
-    <string name="guest">No signed in</string>
+    <string name="every_day">Every day</string>
+    <string name="every_week">Every week</string>
+    <string name="times2_per_week">2 times per week</string>
+    <string name="times5_per_week">5 times per week</string>
+    <string name="custom">Custom</string>
+
+    <string name="weak">Weak</string>
+    <string name="normal">Normal</string>
+    <string name="strong">Strong</string>
+
+    <string name="guest">No Signed in</string>
     <string name="friends">Friends</string>
 
     <string name="january">JAN</string>

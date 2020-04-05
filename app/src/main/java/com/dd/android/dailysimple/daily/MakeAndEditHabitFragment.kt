@@ -10,25 +10,30 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.databinding.FragmentMakeDailyScheduleBinding
 import com.dd.android.dailysimple.common.BaseFragment
+import com.dd.android.dailysimple.common.utils.DateUtils
 import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
+import com.dd.android.dailysimple.databinding.FragmentMakeDailyHabitBinding
+import com.dd.android.dailysimple.db.Alarm
 import com.dd.android.dailysimple.db.DailyHabit
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 
 private const val ARG_ID = "dailyScheduleId"
 
-class MakeAndEditHabitFragment : BaseFragment<FragmentMakeDailyScheduleBinding>() {
+class MakeAndEditHabitFragment : BaseFragment<FragmentMakeDailyHabitBinding>() {
+
+    private val alarm = Alarm()
 
     private val viewModel by viewModels<HabitViewModel>()
 
-    override val layout: Int = R.layout.fragment_make_daily_schedule
+    override val layout: Int = R.layout.fragment_make_daily_habit
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setUpModel()
         setUpToolbar()
         setUpColorPicker()
+        setUpAlarmSwitcher()
     }
 
     private fun setUpModel() {
@@ -62,11 +67,17 @@ class MakeAndEditHabitFragment : BaseFragment<FragmentMakeDailyScheduleBinding>(
                         override fun onDialogDismissed(dialogId: Int) {}
                         override fun onColorSelected(dialogId: Int, color: Int) {
                             Log.e("TEST-DH", color.toString())
-                            bind.colorPicker.imageTintList = ColorStateList.valueOf(color)
+                            bind.color.imageTintList = ColorStateList.valueOf(color)
                         }
                     })
                 }
                 .show(activity.supportFragmentManager, "color-picker-dialog")
+        }
+    }
+
+    private fun setUpAlarmSwitcher() {
+        bind.alarmSwitcher.setOnCheckedChangeListener { _, checked ->
+            bind.setAlarm(if (checked) alarm else null)
         }
     }
 
@@ -81,8 +92,10 @@ class MakeAndEditHabitFragment : BaseFragment<FragmentMakeDailyScheduleBinding>(
                     DailyHabit(
                         id = bind.model?.id ?: 0,
                         title = bind.titleEditor.text.toString(),
-                        color = bind.colorPicker.imageTintList!!.defaultColor,
-                        memo = bind.memoEditor.text.toString()
+                        color = bind.color.imageTintList!!.defaultColor,
+                        memo = bind.memoEditor.text.toString(),
+                        startTime = DateUtils.today(),
+                        alarm = alarm
                     )
                 )
 

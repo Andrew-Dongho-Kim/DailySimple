@@ -10,8 +10,8 @@ const val GROUP_SCHEDULE_PAGE_INDEX = 1
 const val SETTINGS_PAGE_INDEX = 2
 
 val TabTitleResId = arrayOf(
-    R.string.daily_schedule,
-    R.string.group_schedule,
+    R.string.daily,
+    R.string.plan,
     R.string.setting
 )
 

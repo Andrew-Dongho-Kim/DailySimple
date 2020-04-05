@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#5a9bff</color>
-    <color name="colorPrimaryDark">#5a9bff</color>
-    <color name="colorAccent">#5a9bff</color>
+    <color name="appPrimary">#5a9bff</color>
+    <color name="appPrimaryDark">#5a9bff</color>
+    <color name="appAccent">#5a9bff</color>
 
-    <color name="ux_common_background">#010101</color>
-    <color name="ux_common_view_background">@color/app_black</color>
+    <color name="basic_common_background">#010101</color>
+    <color name="basic_view_background">@color/appBlack</color>
 
-    <color name="ux_common_text_color">#fafafa</color>
+    <color name="basic_text1_color">#fafafa</color>
     <color name="tab_text_color">#7f7f7f</color>
     <color name="ux_common_view_dim">#3f3f3f</color>
 </resources>

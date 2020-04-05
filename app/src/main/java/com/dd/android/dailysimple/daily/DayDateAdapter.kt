@@ -8,7 +8,7 @@ import androidx.paging.PageKeyedDataSource
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.common.DateUtils
+import com.dd.android.dailysimple.common.utils.DateUtils
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
 import java.util.*
 

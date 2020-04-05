@@ -7,7 +7,7 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/ux_common_background"
+        android:background="@color/basic_common_background"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/app_navigation" />
+        app:navGraph="@navigation/navigation" />
 </layout>

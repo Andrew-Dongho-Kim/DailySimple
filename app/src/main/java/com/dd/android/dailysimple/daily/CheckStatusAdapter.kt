@@ -10,7 +10,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.dd.android.dailysimple.BR
 import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.common.DateUtils
+import com.dd.android.dailysimple.common.utils.DateUtils
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.di.appDb
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
@@ -49,6 +49,10 @@ class CheckStatusAdapter(
         holder.bind.setVariable(holder.variableId, getItem(position))
         holder.bind.root.setTag(CHECK_STATUS_MODEL, getItem(position))
         holder.bind.root.setOnClickListener(onItemClick)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return getItem(position)!!.id
     }
 
     companion object {
@@ -103,7 +107,7 @@ class CheckStatusDataSource(
     private val itemSize = 14
 
     override fun loadBefore(params: LoadParams<Key>, callback: LoadCallback<Key, CheckStatus>) {
-
+        logD {"loadBefore"}
     }
 
     override fun loadInitial(
@@ -123,6 +127,7 @@ class CheckStatusDataSource(
     }
 
     override fun loadAfter(params: LoadParams<Key>, callback: LoadCallback<Key, CheckStatus>) {
+        logD { "loadAfter"}
         val cal = Calendar.getInstance()
         cal.time = Date(params.key.date)
 

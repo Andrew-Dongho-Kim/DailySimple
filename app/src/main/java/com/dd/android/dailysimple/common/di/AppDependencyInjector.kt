@@ -4,20 +4,22 @@ import android.app.Application
 import android.content.Context
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.db.AppDatabase
+import java.util.*
 import javax.inject.Inject
+import javax.inject.Provider
 
 open class AppDependencyInjector {
 
     // @formatter:off
+    @Inject lateinit var providerLocale : Provider<Locale>
+    
     @Inject lateinit var logger: Logger
     @Inject lateinit var appContext:Context
     @Inject lateinit var appDb: AppDatabase
 
     // @formatter:on
 
-    fun provideAppContext(): Context = appContext
-
-    fun provideAppDb(): AppDatabase = appDb
+    fun provideLocale(): Locale = providerLocale.get()
 
     fun inject(app: Application) {
         DaggerApplicationComponent.builder()
@@ -31,6 +33,8 @@ open class AppDependencyInjector {
 object DependencyInjector : AppDependencyInjector()
 
 
-fun appContext() = DependencyInjector.provideAppContext()
+fun appContext(): Context = DependencyInjector.appContext
 
-fun appDb() = DependencyInjector.provideAppDb()
+fun systemLocale(): Locale = DependencyInjector.provideLocale()
+
+fun appDb(): AppDatabase = DependencyInjector.appDb

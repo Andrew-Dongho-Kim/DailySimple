@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="alarm_repeat">
+        <item>@string/every_day</item>
+        <item>@string/every_week</item>
+        <item>@string/times2_per_week</item>
+        <item>@string/times5_per_week</item>
+        <item>@string/custom</item>
+    </string-array>
+
+    <string-array name="alarm_power">
+        <item>@string/weak</item>
+        <item>@string/normal</item>
+        <item>@string/strong</item>
+    </string-array>
+
 </resources>

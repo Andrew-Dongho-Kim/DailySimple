@@ -17,7 +17,7 @@ class GroupScheduleAdapter : RecyclerView.Adapter<ViewHolder2>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ) = ViewHolder2(parent, R.layout.group_schedule_card_item, viewType)
+    ) = ViewHolder2(parent, R.layout.plan_card_item, viewType)
 
     override fun onBindViewHolder(holder: ViewHolder2, position: Int) {
         holder.itemClickListener = onItemClickListener

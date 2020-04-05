@@ -17,7 +17,7 @@
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/UxCommonDpTextStyleNormal"
+            style="@style/BasicTextDpNormal"
             android:id="@+id/tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
             app:layout_constraintTop_toTopOf="@id/tag_editor" />
 
         <androidx.appcompat.widget.AppCompatEditText
-            style="@style/UxCommonDpTextStyleNormal"
+            style="@style/BasicTextDpNormal"
             android:id="@+id/tag_editor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/UxCommonDpTextStyleNormal"
+            style="@style/BasicTextDpNormal"
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
             app:layout_constraintTop_toTopOf="@id/title_editor" />
 
         <androidx.appcompat.widget.AppCompatEditText
-            style="@style/UxCommonDpTextStyleNormal"
+            style="@style/BasicTextDpNormal"
             android:id="@+id/title_editor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

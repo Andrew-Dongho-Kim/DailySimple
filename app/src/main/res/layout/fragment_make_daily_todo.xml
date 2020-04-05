@@ -4,7 +4,7 @@
 
     <data>
 
-        <import type="com.dd.android.dailysimple.common.DateUtils" />
+        <import type="com.dd.android.dailysimple.common.utils.DateUtils" />
 
         <variable
             name="locale"
@@ -33,7 +33,7 @@
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
                 app:collapsedTitleTextAppearance="@style/CollapsingTitleStyle"
-                app:contentScrim="@color/ux_common_background"
+                app:contentScrim="@color/basic_common_background"
                 app:expandedTitleTextAppearance="@style/ExpandedTitleStyle"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:scrimAnimationDuration="200"
@@ -68,7 +68,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:padding="15dp"
-                app:cardBackgroundColor="@color/ux_common_view_background"
+                app:cardBackgroundColor="@color/basic_view_background"
                 app:cardCornerRadius="10dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -84,13 +84,12 @@
                         android:layout_height="30dp"
                         android:background="?android:attr/selectableItemBackgroundBorderless"
                         android:src="@drawable/oval"
-                        android:tint="@{model.color, default=@color/colorPrimary}"
                         app:layout_constraintBottom_toBottomOf="@id/title_editor"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@id/title_editor" />
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        style="@style/UxCommonDpTextStyleNormal"
+                        style="@style/BasicTextDpNormal"
                         android:id="@+id/title_editor"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -104,7 +103,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/start"
-                        style="@style/UxCommonDpTextStyleTinyBig"
+                        style="@style/BasicTextDpLittleBig"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
@@ -114,7 +113,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/end"
-                        style="@style/UxCommonDpTextStyleTinyBig"
+                        style="@style/BasicTextDpLittleBig"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -124,7 +123,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/start_date"
-                        style="@style/UxCommonDpTextStyleTinyBig"
+                        style="@style/BasicTextDpLittleBig"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -134,7 +133,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/end_date"
-                        style="@style/UxCommonDpTextStyleTinyBig"
+                        style="@style/BasicTextDpLittleBig"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -147,13 +146,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_memo"
-                        android:tint="@color/ux_common_sub_text_color"
+                        android:tint="@color/basic_text2_color"
                         app:layout_constraintBottom_toBottomOf="@id/memo_editor"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@id/memo_editor" />
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        style="@style/UxCommonDpTextStyleNormal"
+                        style="@style/BasicTextDpNormal"
                         android:id="@+id/memo_editor"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

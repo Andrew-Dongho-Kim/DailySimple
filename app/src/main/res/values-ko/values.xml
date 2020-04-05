@@ -13,6 +13,20 @@
     <string name="memo">메모</string>
     <string name="start">시작</string>
     <string name="end">종료</string>
+    <string name="alarm">알람</string>
+    <string name="repeat">반복</string>
+    <string name="time">시간</string>
+    <string name="power">세기</string>
+
+    <string name="every_day">매일</string>
+    <string name="every_week">매주</string>
+    <string name="times2_per_week">일주일에 2번</string>
+    <string name="times5_per_week">일주일에 5번</string>
+    <string name="custom">직접 정하기</string>
+
+    <string name="weak">약함</string>
+    <string name="normal">중간</string>
+    <string name="strong">강함</string>
 
     <string name="january">1월</string>
     <string name="february">2월</string>

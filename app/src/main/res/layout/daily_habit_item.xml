@@ -34,19 +34,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_check_black"
-                    android:tint="@color/app_white"
+                    android:tint="@color/appWhite"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/done_text"
-                    style="@style/UxCommonDpTextStyleNormal"
+                    style="@style/BasicTextDpNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:text="@string/done"
-                    android:textColor="@color/app_white"
+                    android:textColor="@color/appWhite"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/done_icon"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -56,19 +56,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_edit"
-                    android:tint="@color/app_white"
+                    android:tint="@color/appWhite"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/edit_text"
-                    style="@style/UxCommonDpTextStyleNormal"
+                    style="@style/BasicTextDpNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:text="@string/edit"
-                    android:textColor="@color/app_white"
+                    android:textColor="@color/appWhite"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/edit_icon"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -80,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:foreground="?android:attr/selectableItemBackground"
-            app:cardBackgroundColor="@color/ux_common_view_background"
+            app:cardBackgroundColor="@color/basic_view_background"
             app:cardCornerRadius="20dp"
             app:cardElevation="1dp">
 
@@ -116,7 +116,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/habit_title"
-                    style="@style/UxCommonDpTextStyleNormal"
+                    style="@style/BasicTextDpNormal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"

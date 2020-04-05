@@ -1,15 +1,17 @@
-package com.dd.android.dailysimple.common
+package com.dd.android.dailysimple.common.utils
 
 import java.text.SimpleDateFormat
 import java.util.*
 
 object DateUtils {
 
-    fun today() = todayCalendar().run {
+    fun today() = todayCalendar()
+        .run {
         timeInMillis
     }
 
-    fun todayAfter(date: Int) = todayCalendar().run {
+    fun todayAfter(date: Int) = todayCalendar()
+        .run {
         add(Calendar.DATE, date)
         timeInMillis
     }
@@ -28,6 +30,13 @@ object DateUtils {
             set(Calendar.MILLISECOND, 0)
         }
 
-    fun toYearMonthDate(date: Date, locale: Locale) =
-        SimpleDateFormat("yyyy. MM. DD", locale).format(date)
+
+    fun toYMD(date: Long, locale: Locale): String =
+        SimpleDateFormat("yyyy. MM. dd", locale).format(Date(date))
+
+    fun todayYMD(locale: Locale): String =
+        toYMD(
+            today(),
+            locale
+        )
 }

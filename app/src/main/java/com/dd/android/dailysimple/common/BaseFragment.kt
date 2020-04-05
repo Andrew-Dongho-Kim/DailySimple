@@ -21,6 +21,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.navigation.findNavController
+import com.dd.android.dailysimple.common.utils.DateUtils
 import java.util.*
 
 abstract class BaseFragment<B : ViewDataBinding> : Fragment() {

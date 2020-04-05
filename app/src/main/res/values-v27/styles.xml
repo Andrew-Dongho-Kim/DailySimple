@@ -3,16 +3,16 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="android:colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorControlActivated">@color/colorPrimary</item>
-        <item name="android:colorControlActivated">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:colorAccent">@color/colorAccent</item>
-        <item name="android:navigationBarColor">@color/ux_common_background</item>
-        <item name="android:statusBarColor">@color/ux_common_background</item>
+        <item name="colorPrimary">@color/appPrimary</item>
+        <item name="android:colorPrimary">@color/appPrimary</item>
+        <item name="colorPrimaryDark">@color/appPrimaryDark</item>
+        <item name="android:colorPrimaryDark">@color/appPrimaryDark</item>
+        <item name="colorControlActivated">@color/appPrimary</item>
+        <item name="android:colorControlActivated">@color/appPrimary</item>
+        <item name="colorAccent">@color/appAccent</item>
+        <item name="android:colorAccent">@color/appAccent</item>
+        <item name="android:navigationBarColor">@color/basic_common_background</item>
+        <item name="android:statusBarColor">@color/basic_common_background</item>
         <item name="android:windowLightNavigationBar">@bool/windowLightNavigationBar</item>
         <item name="android:windowLightStatusBar">@bool/windowLightStatusBar</item>
     </style>

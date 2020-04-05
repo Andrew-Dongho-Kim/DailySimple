@@ -12,8 +12,8 @@ private const val DATABASE_NAME = "schedule-db"
 // Migration strategy
 //  https://medium.com/androiddevelopers/understanding-migrations-with-room-f01e04b07929
 @Database(
-    entities = [GroupSchedule::class, DailyHabit::class, CheckStatus::class],
-    version = 4,
+    entities = [Plan::class, DailyHabit::class, CheckStatus::class],
+    version = 1,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -37,7 +37,7 @@ abstract class AppDatabase : RoomDatabase() {
                 AppDatabase::class.java,
                 DATABASE_NAME
             )
-                .addMigrations(MIGRATION_2_3, MIGRATION_3_4)
+//                .addMigrations(MIGRATION_2_3, MIGRATION_3_4)
                 .build()
     }
 }
@@ -75,3 +75,21 @@ val MIGRATION_3_4 = object : Migration(3, 4) {
         )
     }
 }
+
+val MIGRATION_4_5 = object : Migration(4, 5) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+//        val table = "daily_habit"
+//        executeSQLMakeTableToLegacy(database, table)
+//
+//        database.execSQL("""CREATE TABLE daily_habit(
+//                    id INTEGER PRIMARY KEY NOT NULL AUTO GENERATE
+//                );"""
+//        )
+
+        database.execSQL("ALTER TABLE daily_habit ADD COLUMN startTime INTEGER DEFAULT 0")
+    }
+}
+
+private fun executeSQLMakeTableToLegacy(database:SupportSQLiteDatabase, tableName:String) =
+    database.execSQL("ALTER TABLE $tableName RENAME TO ${tableName}_old;")
+

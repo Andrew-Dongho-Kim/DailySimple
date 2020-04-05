@@ -13,7 +13,7 @@ import androidx.core.content.ContentResolverCompat
 import androidx.core.os.CancellationSignal
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import com.dd.android.dailysimple.common.DateUtils
+import com.dd.android.dailysimple.common.utils.DateUtils
 import com.dd.android.dailysimple.provider.calendar.EventReminderMethod.Companion.ALERT
 import com.dd.android.dailysimple.provider.calendar.EventReminderMethod.Companion.DEFAULT
 import com.dd.android.dailysimple.provider.calendar.EventReminderMethod.Companion.EMAIL

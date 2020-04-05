@@ -8,11 +8,12 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.databinding.FragmentScheduleCommonBinding
 import com.dd.android.dailysimple.HomeViewPagerFragmentDirections
+import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.BaseFragment
+import com.dd.android.dailysimple.databinding.FragmentScheduleCommonBinding
 import com.dd.android.dailysimple.plan.ScheduleCardItemDecoration
 
 
@@ -23,25 +24,26 @@ class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         setUpRecycler()
-        setUpAdd(view)
+        setUpFab(view)
 
         setHasOptionsMenu(true)
     }
 
     private fun setUpRecycler() {
         with(bind.recycler) {
-            val adapter2 = DailyAdapter(viewLifecycleOwner)
+            val lm = LinearLayoutManager(activity)
+            val adt = DailyAdapter(viewLifecycleOwner, lm)
 
-            adapter = adapter2
-            layoutManager = LinearLayoutManager(activity)
+            adapter = adt
+            layoutManager = lm
             itemAnimator = DefaultItemAnimator()
 
             DailyItemModels(requireActivity()).data.observe(
                 viewLifecycleOwner,
                 Observer { list ->
-                    adapter2.items.clear()
-                    adapter2.items.addAll(list)
-                    adapter2.notifyDataSetChanged()
+                    adt.items.clear()
+                    adt.items.addAll(list)
+                    adt.notifyDataSetChanged()
                 })
 
             addItemDecoration(
@@ -50,13 +52,13 @@ class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>() {
                 )
             )
 
-//            ItemTouchHelper(
-//                DailyItemTouchAction(requireContext(), adapter2)
-//            ).attachToRecyclerView(this)
+            ItemTouchHelper(
+                DailyItemTouchAction(requireContext(), adt)
+            ).attachToRecyclerView(this)
         }
     }
 
-    private fun setUpAdd(view: View) {
+    private fun setUpFab(view: View) {
         bind.fabAdd.setOnClickListener {
             view.findNavController().navigate(
                 HomeViewPagerFragmentDirections.homeToCreateDailyScheduleFragment(-1)

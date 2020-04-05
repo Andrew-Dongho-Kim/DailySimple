@@ -39,7 +39,7 @@
             android:paddingEnd="5dp"
             android:paddingBottom="0dp"
             android:text="@{viewModel.year+'\n'+viewModel.month}"
-            android:textColor="@color/app_white"
+            android:textColor="@color/appWhite"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/checked_recycler_view"
             app:layout_constraintTop_toTopOf="parent" />

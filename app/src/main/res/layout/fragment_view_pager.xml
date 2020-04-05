@@ -44,7 +44,7 @@
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
                     app:collapsedTitleTextAppearance="@style/CollapsingTitleStyle"
-                    app:contentScrim="@color/ux_common_background"
+                    app:contentScrim="@color/basic_common_background"
                     app:expandedTitleTextAppearance="@style/ExpandedTitleStyle"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed"
                     app:scrimAnimationDuration="200"

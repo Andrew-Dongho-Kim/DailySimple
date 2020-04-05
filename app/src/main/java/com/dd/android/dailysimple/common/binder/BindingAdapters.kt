@@ -20,6 +20,8 @@ fun thumbnailUrl(view: AppCompatImageView, url: String?) {
 @BindingAdapter("circleThumbnailUrl")
 fun circleThumbnailUrl(view: AppCompatImageView, url: String?) {
     if (url.isNullOrEmpty()) return
+
+    view.imageTintList = null
     Glide.with(view.context).load(url)
         .thumbnail(0.5f)
         .apply(RequestOptions.circleCropTransform())

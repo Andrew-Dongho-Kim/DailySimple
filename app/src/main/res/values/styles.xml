@@ -3,23 +3,23 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="android:colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorControlActivated">@color/colorPrimary</item>
-        <item name="android:colorControlActivated">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:colorAccent">@color/colorAccent</item>
-        <item name="android:navigationBarColor">@color/ux_common_background</item>
-        <item name="android:statusBarColor">@color/ux_common_background</item>
+        <item name="colorPrimary">@color/appPrimary</item>
+        <item name="android:colorPrimary">@color/appPrimary</item>
+        <item name="colorPrimaryDark">@color/appPrimaryDark</item>
+        <item name="android:colorPrimaryDark">@color/appPrimaryDark</item>
+        <item name="colorControlActivated">@color/appPrimary</item>
+        <item name="android:colorControlActivated">@color/appPrimary</item>
+        <item name="colorAccent">@color/appAccent</item>
+        <item name="android:colorAccent">@color/appAccent</item>
+        <item name="android:navigationBarColor">@color/basic_common_background</item>
+        <item name="android:statusBarColor">@color/basic_common_background</item>
     </style>
 
     <style name="ToolbarTitleStyleParent">
         <item name="android:shadowDx">0.5</item>
         <item name="android:shadowDy">0.5</item>
         <item name="android:shadowRadius">0.5</item>
-        <item name="android:shadowColor">@color/ux_common_view_background</item>
+        <item name="android:shadowColor">@color/basic_view_background</item>
     </style>
 
     <style name="AppTabLayout" parent="Widget.Design.TabLayout">
@@ -29,7 +29,7 @@
         <item name="tabIconTint">@color/tab_text_color</item>
         <item name="tabBackground">?attr/selectableItemBackground</item>
         <item name="tabTextAppearance">@style/TabTextStyle</item>
-        <item name="tabSelectedTextColor">@color/colorPrimary</item>
+        <item name="tabSelectedTextColor">@color/appPrimary</item>
         <item name="tabIndicatorColor">@android:color/transparent</item>
     </style>
 
@@ -39,7 +39,7 @@
     </style>
 
     <style name="CollapsingTitleStyle" parent="ToolbarTitleStyleParent">
-        <item name="android:textColor">@color/ux_common_text_color</item>
+        <item name="android:textColor">@color/basic_text1_color</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -49,31 +49,38 @@
 
     <style name="UxCommonSpTextStyleNormal">
         <item name="android:textSize">@dimen/ux_common_text_size_sp_normal</item>
-        <item name="android:textColor">@color/ux_common_text_color</item>
+        <item name="android:textColor">@color/basic_text1_color</item>
     </style>
 
     <style name="UxCommonDpHeaderTextStyleNormal">
-        <item name="android:textSize">@dimen/ux_common_text_size_dp_normal</item>
-        <item name="android:textColor">@color/ux_common_text_color</item>
+        <item name="android:textSize">@dimen/basic_text_size_dp_normal</item>
+        <item name="android:textColor">@color/basic_text1_color</item>
     </style>
 
     <style name="UxCommonDpHeaderTextStyleTinyBig">
-        <item name="android:textSize">@dimen/ux_common_text_size_dp_tiny_big</item>
-        <item name="android:textColor">@color/ux_common_text_color</item>
+        <item name="android:textSize">@dimen/basic_text_size_dp_little_Big</item>
+        <item name="android:textColor">@color/basic_text1_color</item>
     </style>
 
-    <style name="UxCommonDpTextStyleNormal">
-        <item name="android:textSize">@dimen/ux_common_text_size_dp_normal</item>
-        <item name="android:textColor">@color/ux_common_text_color</item>
+    <style name="BasicTextDpNormal">
+        <item name="android:textSize">@dimen/basic_text_size_dp_normal</item>
+        <item name="android:textColor">@color/basic_text1_color</item>
+    </style>
+
+    <style name="BasicTextDpLittleBig">
+        <item name="android:textSize">@dimen/basic_text_size_dp_little_Big</item>
+        <item name="android:textColor">@color/basic_text1_color</item>
+    </style>
+
+    <style name="BasicTextDpBig">
+        <item name="android:textSize">@dimen/basic_text_size_dp_big</item>
+        <item name="android:textColor">@color/basic_text1_color</item>
     </style>
 
     <style name="UxCommonDpTextStyleTinySmall">
-        <item name="android:textSize">@dimen/ux_common_text_size_dp_tiny_small</item>
-        <item name="android:textColor">@color/ux_common_text_color</item>
+        <item name="android:textSize">@dimen/basic_text_size_dp_little_small</item>
+        <item name="android:textColor">@color/basic_text1_color</item>
     </style>
 
-    <style name="UxCommonDpTextStyleTinyBig">
-        <item name="android:textSize">@dimen/ux_common_text_size_dp_tiny_big</item>
-        <item name="android:textColor">@color/ux_common_text_color</item>
-    </style>
+
 </resources>

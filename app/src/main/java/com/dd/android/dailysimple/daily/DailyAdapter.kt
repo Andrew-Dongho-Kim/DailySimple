@@ -4,6 +4,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IntDef
+import androidx.annotation.LayoutRes
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -16,8 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.databinding.DailyHabitHeaderItemBinding
-import com.dd.android.dailysimple.databinding.DailyHabitItem2Binding
 import com.dd.android.dailysimple.HomeViewPagerFragmentDirections
+import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.di.appDb
 import com.dd.android.dailysimple.common.recycler.ItemModel
 import com.dd.android.dailysimple.common.recycler.RecyclerViewAdapter2
@@ -28,8 +29,13 @@ import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.TODO_COM
 import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.TODO_HEADER
 import com.dd.android.dailysimple.daily.viewmodel.HabitHeaderItemModel
 import com.dd.android.dailysimple.daily.viewmodel.TodoHeaderItemModel
+import com.dd.android.dailysimple.databinding.DailyHabitItemBinding
 import com.dd.android.dailysimple.db.CheckStatus
 import com.dd.android.dailysimple.provider.calendar.TodoItemModel
+import java.util.*
+
+private const val TAG = "DailyAdapter"
+private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
 
 @IntDef(DAILY_HEADER, DAILY_COMMON, TODO_HEADER, TODO_COMMON)
 private annotation class DailyScheduleViewType {
@@ -41,7 +47,33 @@ private annotation class DailyScheduleViewType {
     }
 }
 
-open class DailyHabitHeaderHolder(
+
+abstract class SlaveRecyclerHolder(
+    parent: ViewGroup,
+    @LayoutRes layoutResId: Int,
+    variableId: Int = 0
+) : ViewHolder2(parent, layoutResId, variableId) {
+
+    var recyclerView: RecyclerView? = null
+        set(value) {
+            field?.removeOnItemTouchListener(onBlockTouchWhenScroll)
+            field = value
+            field?.addOnItemTouchListener(onBlockTouchWhenScroll)
+        }
+
+    var isMasterScrolling: Boolean = false
+
+    private val onBlockTouchWhenScroll = object : RecyclerView.OnItemTouchListener {
+        override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+        override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+        override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+            logD { "onInterceptTouchEvent  master scroll: $isMasterScrolling" }
+            return isMasterScrolling
+        }
+    }
+}
+
+class DailyHabitHeaderHolder(
     parent: ViewGroup,
     private val lifecycleOwner: LifecycleOwner
 ) :
@@ -56,40 +88,24 @@ open class DailyHabitHeaderHolder(
         orientation = RecyclerView.HORIZONTAL
         reverseLayout = true
     }
-    private val slaveRecyclerViewList = mutableListOf<RecyclerView>()
-
-    private val scrollListener = object : RecyclerView.OnScrollListener() {
+    private val yearAndMonthDetector = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             model?.refresh(
                 layoutManager.findFirstCompletelyVisibleItemPosition()
             )
-            slaveRecyclerViewList.forEach {
-                it.scrollBy(dx, dy)
-            }
         }
 
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {}
     }
+    val recyclerView = bindAs<DailyHabitHeaderItemBinding>().checkedRecyclerView.apply {
+        adapter = this@DailyHabitHeaderHolder.adapter
+        layoutManager = this@DailyHabitHeaderHolder.layoutManager
+        removeOnScrollListener(yearAndMonthDetector)
+        addOnScrollListener(yearAndMonthDetector)
+    }
 
     private val observer = Observer<PagedList<DayDateItemModel>> { adapter.submitList(it) }
     private var model: HabitHeaderItemModel? = null
-
-    init {
-        bindAs<DailyHabitHeaderItemBinding>().checkedRecyclerView.apply {
-            adapter = this@DailyHabitHeaderHolder.adapter
-            layoutManager = this@DailyHabitHeaderHolder.layoutManager
-            removeOnScrollListener(scrollListener)
-            addOnScrollListener(scrollListener)
-        }
-    }
-
-    fun addSlaveRecyclerView(recyclerView: RecyclerView) {
-        slaveRecyclerViewList.add(recyclerView)
-    }
-
-    fun removeSlaveRecyclerView(recyclerView: RecyclerView) {
-        slaveRecyclerViewList.remove(recyclerView)
-    }
 
     override fun bindTo(itemModel: ItemModel) {
         super.bindTo(itemModel)
@@ -103,19 +119,29 @@ open class DailyHabitHeaderHolder(
 class DailyHabitItemHolder(
     parent: ViewGroup,
     private val lifecycleOwner: LifecycleOwner
-) : ViewHolder2(
+) : SlaveRecyclerHolder(
     parent,
-    R.layout.daily_habit_item2,
+    R.layout.daily_habit_item,
     BR.viewModel
 ) {
-    private val binding = bindAs<DailyHabitItem2Binding>()
+    private val binding = bindAs<DailyHabitItemBinding>()
     private val adapter = CheckStatusAdapter(lifecycleOwner)
-    private val layoutManager = LinearLayoutManager(parent.context).apply {
-        orientation = RecyclerView.HORIZONTAL
-        reverseLayout = true
+
+    init {
+        recyclerView = binding.checkedRecyclerView.apply {
+            adapter = this@DailyHabitItemHolder.adapter
+            layoutManager = object : LinearLayoutManager(parent.context) {
+                override fun canScrollHorizontally(): Boolean {
+                    return isMasterScrolling
+                }
+
+            }.apply {
+                orientation = RecyclerView.HORIZONTAL
+                reverseLayout = true
+            }
+        }
     }
 
-    var checkedListRecycler:RecyclerView? = null
     private var liveDataAdapter: LiveData<PagedList<CheckStatus>>? = null
     private val observerAdapter = Observer<PagedList<CheckStatus>> { adapter.submitList(it) }
 
@@ -132,16 +158,6 @@ class DailyHabitItemHolder(
         ).build()
 
         liveDataAdapter!!.observe(lifecycleOwner, observerAdapter)
-    }
-
-    init {
-        binding.checkedRecyclerView.apply {
-            adapter = this@DailyHabitItemHolder.adapter
-            layoutManager = this@DailyHabitItemHolder.layoutManager
-            removeOnItemTouchListener(onBlockItemTouch)
-            addOnItemTouchListener(onBlockItemTouch)
-            checkedListRecycler = this
-        }
     }
 
     override fun bindTo(itemModel: ItemModel) {
@@ -166,14 +182,6 @@ class DailyHabitItemHolder(
                 HomeViewPagerFragmentDirections.homeToDailyHabitDetailFragment(it.getTag(ID_TAG) as Long)
             )
         }
-        private val onBlockItemTouch = object : RecyclerView.OnItemTouchListener {
-            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
-
-            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                return true
-            }
-            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
-        }
     }
 }
 
@@ -189,32 +197,62 @@ class DailyTodoItemHolder(parent: ViewGroup) : ViewHolder2(
 )
 
 class DailyAdapter(
-    private val lifecycleOwner: LifecycleOwner
+    private val lifecycleOwner: LifecycleOwner,
+    private val layoutManager: LinearLayoutManager
 ) : RecyclerViewAdapter2(lifecycleOwner) {
 
-    private var habitHeaderHolder: DailyHabitHeaderHolder? = null
+    private var slaveList = LinkedList<SlaveRecyclerHolder>()
+    private val slaveScroll = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            slaveList.forEach { it.recyclerView?.scrollBy(dx, dy) }
+        }
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            slaveList.forEach {
+                it.isMasterScrolling = newState != RecyclerView.SCROLL_STATE_IDLE
+            }
+        }
+    }
 
     override fun onCreateViewHolder2(parent: ViewGroup, viewType: Int) =
         when (viewType) {
             TODO_HEADER -> DailyTodoHeaderHolder(parent)
             TODO_COMMON -> DailyTodoItemHolder(parent)
             DAILY_HEADER -> DailyHabitHeaderHolder(parent, lifecycleOwner).also {
-                habitHeaderHolder = it
+                it.recyclerView.addOnScrollListener(slaveScroll)
             }
-            else -> DailyHabitItemHolder(parent, lifecycleOwner)
-        }
-
-    override fun onBindViewHolder(holder: ViewHolder2, position: Int) {
-        super.onBindViewHolder(holder, position)
-
-        // How to remove un-visible slave recycler view for checked list ?
-        when (holder) {
-            is DailyHabitItemHolder -> {
-                holder.checkedListRecycler?.let {
-                    habitHeaderHolder?.addSlaveRecyclerView(it)
-                }
+            else -> DailyHabitItemHolder(parent, lifecycleOwner).also {
+                slaveList.add(it)
             }
         }
+
+//    override fun onBindViewHolder(holder: ViewHolder2, position: Int) {
+//        super.onBindViewHolder(holder, position)
+//
+//        when (holder) {
+//            is ColleagueRecyclerHolder -> {
+//                verifyColleague(holder)
+//                logD { "Colleague list size : ${colleagueList.size}" }
+//            }
+//        }
+//    }
+
+    private fun verifyColleague(vh: SlaveRecyclerHolder) {
+        val first = layoutManager.findFirstVisibleItemPosition()
+        val last = layoutManager.findLastVisibleItemPosition()
+
+        val it = slaveList.listIterator()
+
+        while (it.hasNext()) {
+            val vh2 = it.next()
+            if (vh == vh2 ||
+                vh2.adapterPosition < first ||
+                vh2.adapterPosition > last
+            ) {
+                it.remove()
+            }
+        }
+        slaveList.add(vh)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -225,4 +263,5 @@ class DailyAdapter(
             else -> DAILY_COMMON
         }
     }
+
 }
