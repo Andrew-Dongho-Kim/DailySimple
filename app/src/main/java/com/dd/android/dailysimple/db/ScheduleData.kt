@@ -37,21 +37,22 @@ data class DailyHabit(
         onUpdate = CASCADE
     )
     val groupId: Long = UNKNOWN_ID,
-    val title: String,
-    val memo: String? = null,
-    val color: Int,
-    val startTime: Long,
-    @Embedded val alarm: Alarm? = null
+    var title: String,
+    var memo: String? = null,
+    var color: Int,
+    var startTime: Long,
+    var finishTime: Long? = null,
+    @Embedded var alarm: Alarm? = null
 ) : ItemModel {
 
 
 }
 
 data class Alarm(
-    val repeat: Boolean = false,
-    @ColumnInfo(name = "alarm_days") val alarmDays: Int = NONE,
-    @ColumnInfo(name = "alarm_time") val alarmTime: Int = 0,
-    @ColumnInfo(name = "alarm_power") val alarmPower: Int = NORMAL
+    var repeat: Boolean = false,
+    @ColumnInfo(name = "alarm_days") var alarmDays: Int = NONE,
+    @ColumnInfo(name = "alarm_time") var alarmTime: Int = 0,
+    @ColumnInfo(name = "alarm_power") var alarmPower: Int = NORMAL
 ) {
 
     @IntDef(WEAK, NORMAL, STRONG)

@@ -13,6 +13,7 @@
     <string name="memo">메모</string>
     <string name="start">시작</string>
     <string name="end">종료</string>
+    <string name="finish">완료</string>
     <string name="alarm">알람</string>
     <string name="repeat">반복</string>
     <string name="time">시간</string>

@@ -11,11 +11,11 @@
         <import type="com.dd.android.dailysimple.common.di.AppDependencyInjectorKt" />
 
         <variable
-            name="alarm"
-            type="com.dd.android.dailysimple.db.Alarm" />
+            name="alarmModel"
+            type="com.dd.android.dailysimple.daily.edit.observable.AlarmObservable" />
 
         <variable
-            name="model"
+            name="habitModel"
             type="com.dd.android.dailysimple.db.DailyHabit" />
     </data>
 
@@ -69,7 +69,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingStart="@dimen/basic_view_margin_horizontal"
+                android:paddingEnd="@dimen/basic_view_margin_horizontal">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -91,7 +93,7 @@
                         android:hint="@string/title"
                         android:maxLines="1"
                         android:singleLine="true"
-                        android:text="@{model.title}"
+                        android:text="@{habitModel.title}"
                         app:layout_constraintEnd_toStartOf="@id/color"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -101,7 +103,7 @@
                         android:layout_width="@dimen/basic_small_icon_size"
                         android:layout_height="@dimen/basic_small_icon_size"
                         android:src="@drawable/oval"
-                        android:tint="@{model.color}"
+                        android:tint="@{habitModel.color}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/title_editor"
                         app:layout_constraintTop_toTopOf="@id/title_editor" />
@@ -145,9 +147,31 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="@{ model==null ? DateUtils.INSTANCE.todayYMD(AppDependencyInjectorKt.systemLocale()) : DateUtils.INSTANCE.toYMD(model.startTime, AppDependencyInjectorKt.systemLocale())}"
+                        android:text="@{habitModel==null ? DateUtils.INSTANCE.todayYMD(AppDependencyInjectorKt.systemLocale()) : DateUtils.INSTANCE.toYMD(habitModel.startTime, AppDependencyInjectorKt.systemLocale())}"
+                        app:layout_constraintBottom_toBottomOf="@id/start"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/start" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/finish"
+                        style="@style/BasicTextDpLittleBig"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/basic_view_margin_vertical"
+                        android:text="@string/finish"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/start" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/finish_date"
+                        style="@style/BasicTextDpLittleBig"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="@{habitModel==null ? DateUtils.INSTANCE.todayAfterYMD(66, AppDependencyInjectorKt.systemLocale()) : DateUtils.INSTANCE.toYMD(habitModel.finishTime, AppDependencyInjectorKt.systemLocale())}"
+                        app:layout_constraintBottom_toBottomOf="@id/finish"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/finish" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/alarm"
@@ -157,15 +181,17 @@
                         android:layout_marginTop="@dimen/make_and_edit_habit_alarm_margin_top"
                         android:text="@string/alarm"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/start" />
+                        app:layout_constraintTop_toBottomOf="@id/finish" />
 
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/alarm_switcher"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:checked="@{alarmModel.on}"
                         app:layout_constraintBottom_toBottomOf="@id/alarm"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/alarm" />
+                        app:layout_constraintTop_toTopOf="@id/alarm"
+                        app:onCheckChanged="@{(view,checked)-> alarmModel.setOn(checked)}" />
 
                     <View
                         android:id="@+id/alarm_divider"
@@ -181,7 +207,7 @@
                         android:id="@+id/alarm_group"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="@{alarm == null ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{alarmModel.isOn ? View.VISIBLE : View.GONE}"
                         app:constraint_referenced_ids="alarm_divider,repeat_icon, time_icon, alarm_power_icon, repeat_spinner, time_spinner" />
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -233,7 +259,9 @@
                         android:entries="@array/alarm_power"
                         app:layout_constraintBottom_toBottomOf="@id/alarm_power_icon"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/alarm_power_icon" />
+                        app:layout_constraintTop_toTopOf="@id/alarm_power_icon"
+                        app:onItemSelected="@{(pos)-> alarmModel.setAlarmPowerAdapterPosition(pos)}"
+                        app:selectItemPosition="@{alarmModel.alarmPowerAdapterPosition}" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -258,7 +286,7 @@
                         android:gravity="top"
                         android:hint="@string/memo"
                         android:minHeight="@dimen/make_and_edit_habit_memo_min_height"
-                        android:text="@{model.memo}"
+                        android:text="@{habitModel.memo}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>

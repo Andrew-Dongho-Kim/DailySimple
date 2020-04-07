@@ -39,4 +39,10 @@ object DateUtils {
             today(),
             locale
         )
+
+    fun todayAfterYMD(date:Int, locale: Locale): String =
+        toYMD(
+            todayAfter(date),
+            locale
+        )
 }

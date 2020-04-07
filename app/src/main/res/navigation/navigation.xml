@@ -53,7 +53,7 @@
 
     <fragment
         android:id="@+id/make_and_edit_habit_fragment"
-        android:name="com.dd.android.dailysimple.daily.MakeAndEditHabitFragment"
+        android:name="com.dd.android.dailysimple.daily.edit.MakeAndEditHabitFragment"
         tools:layout="@layout/fragment_make_daily_habit">
         <argument
             android:name="dailyScheduleId"

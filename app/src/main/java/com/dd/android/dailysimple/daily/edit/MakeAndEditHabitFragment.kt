@@ -1,4 +1,4 @@
-package com.dd.android.dailysimple.daily
+package com.dd.android.dailysimple.daily.edit
 
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -11,7 +11,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.BaseFragment
+import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.utils.DateUtils
+import com.dd.android.dailysimple.daily.edit.observable.AlarmObservable
 import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
 import com.dd.android.dailysimple.databinding.FragmentMakeDailyHabitBinding
 import com.dd.android.dailysimple.db.Alarm
@@ -21,9 +23,12 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 
 private const val ARG_ID = "dailyScheduleId"
 
+private const val TAG = "MakeAndHabit"
+private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
+
 class MakeAndEditHabitFragment : BaseFragment<FragmentMakeDailyHabitBinding>() {
 
-    private val alarm = Alarm()
+    private val alarmObservable = AlarmObservable(Alarm())
 
     private val viewModel by viewModels<HabitViewModel>()
 
@@ -33,17 +38,22 @@ class MakeAndEditHabitFragment : BaseFragment<FragmentMakeDailyHabitBinding>() {
         setUpModel()
         setUpToolbar()
         setUpColorPicker()
-        setUpAlarmSwitcher()
     }
 
     private fun setUpModel() {
-        (arguments?.get(ARG_ID) as? Long)?.let { id ->
-            if (id == -1L) return
+        val habitId = arguments?.get(ARG_ID) as Long?
 
-            viewModel.getHabit(id).observe(viewLifecycleOwner, Observer {
-                bind.model = it
+        habitId?.let {
+            viewModel.getHabit(it).observe(viewLifecycleOwner, Observer { habitModel ->
+                bind.habitModel = habitModel
+                habitModel?.alarm?.let { alarm ->
+                    alarmObservable.alarm = alarm
+                    alarmObservable.isOn = true
+                    logD { "Habit(${habitId}) alarm : $alarm" }
+                }
             })
         }
+        bind.alarmModel = alarmObservable
     }
 
     private fun setUpToolbar() {
@@ -75,11 +85,6 @@ class MakeAndEditHabitFragment : BaseFragment<FragmentMakeDailyHabitBinding>() {
         }
     }
 
-    private fun setUpAlarmSwitcher() {
-        bind.alarmSwitcher.setOnCheckedChangeListener { _, checked ->
-            bind.setAlarm(if (checked) alarm else null)
-        }
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.create_daily_schedule_menu, menu)
@@ -90,15 +95,16 @@ class MakeAndEditHabitFragment : BaseFragment<FragmentMakeDailyHabitBinding>() {
             R.id.done -> {
                 viewModel.insert(
                     DailyHabit(
-                        id = bind.model?.id ?: 0,
+                        id = bind.habitModel?.id ?: 0,
                         title = bind.titleEditor.text.toString(),
                         color = bind.color.imageTintList!!.defaultColor,
                         memo = bind.memoEditor.text.toString(),
                         startTime = DateUtils.today(),
-                        alarm = alarm
+                        finishTime = DateUtils.todayAfter(66),
+                        alarm = alarmObservable.alarm
                     )
                 )
-
+                logD { "Alarm  : ${alarmObservable.alarm}" }
                 popBackStack()
                 true
             }
@@ -108,6 +114,6 @@ class MakeAndEditHabitFragment : BaseFragment<FragmentMakeDailyHabitBinding>() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-
     }
 }
+
