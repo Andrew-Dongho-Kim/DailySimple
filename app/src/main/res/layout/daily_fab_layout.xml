@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="fabModel"
+            type="com.dd.android.dailysimple.common.FabViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@{fabModel.isOpen()? @color/appBlackWithAlpha : @android:color/transparent}">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
+            android:layout_marginBottom="@dimen/basic_view_margin_vertical"
+            android:backgroundTint="#5a9bff"
+            android:onClick="@{(view)->fabModel.toggle()}"
+            android:src="@drawable/ic_add_black"
+            android:tint="@color/appWhite"
+            app:elevation="5dp"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.constraintlayout.widget.Group
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{(fabModel.isOpen() &amp;&amp; fabModel.onFab1Click != null) ? View.VISIBLE : View.GONE}"
+            app:constraint_referenced_ids="sub_fab_1, sub_fab_1_text" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/sub_fab_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/basic_view_margin_vertical"
+            android:backgroundTint="@color/basic_view_background"
+            android:onClick="@{(view)-> fabModel.onFab1Click.invoke(view)}"
+            android:src="@drawable/ic_edit"
+            android:tint="@color/appPrimary"
+            app:elevation="5dp"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@id/fab_add"
+            app:layout_constraintEnd_toEndOf="@id/fab_add"
+            app:layout_constraintStart_toStartOf="@id/fab_add" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/sub_fab_1_text"
+            style="@style/BasicTextDpNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
+            android:text="@{fabModel.fab1Text}"
+            android:textColor="@color/appWhite"
+            app:layout_constraintBottom_toBottomOf="@id/sub_fab_1"
+            app:layout_constraintEnd_toStartOf="@id/sub_fab_1"
+            app:layout_constraintTop_toTopOf="@id/sub_fab_1" />
+
+        <androidx.constraintlayout.widget.Group
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{fabModel.isOpen() &amp;&amp; fabModel.onFab2Click != null ? View.VISIBLE : View.GONE}"
+            app:constraint_referenced_ids="sub_fab_2, sub_fab_2_text" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/sub_fab_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/basic_view_margin_vertical"
+            android:backgroundTint="@color/basic_view_background"
+            android:onClick="@{(view)-> fabModel.onFab2Click.invoke(view)}"
+            android:src="@drawable/ic_add_black"
+            android:tint="@color/appPrimary"
+            app:elevation="5dp"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@id/sub_fab_1"
+            app:layout_constraintEnd_toEndOf="@id/sub_fab_1"
+            app:layout_constraintStart_toStartOf="@id/sub_fab_1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/sub_fab_2_text"
+            style="@style/BasicTextDpNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
+            android:text="@{fabModel.fab2Text}"
+            android:textColor="@color/appWhite"
+            app:layout_constraintBottom_toBottomOf="@id/sub_fab_2"
+            app:layout_constraintEnd_toStartOf="@id/sub_fab_2"
+            app:layout_constraintTop_toTopOf="@id/sub_fab_2" />
+
+        <androidx.constraintlayout.widget.Group
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{fabModel.isOpen() &amp;&amp; fabModel.onFab3Click != null ? View.VISIBLE : View.GONE}"
+            app:constraint_referenced_ids="sub_fab_3, sub_fab_3_text" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/sub_fab_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/basic_view_margin_vertical"
+            android:backgroundTint="@color/basic_view_background"
+            android:onClick="@{(view)-> fabModel.onFab3Click.invoke(view)}"
+            android:src="@drawable/ic_add_black"
+            android:tint="@color/appPrimary"
+            app:elevation="5dp"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@id/sub_fab_2"
+            app:layout_constraintEnd_toEndOf="@id/sub_fab_2"
+            app:layout_constraintStart_toStartOf="@id/sub_fab_2" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/sub_fab_3_text"
+            style="@style/BasicTextDpNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
+            android:text="@{fabModel.fab3Text}"
+            android:textColor="@color/appWhite"
+            app:layout_constraintBottom_toBottomOf="@id/sub_fab_3"
+            app:layout_constraintEnd_toStartOf="@id/sub_fab_3"
+            app:layout_constraintTop_toTopOf="@id/sub_fab_3" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -7,14 +7,14 @@ object DateUtils {
 
     fun today() = todayCalendar()
         .run {
-        timeInMillis
-    }
+            timeInMillis
+        }
 
     fun todayAfter(date: Int) = todayCalendar()
         .run {
-        add(Calendar.DATE, date)
-        timeInMillis
-    }
+            add(Calendar.DATE, date)
+            timeInMillis
+        }
 
     fun getDate(date: Date) = Calendar.getInstance().run {
         time = date
@@ -40,9 +40,10 @@ object DateUtils {
             locale
         )
 
-    fun todayAfterYMD(date:Int, locale: Locale): String =
+    fun todayAfterYMD(date: Int, locale: Locale): String =
         toYMD(
             todayAfter(date),
             locale
         )
+
 }

@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.dd.android.dailysimple.db.DailyHabit" />
+            type="com.dd.android.dailysimple.db.data.DailyHabit" />
     </data>
 
     <FrameLayout
@@ -95,23 +95,9 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/checked_recycler_view"
                     android:layout_width="170dp"
-                    android:layout_height="24dp"
+                    android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ProgressBar
-                    android:id="@+id/circle_progress"
-                    style="?android:progressBarStyleHorizontal"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:max="100"
-                    android:progress="100"
-                    android:progressDrawable="@drawable/progress_circle"
-                    android:secondaryProgress="20"
-                    android:secondaryProgressTint="@{viewModel.color}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -120,13 +106,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:ellipsize="marquee"
-                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:singleLine="true"
                     android:text="@{viewModel.title}"
-                    app:layout_constraintBottom_toBottomOf="@id/circle_progress"
-                    app:layout_constraintEnd_toStartOf="@id/circle_progress"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/checked_recycler_view"
-                    app:layout_constraintTop_toTopOf="@id/circle_progress" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

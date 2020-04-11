@@ -22,19 +22,15 @@
         <item name="android:shadowColor">@color/basic_view_background</item>
     </style>
 
-    <style name="AppTabLayout" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorHeight">0dp</item>
-        <item name="tabPaddingStart">6dp</item>
-        <item name="tabPaddingEnd">6dp</item>
-        <item name="tabIconTint">@color/tab_text_color</item>
-        <item name="tabBackground">?attr/selectableItemBackground</item>
-        <item name="tabTextAppearance">@style/TabTextStyle</item>
-        <item name="tabSelectedTextColor">@color/appPrimary</item>
-        <item name="tabIndicatorColor">@android:color/transparent</item>
+    <style name="BasicBottomNavigationStyle" parent="Widget.Design.BottomNavigationView" />
+
+    <style name="BottomNavigationTextStyle" parent="UxCommonDpHeaderTextStyleNormal">
+        <item name="android:textColor">@color/tab_text_color</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TabTextStyle" parent="UxCommonDpHeaderTextStyleNormal">
-        <item name="android:textColor">@color/tab_text_color</item>
+    <style name="ActiveBottomNavigationTextStyle" parent="UxCommonDpHeaderTextStyleNormal">
+        <item name="android:textColor">@color/appPrimary</item>
         <item name="android:textStyle">bold</item>
     </style>
 

@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.recycler.ItemModel
 import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
-import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
+import com.dd.android.dailysimple.daily.viewmodel.ScheduleViewModel
 
 private const val TAG = "ItemModel"
 private const val HABITS = "Habit"
@@ -18,10 +18,10 @@ private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, messa
 
 class DailyItemModels(activity: FragmentActivity) : ViewModel() {
 
-    private val todayVm by activity.viewModels<TodoViewModel>()
+    private val scheduleVm by activity.viewModels<ScheduleViewModel>()
     private val habitsVm by activity.viewModels<HabitViewModel>()
 
-    private val todayTodo get() = todayVm.todayTodo.value!!
+    private val schedule get() = scheduleVm.schedule.value!!
     private val allHabits get() = habitsVm.allHabits.value!!
     private val habitHeader get() = habitsVm.header.value!!
 
@@ -32,20 +32,20 @@ class DailyItemModels(activity: FragmentActivity) : ViewModel() {
         addSource(habitsVm.header) {
             if (ensureVm()) value = createModel(HABIT_HEADER)
         }
-        addSource(todayVm.todayTodo) {
+        addSource(scheduleVm.schedule) {
             if (ensureVm()) value = createModel(TODO)
         }
     }
 
     private fun ensureVm() =
-        todayVm.todayTodo.value != null &&
+        scheduleVm.schedule.value != null &&
                 habitsVm.allHabits.value != null &&
                 habitsVm.header.value != null
 
     private fun createModel(from: String): List<ItemModel> =
         mutableListOf<ItemModel>().apply {
-            add(todayVm.todayHeader)
-            addAll(todayTodo)
+            add(scheduleVm.header)
+            addAll(schedule)
             add(habitHeader)
             addAll(allHabits)
             logD { "Daily model is re-created : $from, size:$size" }

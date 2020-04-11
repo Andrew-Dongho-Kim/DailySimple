@@ -5,66 +5,83 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dd.android.dailysimple.HomeViewPagerFragmentDirections
+import com.dd.android.dailysimple.HomeFragmentDirections
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.BaseFragment
+import com.dd.android.dailysimple.common.FabViewModel
 import com.dd.android.dailysimple.databinding.FragmentScheduleCommonBinding
+import com.dd.android.dailysimple.google.GoogleAccountViewModel
 import com.dd.android.dailysimple.plan.ScheduleCardItemDecoration
 
 
 class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>() {
 
+    private val fabModel by viewModels<FabViewModel>()
+
     override val layout: Int = R.layout.fragment_schedule_common
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        bind.accountViewModel = activity.viewModels<GoogleAccountViewModel>().value
+        bind.fabModel = fabModel
 
         setUpRecycler()
-        setUpFab(view)
+        setUpFab()
 
         setHasOptionsMenu(true)
     }
 
     private fun setUpRecycler() {
-        with(bind.recycler) {
-            val lm = LinearLayoutManager(activity)
-            val adt = DailyAdapter(viewLifecycleOwner, lm)
 
-            adapter = adt
-            layoutManager = lm
-            itemAnimator = DefaultItemAnimator()
+        val recycler = bind.recycler
 
-            DailyItemModels(requireActivity()).data.observe(
-                viewLifecycleOwner,
-                Observer { list ->
-                    adt.items.clear()
-                    adt.items.addAll(list)
-                    adt.notifyDataSetChanged()
-                })
+        val layoutManager = LinearLayoutManager(activity)
+        val adapter = DailyAdapter(viewLifecycleOwner, layoutManager)
 
-            addItemDecoration(
-                ScheduleCardItemDecoration(
-                    activity
-                )
+        recycler.adapter = adapter
+        recycler.layoutManager = layoutManager
+        recycler.itemAnimator = DefaultItemAnimator()
+
+        DailyItemModels(requireActivity()).data.observe(
+            viewLifecycleOwner,
+            Observer { list ->
+                adapter.items.clear()
+                adapter.items.addAll(list)
+                adapter.notifyDataSetChanged()
+            })
+
+        recycler.addItemDecoration(
+            ScheduleCardItemDecoration(activity)
+        )
+
+        ItemTouchHelper(
+            DailyItemTouchAction(activity, adapter, navController)
+        ).attachToRecyclerView(recycler)
+
+        recycler.setUpCache()
+    }
+
+    private fun setUpFab() {
+        fabModel.fab1Text.postValue(getString(R.string.make_a_habit))
+        fabModel.fab2Text.postValue(getString(R.string.make_a_todo))
+
+        fabModel.onFab1Click = {
+            navController.navigate(
+                HomeFragmentDirections.homeToMakeAndEditHabitFragment(-1)
             )
-
-            ItemTouchHelper(
-                DailyItemTouchAction(requireContext(), adt)
-            ).attachToRecyclerView(this)
+        }
+        fabModel.onFab2Click = {
+            navController.navigate(
+                HomeFragmentDirections.homeToMakeAndEditTodoFragment(-1)
+            )
         }
     }
 
-    private fun setUpFab(view: View) {
-        bind.fabAdd.setOnClickListener {
-            view.findNavController().navigate(
-                HomeViewPagerFragmentDirections.homeToCreateDailyScheduleFragment(-1)
-            )
-        }
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.daily_menu, menu)

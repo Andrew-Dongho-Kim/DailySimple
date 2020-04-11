@@ -17,7 +17,7 @@ val TabTitleResId = arrayOf(
 
 val TabIconResId = arrayOf(
     R.drawable.ic_daily,
-    R.drawable.ic_group,
+    R.drawable.ic_plan,
     R.drawable.ic_settings
 )
 

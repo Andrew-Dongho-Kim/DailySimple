@@ -4,7 +4,7 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.dd.android.dailysimple.BR
 import com.dd.android.dailysimple.common.Logger
-import com.dd.android.dailysimple.db.Alarm
+import com.dd.android.dailysimple.db.data.Alarm
 
 
 private const val TAG = "AlarmObservable"
@@ -14,9 +14,17 @@ class AlarmObservable(alarm: Alarm) : BaseObservable() {
 
     var alarm: Alarm = alarm
         set(value) {
+            val old = field
             field = value
-            notifyPropertyChanged(BR.on)
-            notifyPropertyChanged(BR.alarmPowerAdapterPosition)
+            if (field.alarmPower != old.alarmPower) {
+                notifyPropertyChanged(BR.alarmPowerAdapterPosition)
+            }
+            if (field.alarmTime != old.alarmTime) {
+                notifyPropertyChanged(BR.alarmTime)
+            }
+            if (field.alarmDays != old.alarmDays) {
+                notifyPropertyChanged(BR.alarmDays)
+            }
         }
 
     @get:Bindable
@@ -25,6 +33,22 @@ class AlarmObservable(alarm: Alarm) : BaseObservable() {
             if (field == value) return
             field = value
             notifyPropertyChanged(BR.on)
+        }
+
+    @get:Bindable
+    var alarmTime: Int
+        get() = alarm.alarmTime
+        set(value) {
+            alarm.alarmTime = value
+            notifyPropertyChanged(BR.alarmTime)
+        }
+
+    @get:Bindable
+    var alarmDays: Int
+        get() = alarm.alarmDays
+        set(value) {
+            alarm.alarmDays = value
+            notifyPropertyChanged(BR.alarmDays)
         }
 
     @get:Bindable

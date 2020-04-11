@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.dd.android.dailysimple.HomeFragmentDirections
 import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.HomeViewPagerFragmentDirections
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
 
 class GroupScheduleAdapter : RecyclerView.Adapter<ViewHolder2>() {
@@ -25,15 +25,6 @@ class GroupScheduleAdapter : RecyclerView.Adapter<ViewHolder2>() {
 
     override fun getItemCount(): Int {
         return 10
-    }
-}
-
-
-class ScheduleCardItemClickListener : View.OnClickListener {
-    override fun onClick(view: View) {
-        view.findNavController().navigate(
-            HomeViewPagerFragmentDirections.homeToGroupScheduleDetailFragment(0)
-        )
     }
 }
 

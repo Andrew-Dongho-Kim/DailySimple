@@ -6,6 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.dd.android.dailysimple.db.dao.CheckStatusDao
+import com.dd.android.dailysimple.db.dao.DailyHabitDao
+import com.dd.android.dailysimple.db.data.CheckStatus
+import com.dd.android.dailysimple.db.data.DailyHabit
+import com.dd.android.dailysimple.db.data.Plan
 
 private const val DATABASE_NAME = "schedule-db"
 
@@ -41,15 +46,6 @@ abstract class AppDatabase : RoomDatabase() {
                 .build()
     }
 }
-
-/**
- * update q
-set q.QuestionID = a.QuestionID
-from QuestionTrackings q
-inner join QuestionAnswers a
-on q.AnswerID = a.AnswerID
-where q.QuestionID is null --
- */
 
 val MIGRATION_1_2 = object : Migration(1, 2) {
     override fun migrate(database: SupportSQLiteDatabase) {

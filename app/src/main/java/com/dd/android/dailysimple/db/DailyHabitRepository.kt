@@ -1,13 +1,11 @@
 package com.dd.android.dailysimple.db
 
+import com.dd.android.dailysimple.db.dao.CheckStatusDao
+import com.dd.android.dailysimple.db.dao.DailyHabitDao
+import com.dd.android.dailysimple.db.data.CheckStatus
+import com.dd.android.dailysimple.db.data.DailyHabit
 
-/**
- * Why use a Repository?
- * A Repository manages queries and allows you to use multiple backends.
- * In the most common example,
- * the Repository implements the logic for deciding whether to fetch data from a network
- * or use results cached in a local database.
- */
+
 class DailyHabitRepository(
     private val dailyHabitDao: DailyHabitDao,
     private val checkStatusDao: CheckStatusDao

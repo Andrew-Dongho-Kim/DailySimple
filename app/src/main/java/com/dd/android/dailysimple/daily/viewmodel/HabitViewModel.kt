@@ -9,8 +9,8 @@ import com.dd.android.dailysimple.common.recycler.ItemModel
 import com.dd.android.dailysimple.daily.DayDateDataSource
 import com.dd.android.dailysimple.daily.DayDateItemModel
 import com.dd.android.dailysimple.db.AppDatabase
-import com.dd.android.dailysimple.db.DailyHabit
 import com.dd.android.dailysimple.db.DailyHabitRepository
+import com.dd.android.dailysimple.db.data.DailyHabit
 import kotlinx.coroutines.launch
 
 class HabitViewModel(application: Application) : AndroidViewModel(application) {
@@ -31,9 +31,6 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
 
 
     fun getHabit(habitId: Long) = repository.getHabit(habitId)
-
-
-    fun getCheckStatus(habitId: Long) = repository.getCheckStatus(habitId)
 
 
     /**

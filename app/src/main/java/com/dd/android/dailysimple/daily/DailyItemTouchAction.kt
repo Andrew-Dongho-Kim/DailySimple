@@ -8,10 +8,11 @@ import android.view.View
 import android.view.WindowManager
 import androidx.cardview.widget.CardView
 import androidx.core.graphics.ColorUtils
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.dd.android.dailysimple.HomeViewPagerFragmentDirections
+import com.dd.android.dailysimple.HomeFragmentDirections
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
@@ -24,7 +25,8 @@ private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, messa
 
 class DailyItemTouchAction(
     private val context: Context,
-    private val adapter: DailyAdapter
+    private val adapter: DailyAdapter,
+    private val navController: NavController
 ) : ItemTouchHelper.SimpleCallback(
     0,
     ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
@@ -85,10 +87,8 @@ class DailyItemTouchAction(
         swiped = true
 
         if (direction == ItemTouchHelper.LEFT) {
-            vh.itemView.findNavController().navigate(
-                HomeViewPagerFragmentDirections.homeToCreateDailyScheduleFragment(
-                    vh.itemModel?.id ?: -1
-                )
+            navController.navigate(
+                HomeFragmentDirections.homeToMakeAndEditHabitFragment(vh.itemModel!!.id)
             )
         }
         adapter.notifyItemChanged(vh.adapterPosition)

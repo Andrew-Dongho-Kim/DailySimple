@@ -14,7 +14,7 @@ import com.dd.android.dailysimple.common.utils.DateUtils
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.di.appDb
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
-import com.dd.android.dailysimple.db.CheckStatus
+import com.dd.android.dailysimple.db.data.CheckStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -147,7 +147,13 @@ class CheckStatusDataSource(
                 list.add(checkedList[index])
                 ++index
             } else {
-                list.add(CheckStatus(curr, habitId, 0))
+                list.add(
+                    CheckStatus(
+                        curr,
+                        habitId,
+                        0
+                    )
+                )
             }
             cal.add(Calendar.DATE, -1)
             curr = cal.timeInMillis

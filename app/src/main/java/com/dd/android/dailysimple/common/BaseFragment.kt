@@ -20,7 +20,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.utils.DateUtils
 import java.util.*
 
@@ -29,7 +31,12 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     private val dateChangeReceiver by lazy { DateChangeReceiver(this) }
     val dateChangedObserver: OnDateChangedObserver = dateChangeReceiver
 
-    private val naviController by lazy { view?.findNavController()!! }
+    val navController by lazy {
+        Navigation.findNavController(
+            activity,
+            R.id.main_navigation_host
+        )
+    }
 
     private lateinit var _activity: AppCompatActivity
     protected val activity: AppCompatActivity
@@ -63,7 +70,7 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                naviController.popBackStack()
+                navController.popBackStack()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
@@ -71,7 +78,7 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     }
 
     fun popBackStack() {
-        naviController.popBackStack()
+        navController.popBackStack()
     }
 }
 

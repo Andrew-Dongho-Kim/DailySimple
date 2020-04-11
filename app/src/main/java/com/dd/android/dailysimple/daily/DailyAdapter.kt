@@ -15,9 +15,9 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.dd.android.dailysimple.HomeFragmentDirections
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.databinding.DailyHabitHeaderItemBinding
-import com.dd.android.dailysimple.HomeViewPagerFragmentDirections
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.di.appDb
 import com.dd.android.dailysimple.common.recycler.ItemModel
@@ -25,25 +25,36 @@ import com.dd.android.dailysimple.common.recycler.RecyclerViewAdapter2
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
 import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.DAILY_COMMON
 import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.DAILY_HEADER
-import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.TODO_COMMON
-import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.TODO_HEADER
+import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.SCHEDULE_COMMON
+import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.SCHEDULE_HEADER
 import com.dd.android.dailysimple.daily.viewmodel.HabitHeaderItemModel
-import com.dd.android.dailysimple.daily.viewmodel.TodoHeaderItemModel
+import com.dd.android.dailysimple.daily.viewmodel.ScheduleHeaderItemModel
 import com.dd.android.dailysimple.databinding.DailyHabitItemBinding
-import com.dd.android.dailysimple.db.CheckStatus
+import com.dd.android.dailysimple.db.data.CheckStatus
 import com.dd.android.dailysimple.provider.calendar.TodoItemModel
 import java.util.*
 
 private const val TAG = "DailyAdapter"
 private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
 
-@IntDef(DAILY_HEADER, DAILY_COMMON, TODO_HEADER, TODO_COMMON)
+private const val RECYCLER_VIEW_CACHE_SIZE = 10
+
+@IntDef(DAILY_HEADER, DAILY_COMMON, SCHEDULE_HEADER, SCHEDULE_COMMON)
 private annotation class DailyScheduleViewType {
     companion object {
         const val DAILY_HEADER = -1
         const val DAILY_COMMON = 0
-        const val TODO_HEADER = -2
-        const val TODO_COMMON = 1
+        const val SCHEDULE_HEADER = -2
+        const val SCHEDULE_COMMON = 1
+    }
+}
+
+fun RecyclerView.setUpCache() {
+    setItemViewCacheSize(RECYCLER_VIEW_CACHE_SIZE)
+
+    with(recycledViewPool) {
+        setMaxRecycledViews(DAILY_HEADER, 1)
+        setMaxRecycledViews(SCHEDULE_HEADER, 1)
     }
 }
 
@@ -179,18 +190,19 @@ class DailyHabitItemHolder(
         private const val LOAD_SIZE = 14
         private val onClick = View.OnClickListener {
             it.findNavController().navigate(
-                HomeViewPagerFragmentDirections.homeToDailyHabitDetailFragment(it.getTag(ID_TAG) as Long)
+                HomeFragmentDirections.homeToDailyDetailFragment(it.getTag(ID_TAG) as Long)
             )
         }
     }
 }
 
-class DailyTodoHeaderHolder(parent: ViewGroup) : ViewHolder2(
+class DailyScheduleHeaderHolder(parent: ViewGroup) : ViewHolder2(
     parent,
-    R.layout.daily_todo_header
+    R.layout.daily_todo_header,
+    BR.model
 )
 
-class DailyTodoItemHolder(parent: ViewGroup) : ViewHolder2(
+class DailyScheduleItemHolder(parent: ViewGroup) : ViewHolder2(
     parent,
     R.layout.daily_todo_item,
     BR.viewModel
@@ -216,8 +228,8 @@ class DailyAdapter(
 
     override fun onCreateViewHolder2(parent: ViewGroup, viewType: Int) =
         when (viewType) {
-            TODO_HEADER -> DailyTodoHeaderHolder(parent)
-            TODO_COMMON -> DailyTodoItemHolder(parent)
+            SCHEDULE_HEADER -> DailyScheduleHeaderHolder(parent)
+            SCHEDULE_COMMON -> DailyScheduleItemHolder(parent)
             DAILY_HEADER -> DailyHabitHeaderHolder(parent, lifecycleOwner).also {
                 it.recyclerView.addOnScrollListener(slaveScroll)
             }
@@ -257,8 +269,8 @@ class DailyAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (items[position]) {
-            is TodoHeaderItemModel -> TODO_HEADER
-            is TodoItemModel -> TODO_COMMON
+            is ScheduleHeaderItemModel -> SCHEDULE_HEADER
+            is TodoItemModel -> SCHEDULE_COMMON
             is HabitHeaderItemModel -> DAILY_HEADER
             else -> DAILY_COMMON
         }

@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.dd.android.dailysimple.HomeFragmentDirections
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.BaseFragment
 import com.dd.android.dailysimple.common.Logger
@@ -16,14 +17,14 @@ import com.dd.android.dailysimple.common.utils.DateUtils
 import com.dd.android.dailysimple.daily.edit.observable.AlarmObservable
 import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
 import com.dd.android.dailysimple.databinding.FragmentMakeDailyHabitBinding
-import com.dd.android.dailysimple.db.Alarm
-import com.dd.android.dailysimple.db.DailyHabit
+import com.dd.android.dailysimple.db.data.Alarm
+import com.dd.android.dailysimple.db.data.DailyHabit
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 
-private const val ARG_ID = "dailyScheduleId"
+private const val TAG = "MakeAndEdit"
+private const val ARG_ID = "habitId"
 
-private const val TAG = "MakeAndHabit"
 private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
 
 class MakeAndEditHabitFragment : BaseFragment<FragmentMakeDailyHabitBinding>() {

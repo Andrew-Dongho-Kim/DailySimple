@@ -59,7 +59,7 @@ class GoogleAccountController(
                 val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
 
                 _signInOutResult.postValue(
-                    if (result.isSuccess) {
+                    if (result!!.isSuccess) {
                         SignInOutResult(
                             SIGNED_IN,
                             result

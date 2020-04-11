@@ -24,6 +24,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".common.AlarmReceiver"
+            android:exported="false"
+            android:permission="com.dd.android.dailysimple.permission.ALARM">
+            <intent-filter>
+                <action android:name="com.dd.android.dailysimple.ALARM" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

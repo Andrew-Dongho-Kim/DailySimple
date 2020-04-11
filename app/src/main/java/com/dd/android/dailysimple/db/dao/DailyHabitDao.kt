@@ -1,7 +1,9 @@
-package com.dd.android.dailysimple.db
+package com.dd.android.dailysimple.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.dd.android.dailysimple.db.data.CheckStatus
+import com.dd.android.dailysimple.db.data.DailyHabit
 
 //@Dao
 //interface GroupDailyScheduleJoinDao {

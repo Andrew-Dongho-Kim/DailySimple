@@ -12,7 +12,7 @@
 
         <variable
             name="model"
-            type="com.dd.android.dailysimple.db.DailyHabit" />
+            type="com.dd.android.dailysimple.db.data.DailyHabit" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

@@ -6,12 +6,12 @@
 
         <variable
             name="checkStatus"
-            type="com.dd.android.dailysimple.db.CheckStatus" />
+            type="com.dd.android.dailysimple.db.data.CheckStatus" />
     </data>
 
     <FrameLayout
         android:layout_width="34dp"
-        android:layout_height="34dp">
+        android:layout_height="24dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/check"

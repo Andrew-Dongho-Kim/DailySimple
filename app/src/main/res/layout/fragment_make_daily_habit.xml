@@ -16,7 +16,7 @@
 
         <variable
             name="habitModel"
-            type="com.dd.android.dailysimple.db.DailyHabit" />
+            type="com.dd.android.dailysimple.db.data.DailyHabit" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -208,7 +208,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="@{alarmModel.isOn ? View.VISIBLE : View.GONE}"
-                        app:constraint_referenced_ids="alarm_divider,repeat_icon, time_icon, alarm_power_icon, repeat_spinner, time_spinner" />
+                        app:constraint_referenced_ids="alarm_divider,repeat_icon, time_icon, time_text, alarm_power_icon, repeat_spinner, time_spinner" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/repeat_icon"
@@ -240,6 +240,16 @@
                         android:tint="@color/basic_icon_background"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/repeat_icon" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/time_text"
+                        style="@style/BasicTextDpLittleBig"
+                        android:layout_width="@dimen/make_and_edit_habit_spinner_width"
+                        android:layout_height="wrap_content"
+                        android:text="@{DateUtils.INSTANCE.todayYMD(AppDependencyInjectorKt.systemLocale())}"
+                        app:layout_constraintBottom_toBottomOf="@id/time_icon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/time_icon" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/alarm_power_icon"
