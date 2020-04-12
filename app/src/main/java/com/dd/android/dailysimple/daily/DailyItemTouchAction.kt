@@ -6,10 +6,11 @@ import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.cardview.widget.CardView
 import androidx.core.graphics.ColorUtils
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.dd.android.dailysimple.HomeFragmentDirections
@@ -18,13 +19,14 @@ import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
 import com.dd.android.dailysimple.common.recycler.ViewHolder2.Companion.findViewById
 import com.dd.android.dailysimple.common.recycler.ViewHolder2.Companion.isHeader
+import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
 import kotlin.math.abs
 
 private const val TAG = "DailyItemTouchAction"
 private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
 
 class DailyItemTouchAction(
-    private val context: Context,
+    private val activity: FragmentActivity,
     private val adapter: DailyAdapter,
     private val navController: NavController
 ) : ItemTouchHelper.SimpleCallback(
@@ -32,10 +34,12 @@ class DailyItemTouchAction(
     ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
 ) {
 
+    private val habitModel by activity.viewModels<HabitViewModel>()
+
     private var swiped = false
 
     private val screenWidth =
-        (context.getSystemService(Context.WINDOW_SERVICE)
+        (activity.getSystemService(Context.WINDOW_SERVICE)
                 as WindowManager).run {
             val point = Point()
             defaultDisplay.getSize(point)
@@ -45,10 +49,10 @@ class DailyItemTouchAction(
     private val background = ColorDrawable()
 
     private val editColor = ColorUtils.setAlphaComponent(
-        context.getColor(R.color.orange), 0XCC
+        activity.getColor(R.color.orange), 0XCC
     )
-    private val doneColor = ColorUtils.setAlphaComponent(
-        context.getColor(R.color.pineapple), 0XCC
+    private val removeColor = ColorUtils.setAlphaComponent(
+        activity.getColor(R.color.apple), 0XCC
     )
 
     override fun onMove(
@@ -90,6 +94,8 @@ class DailyItemTouchAction(
             navController.navigate(
                 HomeFragmentDirections.homeToMakeAndEditHabitFragment(vh.itemModel!!.id)
             )
+        } else {
+            habitModel.delete(vh.itemModel!!.id)
         }
         adapter.notifyItemChanged(vh.adapterPosition)
     }
@@ -128,12 +134,7 @@ class DailyItemTouchAction(
                 R.id.done_icon, R.id.done_text,
                 visibility = if (!rightSwipe) View.GONE else View.VISIBLE
             )
-            setCardBackgroundColor(if (rightSwipe) doneColor else editColor)
-        }
-        logD {
-            """dX : $dX, dY: $dY, 
-                actionState:$actionState, 
-                isActive:$isCurrentlyActive, alpha:${screenWidth}"""
+            setCardBackgroundColor(if (rightSwipe) removeColor else editColor)
         }
     }
 

@@ -38,6 +38,9 @@ interface DailyHabitDao {
     @Update
     suspend fun update(vararg habits: DailyHabit)
 
+    @Query("DELETE FROM daily_habit WHERE id=:habitId")
+    suspend fun delete(habitId: Long)
+
     @Query("SELECT * FROM daily_habit")
     fun getAllHabits(): LiveData<List<DailyHabit>>
 

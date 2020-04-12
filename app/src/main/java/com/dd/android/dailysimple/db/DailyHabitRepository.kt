@@ -23,6 +23,9 @@ class DailyHabitRepository(
     suspend fun insert(habit: DailyHabit) =
         dailyHabitDao.insert(habit)
 
+    suspend fun delete(habitId:Long) =
+        dailyHabitDao.delete(habitId)
+
     suspend fun update(habit: DailyHabit) =
         dailyHabitDao.update(habit)
 }

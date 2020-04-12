@@ -31,6 +31,28 @@ object DateUtils {
         }
 
 
+    fun timeNowCalendar(): Calendar =
+        Calendar.getInstance().apply {
+            time = Date()
+            set(Calendar.YEAR, 0)
+            set(Calendar.MONTH, 0)
+            set(Calendar.DATE, 0)
+        }
+
+    fun timeNow() = timeNowCalendar().timeInMillis
+
+    @JvmOverloads
+    fun timeNowFrom(hour: Int, minute: Int = 0, second: Int = 0): Long =
+        timeNowCalendar().run {
+            add(Calendar.HOUR_OF_DAY, hour)
+            add(Calendar.MINUTE, minute)
+            add(Calendar.SECOND, second)
+            timeInMillis
+        }
+
+    fun toTime(date: Long, locale: Locale): String =
+        SimpleDateFormat("a hh : mm", locale).format(Date(date))
+
     fun toYMD(date: Long, locale: Locale): String =
         SimpleDateFormat("yyyy. MM. dd", locale).format(Date(date))
 

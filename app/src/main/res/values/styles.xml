@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -15,6 +15,19 @@
         <item name="android:statusBarColor">@color/basic_common_background</item>
     </style>
 
+    <style name="Widget.AppCompat.DropDownItem.Spinner" parent="android:Widget.Material.DropDownItem.Spinner" tools:override="true">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Widget.DropDownItem
+        </item>
+        <item name="android:popupBackground">@drawable/rounded_view_background</item>
+        <item name="android:minWidth">@dimen/basic_popup_menu_item_min_width</item>
+        <item name="android:minHeight">@dimen/basic_popup_menu_item_min_height</item>
+        <item name="android:paddingStart">@dimen/basic_popup_menu_item_start_padding</item>
+        <item name="android:paddingEnd">@dimen/basic_popup_menu_item_end_padding</item>
+        <item name="android:paddingTop">@dimen/basic_popup_menu_item_top_padding</item>
+        <item name="android:paddingBottom">@dimen/basic_popup_menu_item_bottom_padding</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
     <style name="ToolbarTitleStyleParent">
         <item name="android:shadowDx">0.5</item>
         <item name="android:shadowDy">0.5</item>
@@ -24,12 +37,12 @@
 
     <style name="BasicBottomNavigationStyle" parent="Widget.Design.BottomNavigationView" />
 
-    <style name="BottomNavigationTextStyle" parent="UxCommonDpHeaderTextStyleNormal">
+    <style name="BottomNavigationTextStyle" parent="BasicHeaderTextDpNormal">
         <item name="android:textColor">@color/tab_text_color</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="ActiveBottomNavigationTextStyle" parent="UxCommonDpHeaderTextStyleNormal">
+    <style name="ActiveBottomNavigationTextStyle" parent="BasicHeaderTextDpNormal">
         <item name="android:textColor">@color/appPrimary</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -43,17 +56,17 @@
         <item name="android:textColor">@android:color/transparent</item>
     </style>
 
-    <style name="UxCommonSpTextStyleNormal">
+    <style name="BasicTextSpNormal">
         <item name="android:textSize">@dimen/ux_common_text_size_sp_normal</item>
         <item name="android:textColor">@color/basic_text1_color</item>
     </style>
 
-    <style name="UxCommonDpHeaderTextStyleNormal">
+    <style name="BasicHeaderTextDpNormal">
         <item name="android:textSize">@dimen/basic_text_size_dp_normal</item>
         <item name="android:textColor">@color/basic_text1_color</item>
     </style>
 
-    <style name="UxCommonDpHeaderTextStyleTinyBig">
+    <style name="BasicHeaderTextDpTinyBig">
         <item name="android:textSize">@dimen/basic_text_size_dp_little_Big</item>
         <item name="android:textColor">@color/basic_text1_color</item>
     </style>
@@ -63,7 +76,7 @@
         <item name="android:textColor">@color/basic_text1_color</item>
     </style>
 
-    <style name="BasicTextDpLittleBig">
+    <style name="BasicTextDpTinyBig">
         <item name="android:textSize">@dimen/basic_text_size_dp_little_Big</item>
         <item name="android:textColor">@color/basic_text1_color</item>
     </style>
@@ -73,7 +86,7 @@
         <item name="android:textColor">@color/basic_text1_color</item>
     </style>
 
-    <style name="UxCommonDpTextStyleTinySmall">
+    <style name="BasicTextDpTinySmall">
         <item name="android:textSize">@dimen/basic_text_size_dp_little_small</item>
         <item name="android:textColor">@color/basic_text1_color</item>
     </style>

@@ -4,21 +4,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="model"
-            type="com.dd.android.dailysimple.daily.viewmodel.ScheduleHeaderItemModel" />
+            type="com.dd.android.dailysimple.daily.viewmodel.SimpleHeaderItemModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="13dp"
-        android:paddingTop="10dp"
-        android:paddingEnd="13dp"
-        android:paddingBottom="10dp">
+        android:paddingTop="@dimen/basic_view_margin_vertical"
+        android:paddingStart="@dimen/basic_view_margin_horizontal"
+        android:paddingEnd="@dimen/basic_view_margin_horizontal"
+        android:paddingBottom="@dimen/basic_view_margin_vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/UxCommonDpHeaderTextStyleTinyBig"
+            style="@style/BasicHeaderTextDpTinyBig"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{model.headerTitle}"

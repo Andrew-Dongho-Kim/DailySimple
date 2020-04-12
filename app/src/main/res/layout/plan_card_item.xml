@@ -30,7 +30,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/schedule_title"
-                style="@style/UxCommonSpTextStyleNormal"
+                style="@style/BasicTextSpNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -41,7 +41,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/schedule_start_date"
-                style="@style/UxCommonDpTextStyleTinySmall"
+                style="@style/BasicTextDpTinySmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -53,7 +53,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/schedule_end_date"
-                style="@style/UxCommonDpTextStyleTinySmall"
+                style="@style/BasicTextDpTinySmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

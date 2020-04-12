@@ -26,9 +26,9 @@ import com.dd.android.dailysimple.common.recycler.ViewHolder2
 import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.DAILY_COMMON
 import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.DAILY_HEADER
 import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.SCHEDULE_COMMON
-import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.SCHEDULE_HEADER
+import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.SIMPLE_HEADER
 import com.dd.android.dailysimple.daily.viewmodel.HabitHeaderItemModel
-import com.dd.android.dailysimple.daily.viewmodel.ScheduleHeaderItemModel
+import com.dd.android.dailysimple.daily.viewmodel.SimpleHeaderItemModel
 import com.dd.android.dailysimple.databinding.DailyHabitItemBinding
 import com.dd.android.dailysimple.db.data.CheckStatus
 import com.dd.android.dailysimple.provider.calendar.TodoItemModel
@@ -39,12 +39,13 @@ private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, messa
 
 private const val RECYCLER_VIEW_CACHE_SIZE = 10
 
-@IntDef(DAILY_HEADER, DAILY_COMMON, SCHEDULE_HEADER, SCHEDULE_COMMON)
+@IntDef(DAILY_HEADER, DAILY_COMMON, SIMPLE_HEADER, SCHEDULE_COMMON)
 private annotation class DailyScheduleViewType {
     companion object {
-        const val DAILY_HEADER = -1
+        const val SIMPLE_HEADER = -1
+        const val DAILY_HEADER = -2
+
         const val DAILY_COMMON = 0
-        const val SCHEDULE_HEADER = -2
         const val SCHEDULE_COMMON = 1
     }
 }
@@ -54,10 +55,15 @@ fun RecyclerView.setUpCache() {
 
     with(recycledViewPool) {
         setMaxRecycledViews(DAILY_HEADER, 1)
-        setMaxRecycledViews(SCHEDULE_HEADER, 1)
+        setMaxRecycledViews(SIMPLE_HEADER, 2)
     }
 }
 
+class SimpleHeaderItemHolder(parent: ViewGroup) : ViewHolder2(
+    parent,
+    R.layout.simple_header_item,
+    BR.model
+)
 
 abstract class SlaveRecyclerHolder(
     parent: ViewGroup,
@@ -196,15 +202,10 @@ class DailyHabitItemHolder(
     }
 }
 
-class DailyScheduleHeaderHolder(parent: ViewGroup) : ViewHolder2(
-    parent,
-    R.layout.daily_todo_header,
-    BR.model
-)
 
 class DailyScheduleItemHolder(parent: ViewGroup) : ViewHolder2(
     parent,
-    R.layout.daily_todo_item,
+    R.layout.daily_schedule_item,
     BR.viewModel
 )
 
@@ -226,9 +227,10 @@ class DailyAdapter(
         }
     }
 
-    override fun onCreateViewHolder2(parent: ViewGroup, viewType: Int) =
-        when (viewType) {
-            SCHEDULE_HEADER -> DailyScheduleHeaderHolder(parent)
+    override fun onCreateViewHolder2(parent: ViewGroup, viewType: Int): ViewHolder2 {
+        logD { "+onCreateViewHolder(#$viewType)" }
+        return when (viewType) {
+            SIMPLE_HEADER -> SimpleHeaderItemHolder(parent)
             SCHEDULE_COMMON -> DailyScheduleItemHolder(parent)
             DAILY_HEADER -> DailyHabitHeaderHolder(parent, lifecycleOwner).also {
                 it.recyclerView.addOnScrollListener(slaveScroll)
@@ -237,17 +239,12 @@ class DailyAdapter(
                 slaveList.add(it)
             }
         }
+    }
 
-//    override fun onBindViewHolder(holder: ViewHolder2, position: Int) {
-//        super.onBindViewHolder(holder, position)
-//
-//        when (holder) {
-//            is ColleagueRecyclerHolder -> {
-//                verifyColleague(holder)
-//                logD { "Colleague list size : ${colleagueList.size}" }
-//            }
-//        }
-//    }
+    override fun onBindViewHolder(holder: ViewHolder2, position: Int) {
+        super.onBindViewHolder(holder, position)
+//        logD { "+onBindViewHolder(#${holder.itemViewType}): $position" }
+    }
 
     private fun verifyColleague(vh: SlaveRecyclerHolder) {
         val first = layoutManager.findFirstVisibleItemPosition()
@@ -269,7 +266,7 @@ class DailyAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (items[position]) {
-            is ScheduleHeaderItemModel -> SCHEDULE_HEADER
+            is SimpleHeaderItemModel -> SIMPLE_HEADER
             is TodoItemModel -> SCHEDULE_COMMON
             is HabitHeaderItemModel -> DAILY_HEADER
             else -> DAILY_COMMON

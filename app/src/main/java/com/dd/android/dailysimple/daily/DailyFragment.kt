@@ -8,6 +8,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,22 +23,25 @@ import com.dd.android.dailysimple.plan.ScheduleCardItemDecoration
 
 class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>() {
 
-    private val fabModel by viewModels<FabViewModel>()
+    private lateinit var fabModel: FabViewModel
 
     override val layout: Int = R.layout.fragment_schedule_common
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        bind.accountViewModel = activity.viewModels<GoogleAccountViewModel>().value
-        bind.fabModel = fabModel
-
+        setUpViewModel()
         setUpRecycler()
         setUpFab()
 
         setHasOptionsMenu(true)
     }
 
-    private fun setUpRecycler() {
+    private fun setUpViewModel() {
+        fabModel = ViewModelProvider(activity).get(FabViewModel::class.java)
+        bind.accountViewModel = activity.viewModels<GoogleAccountViewModel>().value
+        bind.fabModel = fabModel
+    }
 
+    private fun setUpRecycler() {
         val recycler = bind.recycler
 
         val layoutManager = LinearLayoutManager(activity)
@@ -90,6 +94,6 @@ class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return super.onOptionsItemSelected(item)
     }
-
 }
+
 

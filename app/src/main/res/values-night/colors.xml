@@ -7,6 +7,9 @@
     <color name="basic_common_background">#010101</color>
     <color name="basic_view_background">@color/appBlack</color>
 
+    <color name="basic_view_background_stroke">#202020</color>
+    <color name="basic_divider_background">#505050</color>
+
     <color name="basic_text1_color">#fafafa</color>
     <color name="tab_text_color">#7f7f7f</color>
     <color name="ux_common_view_dim">#3f3f3f</color>

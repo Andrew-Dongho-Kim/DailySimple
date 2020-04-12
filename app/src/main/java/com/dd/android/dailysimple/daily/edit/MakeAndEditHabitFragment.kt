@@ -77,7 +77,7 @@ class MakeAndEditHabitFragment : BaseFragment<FragmentMakeDailyHabitBinding>() {
                     setColorPickerDialogListener(object : ColorPickerDialogListener {
                         override fun onDialogDismissed(dialogId: Int) {}
                         override fun onColorSelected(dialogId: Int, color: Int) {
-                            Log.e("TEST-DH", color.toString())
+                            Log.e("TEST-DH", Integer.toHexString(color))
                             bind.color.imageTintList = ColorStateList.valueOf(color)
                         }
                     })

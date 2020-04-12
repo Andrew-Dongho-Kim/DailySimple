@@ -13,12 +13,13 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:padding="10dp">
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/basic_view_margin_horizontal"
+        android:paddingEnd="@dimen/basic_view_margin_horizontal">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/begin"
-            style="@style/UxCommonDpTextStyleTinySmall"
+            style="@style/BasicTextDpTinySmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{viewModel.beginTime}"
@@ -30,14 +31,13 @@
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/BasicTextDpNormal"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal_small"
             android:background="@color/basic_view_background"
             android:gravity="center_vertical"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
+            android:paddingStart="@dimen/basic_view_margin_horizontal_small"
+            android:paddingEnd="@dimen/basic_view_margin_horizontal"
             android:text="@{viewModel.title}"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/begin"
             app:layout_constraintTop_toTopOf="parent" />

@@ -76,7 +76,7 @@
 
         <include
             android:id="@+id/fab_layout"
-            layout="@layout/daily_fab_layout"
+            layout="@layout/fab_layout_common"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             bind:fabModel="@{fabModel}"/>

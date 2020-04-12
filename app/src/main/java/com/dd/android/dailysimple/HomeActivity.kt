@@ -4,12 +4,15 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.dd.android.dailysimple.common.BaseActivity
+import com.dd.android.dailysimple.common.FabViewModel
 import com.dd.android.dailysimple.google.GoogleAccountController
 import com.dd.android.dailysimple.google.GoogleAccountViewModel
 
 class HomeActivity : BaseActivity() {
 
     private val accountViewModel by viewModels<GoogleAccountViewModel>()
+
+    private val fabViewModel by viewModels<FabViewModel>()
 
     private val accountController = GoogleAccountController(this)
 
@@ -22,6 +25,14 @@ class HomeActivity : BaseActivity() {
                     accountViewModel.update(account)
                 }
             })
+    }
+
+    override fun onBackPressed() {
+        if (fabViewModel.isOpen.value!!) {
+            fabViewModel.toggle()
+            return
+        }
+        super.onBackPressed()
     }
 
 }

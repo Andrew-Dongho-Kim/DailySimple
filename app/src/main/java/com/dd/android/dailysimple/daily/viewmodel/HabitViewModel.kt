@@ -29,9 +29,7 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
 
     val allHabits = repository.allHabits
 
-
     fun getHabit(habitId: Long) = repository.getHabit(habitId)
-
 
     /**
      * The implementation of insert() in the database is completely hidden from the UI.
@@ -42,6 +40,10 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
      */
     fun insert(schedule: DailyHabit) = viewModelScope.launch {
         repository.insert(schedule)
+    }
+
+    fun delete(habitId:Long) = viewModelScope.launch {
+        repository.delete(habitId)
     }
 }
 

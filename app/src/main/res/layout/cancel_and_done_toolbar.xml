@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/cancel"
-        style="@style/UxCommonSpTextStyleNormal"
+        style="@style/BasicTextSpNormal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/done"
-        style="@style/UxCommonSpTextStyleNormal"
+        style="@style/BasicTextSpNormal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"

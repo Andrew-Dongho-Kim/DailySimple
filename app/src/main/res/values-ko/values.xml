@@ -10,6 +10,7 @@
     <string name="about_dailysimple">Daily Simple 정보</string>
 
     <string name="schedule">일정</string>
+    <string name="todo">할일</string>
 
     <string name="title">제목</string>
     <string name="memo">메모</string>
