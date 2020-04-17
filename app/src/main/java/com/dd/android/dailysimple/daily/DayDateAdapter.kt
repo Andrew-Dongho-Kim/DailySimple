@@ -2,14 +2,15 @@ package com.dd.android.dailysimple.daily
 
 import android.content.Context
 import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.LifecycleOwner
 import androidx.paging.PageKeyedDataSource
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.common.utils.DateUtils
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
+import com.dd.android.dailysimple.common.utils.DateUtils
 import java.util.*
 
 class DayDateAdapter(
@@ -44,20 +45,24 @@ class DayDateAdapter(
 }
 
 class DayDateViewHolder(parent: ViewGroup) :
-    ViewHolder2(parent, R.layout.daily_habit_day_date_item, BR.itemModel)
+    ViewHolder2<ViewDataBinding, DayDateItemModel>(
+        parent,
+        R.layout.daily_habit_day_date_item,
+        BR.itemModel
+    )
 
 
 class DayDateDataSource(
     private val context: Context
 ) : PageKeyedDataSource<Long, DayDateItemModel>() {
 
-    private val defaultPageSize = 7
+    private val pageSize = 7
 
     override fun loadInitial(
         params: LoadInitialParams<Long>,
         callback: LoadInitialCallback<Long, DayDateItemModel>
     ) {
-        val cal = DateUtils.todayCalendar()
+        val cal = DateUtils.calendarDateOnly()
         val list = loadFrom(cal)
         callback.onResult(list, null, cal.timeInMillis)
     }
@@ -81,7 +86,7 @@ class DayDateDataSource(
 
     private fun loadFrom(cal: Calendar) =
         mutableListOf<DayDateItemModel>().apply {
-            for (i in 0 until defaultPageSize) {
+            for (i in 0 until pageSize) {
                 val monthIndex = cal.get(Calendar.MONTH)
                 val dayIndex = cal.get(Calendar.DAY_OF_WEEK)
                 add(

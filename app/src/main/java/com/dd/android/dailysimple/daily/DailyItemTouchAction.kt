@@ -1,13 +1,13 @@
 package com.dd.android.dailysimple.daily
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Canvas
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
-import androidx.cardview.widget.CardView
 import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
@@ -26,15 +26,16 @@ private const val TAG = "DailyItemTouchAction"
 private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
 
 class DailyItemTouchAction(
-    private val activity: FragmentActivity,
+    activity: FragmentActivity,
     private val adapter: DailyAdapter,
     private val navController: NavController
-) : ItemTouchHelper.SimpleCallback(
-    0,
-    ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-) {
+) :
+    ItemTouchHelper.SimpleCallback(
+        0,
+        ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+    ) {
 
-    private val habitModel by activity.viewModels<HabitViewModel>()
+    private val habitVm by activity.viewModels<HabitViewModel>()
 
     private var swiped = false
 
@@ -76,9 +77,9 @@ class DailyItemTouchAction(
     }
 
     override fun onSwiped(viewHodler: RecyclerView.ViewHolder, direction: Int) {
-        val vh = viewHodler as ViewHolder2
+        val vh = viewHodler as ViewHolder2<*, *>
         val itemRoot = vh.findViewById<View>(R.id.item_root)
-        val swipeRoot = vh.findViewById<CardView>(R.id.swipe_root)
+        val swipeRoot = vh.findViewById<View>(R.id.swipe_root)
 
         itemRoot ?: return
         swipeRoot ?: return
@@ -92,10 +93,10 @@ class DailyItemTouchAction(
 
         if (direction == ItemTouchHelper.LEFT) {
             navController.navigate(
-                HomeFragmentDirections.homeToMakeAndEditHabitFragment(vh.itemModel!!.id)
+                HomeFragmentDirections.homeToMakeAndEditHabit(vh.model!!.id)
             )
         } else {
-            habitModel.delete(vh.itemModel!!.id)
+            habitVm.delete(vh.model!!.id)
         }
         adapter.notifyItemChanged(vh.adapterPosition)
     }
@@ -112,7 +113,7 @@ class DailyItemTouchAction(
         if (swiped) return
 
         val itemRoot = vh.findViewById<View>(R.id.item_root)
-        val swipeRoot = vh.findViewById<CardView>(R.id.swipe_root)
+        val swipeRoot = vh.findViewById<View>(R.id.swipe_root)
 
         itemRoot ?: return
         swipeRoot ?: return
@@ -131,10 +132,11 @@ class DailyItemTouchAction(
                 visibility = if (rightSwipe) View.GONE else View.VISIBLE
             )
             setChildVisibility(
-                R.id.done_icon, R.id.done_text,
+                R.id.delete_icon, R.id.delete_text,
                 visibility = if (!rightSwipe) View.GONE else View.VISIBLE
             )
-            setCardBackgroundColor(if (rightSwipe) removeColor else editColor)
+
+            backgroundTintList = ColorStateList.valueOf(if (rightSwipe) removeColor else editColor)
         }
     }
 

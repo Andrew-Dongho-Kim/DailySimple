@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
@@ -70,7 +71,7 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                navController.popBackStack()
+                popBackStack()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
@@ -79,6 +80,12 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
 
     fun popBackStack() {
         navController.popBackStack()
+        hideSoftInput()
+    }
+
+    private fun hideSoftInput() {
+        val imm = _activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(bind.root.windowToken, 0)
     }
 }
 

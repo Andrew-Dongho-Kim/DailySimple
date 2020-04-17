@@ -5,18 +5,18 @@ import androidx.lifecycle.*
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.dd.android.dailysimple.common.di.appDb
 import com.dd.android.dailysimple.common.recycler.ItemModel
 import com.dd.android.dailysimple.daily.DayDateDataSource
 import com.dd.android.dailysimple.daily.DayDateItemModel
-import com.dd.android.dailysimple.db.AppDatabase
 import com.dd.android.dailysimple.db.DailyHabitRepository
 import com.dd.android.dailysimple.db.data.DailyHabit
 import kotlinx.coroutines.launch
 
 class HabitViewModel(application: Application) : AndroidViewModel(application) {
-    // The ViewModel maintains a reference to the repository to get data.
+
     private val repository by lazy {
-        val db = AppDatabase.getInstance(application.applicationContext)
+        val db = appDb()
         DailyHabitRepository(
             db.dailyScheduleDao(),
             db.checkStatusDao()
@@ -38,11 +38,11 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
      * ViewModels have a coroutine scope based on their lifecycle called
      * viewModelScope which we can use here.
      */
-    fun insert(schedule: DailyHabit) = viewModelScope.launch {
-        repository.insert(schedule)
+    fun insert(habit: DailyHabit) = viewModelScope.launch {
+        repository.insert(habit)
     }
 
-    fun delete(habitId:Long) = viewModelScope.launch {
+    fun delete(habitId: Long) = viewModelScope.launch {
         repository.delete(habitId)
     }
 }

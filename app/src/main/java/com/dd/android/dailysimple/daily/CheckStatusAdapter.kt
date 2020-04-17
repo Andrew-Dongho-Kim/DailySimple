@@ -4,16 +4,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.paging.PageKeyedDataSource
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.dd.android.dailysimple.BR
 import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.common.utils.DateUtils
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.di.appDb
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
+import com.dd.android.dailysimple.common.utils.DateUtils
 import com.dd.android.dailysimple.db.data.CheckStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -26,12 +27,12 @@ private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, messa
 private inline fun logE(crossinline message: () -> String) = Logger.e(TAG, message)
 
 @BindingAdapter("daily:checkStatus")
-fun applyCheckStatus(imageView: ImageView, checkStatus: CheckStatus?) {
+fun applyCheckStatus(imageView: ImageView, checkedCount: Int) {
     imageView.setImageResource(
-        if (checkStatus == null || checkStatus.checkedCount == 0) {
-            R.drawable.unchecked_oval_stroke
-        } else {
+        if (checkedCount > 0) {
             R.drawable.checked_oval_stroke
+        } else {
+            R.drawable.unchecked_oval_stroke
         }
     )
 }
@@ -56,7 +57,7 @@ class CheckStatusAdapter(
     }
 
     companion object {
-        private const val CHECK_STATUS_MODEL = R.id.item_model
+        private const val CHECK_STATUS_MODEL = R.id.itemModel
         private val onItemClick = View.OnClickListener { view ->
             val status = (view.getTag(CHECK_STATUS_MODEL) as CheckStatus)
 
@@ -79,7 +80,7 @@ class CheckStatusAdapter(
                 oldItem: CheckStatus,
                 newItem: CheckStatus
             ): Boolean =
-                oldItem.id == newItem.id
+                oldItem.date == newItem.date && oldItem.habitId == newItem.habitId
 
             override fun areContentsTheSame(
                 oldItem: CheckStatus,
@@ -91,7 +92,11 @@ class CheckStatusAdapter(
 }
 
 class CheckStatusViewHolder(parent: ViewGroup) :
-    ViewHolder2(parent, R.layout.daily_habit_check_state_item, BR.checkStatus)
+    ViewHolder2<ViewDataBinding, CheckStatus>(
+        parent,
+        R.layout.daily_habit_check_state_item,
+        BR.checkStatus
+    )
 
 
 data class Key(
@@ -101,20 +106,20 @@ data class Key(
 
 class CheckStatusDataSource(
     private val habitId: Long,
-    private val checkedList: List<CheckStatus>
+    private var checkedList: List<CheckStatus>
 ) : PageKeyedDataSource<Key, CheckStatus>() {
 
-    private val itemSize = 14
+    private val pageSize = 7
 
     override fun loadBefore(params: LoadParams<Key>, callback: LoadCallback<Key, CheckStatus>) {
-        logD {"loadBefore"}
+        logD { "loadBefore" }
     }
 
     override fun loadInitial(
         params: LoadInitialParams<Key>,
         callback: LoadInitialCallback<Key, CheckStatus>
     ) {
-        val cal = DateUtils.todayCalendar()
+        val cal = DateUtils.calendarDateOnly()
         val list = mutableListOf<CheckStatus>()
 
         val start = 0
@@ -127,7 +132,7 @@ class CheckStatusDataSource(
     }
 
     override fun loadAfter(params: LoadParams<Key>, callback: LoadCallback<Key, CheckStatus>) {
-        logD { "loadAfter"}
+        logD { "loadAfter" }
         val cal = Calendar.getInstance()
         cal.time = Date(params.key.date)
 
@@ -142,7 +147,7 @@ class CheckStatusDataSource(
     private fun loadFrom(cal: Calendar, start: Int, list: MutableList<CheckStatus>): Int {
         var curr = cal.timeInMillis
         var index = start
-        for (i in 0 until itemSize) {
+        for (i in 0 until pageSize) {
             if (index < checkedList.size && curr == checkedList[index].date) {
                 list.add(checkedList[index])
                 ++index

@@ -12,9 +12,16 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fab_root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@{fabModel.isOpen()? @color/appBlackWithAlpha : @android:color/transparent}">
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/fab_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="@{fabModel.isOpen()? 1f : 0f}"
+            android:background="@color/appBlackAlpha" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add"

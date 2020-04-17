@@ -3,7 +3,7 @@ package com.dd.android.dailysimple.common.binder
 import android.view.View
 import android.widget.AdapterView
 import android.widget.CompoundButton
-import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.appcompat.widget.SwitchCompat
@@ -13,7 +13,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 
 
-@BindingAdapter("app:thumbnailUrl")
+@BindingAdapter("app:thumbnail")
 fun thumbnailUrl(view: AppCompatImageView, url: String?) {
     if (url.isNullOrEmpty()) return
     Glide.with(view.context).load(url)
@@ -23,12 +23,23 @@ fun thumbnailUrl(view: AppCompatImageView, url: String?) {
 }
 
 
-@BindingAdapter("app:circleThumbnailUrl")
+@BindingAdapter("app:circleThumbnail")
 fun circleThumbnailUrl(view: AppCompatImageView, url: String?) {
     if (url.isNullOrEmpty()) return
 
     view.imageTintList = null
     Glide.with(view.context).load(url)
+        .thumbnail(0.5f)
+        .apply(RequestOptions.circleCropTransform())
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .into(view)
+}
+
+@BindingAdapter("app:circleThumbnail")
+fun circleThumbnail(view: AppCompatImageView, @DrawableRes resId: Int) {
+    if (resId == 0) return
+
+    Glide.with(view.context).load(resId)
         .thumbnail(0.5f)
         .apply(RequestOptions.circleCropTransform())
         .diskCacheStrategy(DiskCacheStrategy.ALL)

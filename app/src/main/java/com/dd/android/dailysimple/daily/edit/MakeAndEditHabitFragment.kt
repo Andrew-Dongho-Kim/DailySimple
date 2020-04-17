@@ -9,7 +9,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.dd.android.dailysimple.HomeFragmentDirections
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.BaseFragment
 import com.dd.android.dailysimple.common.Logger
@@ -100,8 +99,8 @@ class MakeAndEditHabitFragment : BaseFragment<FragmentMakeDailyHabitBinding>() {
                         title = bind.titleEditor.text.toString(),
                         color = bind.color.imageTintList!!.defaultColor,
                         memo = bind.memoEditor.text.toString(),
-                        startTime = DateUtils.today(),
-                        finishTime = DateUtils.todayAfter(66),
+                        startTime = DateUtils.msDateOnlyFrom(),
+                        finishTime = DateUtils.msDateOnlyFrom(66),
                         alarm = alarmObservable.alarm
                     )
                 )

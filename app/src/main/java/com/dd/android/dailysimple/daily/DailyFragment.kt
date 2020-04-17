@@ -6,7 +6,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -28,6 +27,8 @@ class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>() {
     override val layout: Int = R.layout.fragment_schedule_common
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        fabModel = ViewModelProvider(activity).get(FabViewModel::class.java)
+
         setUpViewModel()
         setUpRecycler()
         setUpFab()
@@ -36,7 +37,6 @@ class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>() {
     }
 
     private fun setUpViewModel() {
-        fabModel = ViewModelProvider(activity).get(FabViewModel::class.java)
         bind.accountViewModel = activity.viewModels<GoogleAccountViewModel>().value
         bind.fabModel = fabModel
     }
@@ -45,7 +45,7 @@ class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>() {
         val recycler = bind.recycler
 
         val layoutManager = LinearLayoutManager(activity)
-        val adapter = DailyAdapter(viewLifecycleOwner, layoutManager)
+        val adapter = DailyAdapter(viewLifecycleOwner, this, navController)
 
         recycler.adapter = adapter
         recycler.layoutManager = layoutManager
@@ -76,16 +76,25 @@ class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>() {
 
         fabModel.onFab1Click = {
             navController.navigate(
-                HomeFragmentDirections.homeToMakeAndEditHabitFragment(-1)
+                HomeFragmentDirections.homeToMakeAndEditHabit(-1)
             )
         }
         fabModel.onFab2Click = {
             navController.navigate(
-                HomeFragmentDirections.homeToMakeAndEditTodoFragment(-1)
+                HomeFragmentDirections.homeToMakeAndEditTodo(-1)
             )
         }
+        fabModel.isOpen.observe(viewLifecycleOwner, Observer { opened ->
+            with(bind.fabLayout) {
+                fabAdd.animate().rotation(if (opened) 45f else 0f)
+
+                fabRoot.setOnClickListener(if (opened) ::blockTouch else null)
+                fabRoot.isClickable = opened
+            }
+        })
     }
 
+    private fun blockTouch(view: View) {}
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.daily_menu, menu)

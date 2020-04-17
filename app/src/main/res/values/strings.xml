@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">DailySimple</string>
-    <string name="bottom_nav_host">bottom_nav_host</string>
+    <string name="app_name" translatable="false">DailySimple</string>
+    <string name="bottom_nav_host" translatable="false">bottom_nav_host</string>
 
     <string name="plan">Plan</string>
     <string name="daily">Daily</string>
@@ -18,16 +18,13 @@
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
     <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 
     <string name="title">Title</string>
     <string name="memo">Memo</string>
     <string name="alarm">Alarm</string>
-    <string name="repeat">Repeat</string>
     <string name="start">Begin</string>
-    <string name="end">End</string>
     <string name="finish">Finish</string>
-    <string name="time">Time</string>
-    <string name="power">Power</string>
 
     <string name="every_day">Every day</string>
     <string name="every_week">Every week</string>
@@ -63,7 +60,26 @@
     <string name="friday">FR</string>
     <string name="saturday">SA</string>
 
-    <string name="today">Today</string>
+    <plurals name="plurals_day">
+        <item quantity="one">@string/day</item>
+        <item quantity="other">@string/days</item>
+    </plurals>
+    <string name="day">%d day</string>
+    <string name="days">%d days</string>
+
+    <string name="abb_hour">h</string>
+    <string name="abb_minute">m</string>
+    <string name="abb_second">s</string>
+
+    <string name="left">left</string>
+    <string name="past">past</string>
+
+    <plurals name="plurals_overdue_task_message">
+        <item quantity="one">@string/overdue_task_message</item>
+        <item quantity="other">@string/overdue_tasks_message</item>
+    </plurals>
+    <string name="overdue_tasks_message">You have %d overdue tasks</string>
+    <string name="overdue_task_message">You have %d overdue task</string>
 
     <string name="make_a_habit">Make a habit</string>
     <string name="make_a_todo">Make a todo</string>

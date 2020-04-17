@@ -13,24 +13,28 @@ import androidx.recyclerview.widget.RecyclerView
 
 interface ItemModel {
     val id: Long
-
-    override fun equals(other: Any?): Boolean
 }
 
 abstract class RecyclerViewAdapter2(
     private val lifecycleOwner: LifecycleOwner
-) : RecyclerView.Adapter<ViewHolder2>() {
+) : RecyclerView.Adapter<ViewHolder2<out ViewDataBinding, out ItemModel>>() {
 
     val items = mutableListOf<ItemModel>()
 
-    abstract fun onCreateViewHolder2(parent: ViewGroup, viewType: Int): ViewHolder2
+    abstract fun onCreateViewHolder2(
+        parent: ViewGroup,
+        viewType: Int
+    ): ViewHolder2<out ViewDataBinding, out ItemModel>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         onCreateViewHolder2(parent, viewType).apply {
             bind.lifecycleOwner = lifecycleOwner
         }
 
-    override fun onBindViewHolder(holder: ViewHolder2, position: Int) {
+    override fun onBindViewHolder(
+        holder: ViewHolder2<out ViewDataBinding, out ItemModel>,
+        position: Int
+    ) {
         holder.bindTo(items[position])
     }
 
@@ -39,19 +43,20 @@ abstract class RecyclerViewAdapter2(
     }
 }
 
-open class ViewHolder2(
+open class ViewHolder2<B : ViewDataBinding, M : ItemModel>(
     parent: ViewGroup,
     @LayoutRes layoutResId: Int,
     val variableId: Int = 0
-) : RecyclerView.ViewHolder(
-    LayoutInflater.from(parent.context).inflate(layoutResId, parent, false)
-) {
+) :
+    RecyclerView.ViewHolder(
+        LayoutInflater.from(parent.context).inflate(layoutResId, parent, false)
+    ) {
 
-    var itemModel: ItemModel? = null
+    var model: M? = null
 
-    val bind = DataBindingUtil.bind<ViewDataBinding>(itemView)!!
+    val bind: B = DataBindingUtil.bind<B>(itemView)!!
 
-    var itemClickListener: View.OnClickListener? = null
+    var itemClickListener: ((View) -> Unit)? = null
         set(listener) {
             field = listener
             bind.root.setOnClickListener(field)
@@ -63,14 +68,12 @@ open class ViewHolder2(
             bind.root.setOnLongClickListener(field)
         }
 
+    @Suppress("unchecked_cast")
     @CallSuper
     open fun bindTo(itemModel: ItemModel) {
         bind.setVariable(variableId, itemModel)
-        this.itemModel = itemModel
+        this.model = itemModel as M
     }
-
-    @Suppress("unchecked_cast")
-    fun <T : ViewDataBinding> bindAs() = bind as T
 
     companion object {
         fun RecyclerView.ViewHolder.isHeader() =
@@ -80,6 +83,7 @@ open class ViewHolder2(
             itemView.findViewById<V>(id)
     }
 }
+
 
 interface StickyHeaderCallback {
     fun getHeaderPositionForItem(pos: Int): Int
@@ -134,7 +138,7 @@ class StickyHeaderDecoration(
         TODO("Implement")
     }
 
-    private fun drawHeader(c:Canvas, currentHeader:View) {
+    private fun drawHeader(c: Canvas, currentHeader: View) {
         TODO("Implement")
     }
 }

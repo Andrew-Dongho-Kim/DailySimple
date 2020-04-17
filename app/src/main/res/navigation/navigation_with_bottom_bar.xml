@@ -2,7 +2,6 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
-    android:id="@+id/navigation_with_bottom_bar"
     app:startDestination="@id/daily_fragment">
 
     <fragment
@@ -10,7 +9,7 @@
         android:name="com.dd.android.dailysimple.daily.DailyFragment"
         tool:layout="@layout/fragment_schedule_common">
         <action
-            android:id="@+id/action_daily_to_plan"
+            android:id="@+id/to_plan"
             app:destination="@id/plan_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
@@ -23,7 +22,7 @@
         android:name="com.dd.android.dailysimple.plan.PlanFragment"
         tool:layout="@layout/fragment_schedule_common">
         <action
-            android:id="@+id/action_plan_to_setting"
+            android:id="@+id/to_setting"
             app:destination="@id/setting_fragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"

@@ -16,6 +16,8 @@ class HomeActivity : BaseActivity() {
 
     private val accountController = GoogleAccountController(this)
 
+    private var isFabOpen = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -25,10 +27,14 @@ class HomeActivity : BaseActivity() {
                     accountViewModel.update(account)
                 }
             })
+
+        fabViewModel.isOpen.observe(this, Observer { opened ->
+            isFabOpen = opened
+        })
     }
 
     override fun onBackPressed() {
-        if (fabViewModel.isOpen.value!!) {
+        if (isFabOpen) {
             fabViewModel.toggle()
             return
         }

@@ -4,7 +4,7 @@ import com.dd.android.dailysimple.common.recycler.ItemModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-data class TodoItemModel(
+data class ScheduleItemModel(
     override val id: Long,
     val title: String,
     val begin: Date,

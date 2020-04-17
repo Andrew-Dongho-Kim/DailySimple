@@ -6,7 +6,7 @@
         android:right="3dp"
         android:top="0dp">
         <shape android:shape="oval">
-            <solid android:color="@color/ux_common_view_dim" />
+            <solid android:color="@color/basic_view_background_dim" />
         </shape>
     </item>
 </layer-list>

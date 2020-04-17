@@ -101,9 +101,9 @@ class CalendarProviderHelper(
 //        }
     }
 
-    fun getTodayEvents() = getEvents(DateUtils.today(), DateUtils.todayAfter(1))
+    fun getTodayEvents() = getEvents(DateUtils.msDateOnlyFrom(), DateUtils.msDateOnlyFrom(1))
 
-    fun getEvents(beginTime: Long, endTime: Long): LiveData<List<TodoItemModel>> {
+    fun getEvents(beginTime: Long, endTime: Long): LiveData<List<ScheduleItemModel>> {
         val uriBuilder = Instances.CONTENT_URI.buildUpon()
         ContentUris.appendId(uriBuilder, beginTime)
         ContentUris.appendId(uriBuilder, endTime)
@@ -115,11 +115,11 @@ class CalendarProviderHelper(
         )
 
         return liveData {
-            val list = mutableListOf<TodoItemModel>()
+            val list = mutableListOf<ScheduleItemModel>()
             if (cursor.moveToFirst()) {
                 do {
                     list.add(
-                        TodoItemModel(
+                        ScheduleItemModel(
                             id = 1000L, // TODO
                             title = cursor.getString(Instances.TITLE),
                             begin = Date(cursor.getLong(Instances.BEGIN)),
@@ -131,7 +131,7 @@ class CalendarProviderHelper(
                     )
                 } while (cursor.moveToNext())
             }
-            emit(list as List<TodoItemModel>)
+            emit(list as List<ScheduleItemModel>)
         }
     }
 

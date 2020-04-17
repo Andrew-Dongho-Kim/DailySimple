@@ -1,4 +1,4 @@
-package com.dd.android.dailysimple.daily.viewmodel
+package com.dd.android.dailysimple.daily
 
 import com.dd.android.dailysimple.common.recycler.ItemModel
 

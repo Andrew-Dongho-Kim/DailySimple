@@ -15,14 +15,14 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/check"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/check_box_size"
+            android:layout_height="@dimen/check_box_size"
             android:layout_gravity="center"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:duplicateParentState="true"
-            android:padding="6dp"
+            android:padding="@dimen/check_box_padding"
             android:scaleType="centerInside"
-            daily:checkStatus="@{checkStatus}" />
+            daily:checkStatus="@{checkStatus.checkedCount}" />
 
     </FrameLayout>
 

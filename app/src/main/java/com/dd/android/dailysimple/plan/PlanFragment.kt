@@ -22,11 +22,6 @@ class PlanFragment : BaseFragment<FragmentScheduleCommonBinding>() {
             adapter =
                 GroupScheduleAdapter()
                     .apply {
-                        onItemClickListener = View.OnClickListener {
-                            navController.navigate(
-                                HomeFragmentDirections.homeToPlanDetailFragment(0)
-                            )
-                        }
                     }
 
             addItemDecoration(

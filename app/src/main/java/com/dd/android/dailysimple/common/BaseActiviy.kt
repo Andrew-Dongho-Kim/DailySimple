@@ -13,8 +13,27 @@ interface OnActivityResultOwner {
     fun removeOnActivityResultListener(listener: OnActivityResultListener): Boolean
 }
 
-abstract class BaseActivity : AppCompatActivity(), OnActivityResultOwner {
+interface OnRequestPermissionResultListener {
+    fun onRequestPermissionResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    )
+}
+
+interface OnRequestPermissionResultOwner {
+    fun addOnRequestPermissionResultListener(listener: OnRequestPermissionResultListener): Boolean
+
+    fun removeOnRequestPermissionResultListener(listener: OnRequestPermissionResultListener): Boolean
+}
+
+abstract class BaseActivity : AppCompatActivity(),
+    OnActivityResultOwner,
+    OnRequestPermissionResultOwner {
+
     private val onActivityResultListeners = hashSetOf<OnActivityResultListener>()
+
+    private val onRequestPermissionResultListeners = hashSetOf<OnRequestPermissionResultListener>()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -36,5 +55,14 @@ abstract class BaseActivity : AppCompatActivity(), OnActivityResultOwner {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        onRequestPermissionResultListeners.forEach { listener ->
+            listener.onRequestPermissionResult(requestCode, permissions, grantResults)
+        }
     }
+
+    override fun addOnRequestPermissionResultListener(listener: OnRequestPermissionResultListener) =
+        onRequestPermissionResultListeners.add(listener)
+
+    override fun removeOnRequestPermissionResultListener(listener: OnRequestPermissionResultListener) =
+        onRequestPermissionResultListeners.remove(listener)
 }

@@ -7,7 +7,7 @@
 
         <variable
             name="model"
-            type="com.dd.android.dailysimple.daily.viewmodel.SimpleHeaderItemModel" />
+            type="com.dd.android.dailysimple.daily.SimpleHeaderItemModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

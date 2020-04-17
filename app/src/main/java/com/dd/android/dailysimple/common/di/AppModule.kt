@@ -33,4 +33,5 @@ class AppModule(private val app: Application) {
             app.resources.configuration.locale
         }
     }
+
 }

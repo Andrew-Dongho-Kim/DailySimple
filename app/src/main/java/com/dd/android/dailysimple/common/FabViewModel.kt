@@ -16,7 +16,9 @@ class FabViewModel : ViewModel() {
     } as MutableLiveData<Boolean>
 
     val fab1Text = MutableLiveData<String>()
+
     val fab2Text = MutableLiveData<String>()
+
     val fab3Text = MutableLiveData<String>()
 
     var onFab1Click: onClick? = null

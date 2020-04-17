@@ -10,11 +10,7 @@ import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
 import com.dd.android.dailysimple.daily.viewmodel.ScheduleViewModel
 import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
 
-private const val TAG = "ItemModel"
-private const val HABITS = "Habit"
-private const val HABIT_HEADER = "HabitHeader"
-private const val TODO = "TODO"
-
+private const val TAG = "DailyItemModels"
 private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
 
 class DailyItemModels(activity: FragmentActivity) : ViewModel() {
@@ -23,35 +19,47 @@ class DailyItemModels(activity: FragmentActivity) : ViewModel() {
     private val todoVm by activity.viewModels<TodoViewModel>()
     private val habitsVm by activity.viewModels<HabitViewModel>()
 
-    private val schedule get() = scheduleVm.schedule.value!!
-    private val allHabits get() = habitsVm.allHabits.value!!
-    private val habitHeader get() = habitsVm.header.value!!
+    private val models = arrayOf(
+        scheduleVm.header,
+        scheduleVm.schedule,
+        todoVm.header,
+        todoVm.overdueGroup,
+        todoVm.todayTodo,
+        habitsVm.header,
+        habitsVm.allHabits
+    )
 
     val data = MediatorLiveData<List<ItemModel>>().apply {
-        addSource(habitsVm.allHabits) {
-            if (ensureVm()) value = createModel(HABITS)
-        }
-        addSource(habitsVm.header) {
-            if (ensureVm()) value = createModel(HABIT_HEADER)
-        }
-        addSource(scheduleVm.schedule) {
-            if (ensureVm()) value = createModel(TODO)
+        models.forEach { liveData ->
+            addSource(liveData) {
+                if (ensureVm()) value = createModel()
+            }
         }
     }
 
-    private fun ensureVm() =
-        scheduleVm.schedule.value != null &&
-                habitsVm.allHabits.value != null &&
-                habitsVm.header.value != null
+    private fun ensureVm(): Boolean {
+        models.forEach { liveData ->
+            if (liveData.value == null) return false
+        }
+        return true
+    }
 
-    private fun createModel(from: String): List<ItemModel> =
+    private fun createModel(): List<ItemModel> =
         mutableListOf<ItemModel>().apply {
-            add(scheduleVm.header)
-            addAll(schedule)
-            add(todoVm.header)
-            add(habitHeader)
-            addAll(allHabits)
-            logD { "Daily model is re-created : $from, size:$size" }
+            models.forEach { liveData ->
+                val model = liveData.value!!
+
+                if (model is List<*>) {
+                    model.forEach {
+                        if (it is ItemModel) {
+                            add(it)
+                        }
+                    }
+                } else if (model is ItemModel) {
+                    add(model)
+                }
+            }
+            logD { "Daily - createModel()" }
         }
 }
 

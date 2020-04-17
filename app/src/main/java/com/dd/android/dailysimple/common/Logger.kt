@@ -9,16 +9,16 @@ internal const val APP_TAG = "DailySimple"
 class Logger {
 
     inline fun logD(tag: String, crossinline message: () -> String) =
-        Log.d("[$APP_TAG]$tag", message())
+        Log.d("[$APP_TAG] $tag", message())
 
     inline fun logI(tag: String, crossinline message: () -> String) =
-        Log.i("[$APP_TAG]$tag", message())
+        Log.i("[$APP_TAG] $tag", message())
 
     inline fun logW(tag: String, crossinline message: () -> String) =
-        Log.w("[$APP_TAG]$tag", message())
+        Log.w("[$APP_TAG] $tag", message())
 
     inline fun logE(tag: String, crossinline message: () -> String) =
-        Log.e("[$APP_TAG]$tag", message())
+        Log.e("[$APP_TAG] $tag", message())
 
 
     companion object {

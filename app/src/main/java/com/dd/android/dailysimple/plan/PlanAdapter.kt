@@ -4,23 +4,21 @@ import android.content.Context
 import android.graphics.Rect
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import com.dd.android.dailysimple.HomeFragmentDirections
 import com.dd.android.dailysimple.R
+import com.dd.android.dailysimple.common.recycler.ItemModel
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
 
-class GroupScheduleAdapter : RecyclerView.Adapter<ViewHolder2>() {
-
-    var onItemClickListener: View.OnClickListener? = null
+class GroupScheduleAdapter : RecyclerView.Adapter<ViewHolder2<ViewDataBinding, ItemModel>>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ) = ViewHolder2(parent, R.layout.plan_card_item, viewType)
+    ) = ViewHolder2<ViewDataBinding, ItemModel>(parent, R.layout.plan_card_item, viewType)
 
-    override fun onBindViewHolder(holder: ViewHolder2, position: Int) {
-        holder.itemClickListener = onItemClickListener
+    override fun onBindViewHolder(holder: ViewHolder2<ViewDataBinding, ItemModel>, position: Int) {
+
     }
 
     override fun getItemCount(): Int {

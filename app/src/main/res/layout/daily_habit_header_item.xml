@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
-            name="viewModel"
+            name="itemModel"
             type="com.dd.android.dailysimple.daily.viewmodel.HabitHeaderItemModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp">
+        android:paddingStart="@dimen/basic_view_margin_horizontal_small"
+        android:paddingTop="@dimen/basic_view_margin_vertical"
+        android:paddingEnd="@dimen/basic_view_margin_horizontal_small">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/checked_recycler_view"
@@ -38,7 +38,7 @@
             android:paddingTop="0dp"
             android:paddingEnd="5dp"
             android:paddingBottom="0dp"
-            android:text="@{viewModel.year+'\n'+viewModel.month}"
+            android:text="@{itemModel.year+'\n'+itemModel.month}"
             android:textColor="@color/appWhite"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/checked_recycler_view"

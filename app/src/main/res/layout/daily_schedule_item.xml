@@ -8,14 +8,14 @@
 
         <variable
             name="viewModel"
-            type="com.dd.android.dailysimple.provider.calendar.TodoItemModel" />
+            type="com.dd.android.dailysimple.provider.calendar.ScheduleItemModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/basic_view_margin_horizontal"
-        android:paddingEnd="@dimen/basic_view_margin_horizontal">
+        android:paddingEnd="@dimen/basic_zero_dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/begin"
@@ -33,10 +33,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/basic_view_margin_horizontal_small"
-            android:background="@color/basic_view_background"
+            android:background="@drawable/rounded_view_background"
             android:gravity="center_vertical"
             android:paddingStart="@dimen/basic_view_margin_horizontal_small"
-            android:paddingEnd="@dimen/basic_view_margin_horizontal"
+            android:paddingTop="@dimen/basic_view_margin_vertical_small"
+            android:paddingEnd="@dimen/basic_view_margin_vertical_small"
+            android:paddingBottom="@dimen/basic_view_margin_vertical_small"
             android:text="@{viewModel.title}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/begin"
