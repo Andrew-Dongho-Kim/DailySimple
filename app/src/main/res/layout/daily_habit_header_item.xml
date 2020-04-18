@@ -4,22 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="itemModel"
             type="com.dd.android.dailysimple.daily.viewmodel.HabitHeaderItemModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/basic_view_margin_horizontal_small"
         android:paddingTop="@dimen/basic_view_margin_vertical"
-        android:paddingEnd="@dimen/basic_view_margin_horizontal_small">
+        android:paddingEnd="@dimen/basic_view_margin_horizontal_small"
+        app:layoutDescription="@xml/scene_day_date">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/checked_recycler_view"
-            android:layout_width="170dp"
+            android:layout_width="34dp"
             android:layout_height="wrap_content"
+            android:background="@drawable/day_date_background"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/daily_habit_day_date_item" />
@@ -44,5 +47,5 @@
             app:layout_constraintStart_toEndOf="@id/checked_recycler_view"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>

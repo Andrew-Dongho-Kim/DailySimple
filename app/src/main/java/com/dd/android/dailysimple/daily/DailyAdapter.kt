@@ -44,12 +44,13 @@ private annotation class DailyScheduleViewType {
 }
 
 fun RecyclerView.setUpCache() {
-    setItemViewCacheSize(RECYCLER_VIEW_CACHE_SIZE)
-
-    with(recycledViewPool) {
-        setMaxRecycledViews(HABIT_HEADER, 1)
-        setMaxRecycledViews(SIMPLE_HEADER, 2)
-    }
+//    setItemViewCacheSize(RECYCLER_VIEW_CACHE_SIZE)
+//
+//    with(recycledViewPool) {
+//        setMaxRecycledViews(HABIT_HEADER, 1)
+//        setMaxRecycledViews(SIMPLE_HEADER, 2)
+//        setMaxRecycledViews(HABIT_HEADER, 20)
+//    }
 }
 
 class SimpleHeaderItemHolder(parent: ViewGroup) :
@@ -86,6 +87,7 @@ class DailyAdapter(
                 absoluteScrollDx += dx
                 absoluteScrollDy += dy
             }
+
 
             slaveScrollHolders.forEach { holder ->
                 holder.recycler.scrollBy(dx, dy)

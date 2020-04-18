@@ -70,6 +70,7 @@ data class HabitHeaderItemModel(private val app: Application) : ItemModel {
 
     fun refresh(firstVisiblePosition: Int) {
         dayDatePagedList.value?.let { models ->
+            if (firstVisiblePosition < 0) return
             models[firstVisiblePosition]?.let { model ->
                 _year.postValue(model.year)
                 _month.postValue(model.month)

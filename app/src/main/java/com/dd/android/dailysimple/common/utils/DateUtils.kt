@@ -25,6 +25,16 @@ object DateUtils {
             set(Calendar.MILLISECOND, 0)
         }
 
+
+    fun msYmd(year: Int, month: Int, date: Int) =
+        calendarDateOnly().run {
+            set(Calendar.YEAR, year)
+            set(Calendar.MONTH, month)
+            set(Calendar.DATE, date)
+            timeInMillis
+        }
+
+
     fun msDateOnlyFrom(date: Int = 0, hours: Int = 0, minutes: Int = 0, seconds: Int = 0) =
         calendarDateOnly().run {
             add(Calendar.DATE, date)

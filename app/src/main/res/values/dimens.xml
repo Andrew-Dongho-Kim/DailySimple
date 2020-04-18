@@ -35,6 +35,8 @@
 
     <dimen name="basic_small_icon_size">24dp</dimen>
 
+    <!-- Day Date Stroke -->
+
     <!-- Check Status-->
     <dimen name="check_box_size">24dp</dimen>
     <dimen name="check_box_padding">6dp</dimen>

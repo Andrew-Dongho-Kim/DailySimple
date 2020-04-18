@@ -9,4 +9,8 @@ data class DayDateItemModel(
     val date: String,
     val day: String,
     val holiday: Boolean
-) : ItemModel
+) : ItemModel {
+
+//    val isToday: Boolean = msDateOnlyFrom() == msYmd(year, month, date)
+
+}
