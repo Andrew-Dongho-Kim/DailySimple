@@ -6,9 +6,9 @@
     <dimen name="ux_common_text_size_sp_normal">15sp</dimen>
 
     <dimen name="basic_zero_dp">0dp</dimen>
-    <dimen name="basic_text_size_dp_little_small">12dp</dimen>
+    <dimen name="basic_text_size_dp_tiny_small">12dp</dimen>
     <dimen name="basic_text_size_dp_normal">15dp</dimen>
-    <dimen name="basic_text_size_dp_little_Big">18dp</dimen>
+    <dimen name="basic_text_size_dp_tiny_big">18dp</dimen>
     <dimen name="basic_text_size_dp_big">21dp</dimen>
 
     <dimen name="basic_popup_menu_item_min_height">43dp</dimen>
@@ -23,11 +23,14 @@
     <dimen name="basic_divider_size">1px</dimen>
     <dimen name="basic_divider_margin_vertical">10dp</dimen>
 
+    <dimen name="basic_view_margin_horizontal_very_small">5dp</dimen>
     <dimen name="basic_view_margin_horizontal_small">10dp</dimen>
     <dimen name="basic_view_margin_horizontal">15dp</dimen>
 
     <dimen name="basic_view_background_round">20dp</dimen>
     <dimen name="basic_view_background_round_stroke">1px</dimen>
+    <dimen name="basic_view_background_dashed_gap">1dp</dimen>
+    <dimen name="basic_view_background_dashed_width">1dp</dimen>
 
     <dimen name="basic_view_margin_vertical_small">5dp</dimen>
     <dimen name="basic_view_margin_vertical">15dp</dimen>
@@ -35,7 +38,27 @@
 
     <dimen name="basic_small_icon_size">24dp</dimen>
 
+    <!-- Daily Todo -->
+    <dimen name="daily_overdue_popup_width">198dp</dimen>
+    <dimen name="daily_overdue_popup_height">70dp</dimen>
+    <dimen name="daily_overdue_popup_box_width">36dp</dimen>
+    <dimen name="daily_overdue_popup_box_height">40dp</dimen>
+    <dimen name="daily_overdue_popup_icon_size">18dp</dimen>
+    <dimen name="daily_overdue_popup_box_margin_horizontal">30dp</dimen>
+
+    <!-- Profile -->
+    <dimen name="profile_picture_size">50dp</dimen>
+
+    <!-- Calendar item -->
+    <dimen name="daily_calendar_item_width">24dp</dimen>
+
     <!-- Day Date Stroke -->
+
+    <!-- Schedule Item-->
+    <dimen name="schedule_item_title_width">60dp</dimen>
+    <dimen name="schedule_item_color_width">10dp</dimen>
+    <dimen name="schedule_item_color_height">2dp</dimen>
+    <dimen name="schedule_item_color_margin_vertical">2dp</dimen>
 
     <!-- Check Status-->
     <dimen name="check_box_size">24dp</dimen>
@@ -48,7 +71,6 @@
     <dimen name="make_and_edit_habit_memo_min_height">150dp</dimen>
     <dimen name="make_and_edit_habit_spinner_width">200dp</dimen>
     <dimen name="make_and_edit_habit_text_width">170dp</dimen>
-
 
 
 </resources>

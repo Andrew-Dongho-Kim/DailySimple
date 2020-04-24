@@ -1,19 +1,20 @@
 package com.dd.android.dailysimple.google
 
 import android.content.Intent
-import android.util.Log
 import androidx.lifecycle.*
 import com.dd.android.dailysimple.common.BaseActivity
 import com.dd.android.dailysimple.common.OnActivityResultListener
 import com.dd.android.dailysimple.google.SignedState.SIGNED_IN
-import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.auth.api.signin.GoogleSignInResult
-import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.tasks.Task
 
 
-private const val REQUEST_GOOGLE_SIGN_IN = 1005
+private const val RC_SIGN_IN = 1
 private const val LOG_TAG = "GoogleAccount"
+
+private const val SIGN_IN_REQUIRED = 4
 
 enum class SignedState {
     SIGNED_IN,
@@ -23,7 +24,7 @@ enum class SignedState {
 
 data class SignInOutResult(
     val state: SignedState,
-    val result: GoogleSignInResult? = null
+    val result: GoogleSignInAccount? = null
 ) {
     companion object {
         val SIGNED_OUT = SignInOutResult(SignedState.SIGNED_OUT)
@@ -31,7 +32,8 @@ data class SignInOutResult(
     }
 }
 
-// http://www.androidhive.info/2014/02/android-login-with-google-plus-account-1/
+// https://developers.google.com/identity/sign-in/android/sign-in?hl=ko
+// https://firebase.google.com/docs/auth/android/google-signin?hl=ko
 class GoogleAccountController(
     private val activity: BaseActivity,
     useSilentSignIn: Boolean = true
@@ -39,36 +41,19 @@ class GoogleAccountController(
 
     private val signInOptions by lazy {
         GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestProfile()
             .requestEmail()
             .build()
     }
 
-    private val apiClient: GoogleApiClient by lazy {
-        GoogleApiClient.Builder(activity)
-            .enableAutoManage(activity) {
-                // Connection failed
-                _signInOutResult.postValue(SignInOutResult.SIGNED_FAIL)
-            }
-            .addApi(Auth.GOOGLE_SIGN_IN_API, signInOptions)
-            .build()
+    private val signInClient by lazy {
+        GoogleSignIn.getClient(activity, signInOptions)
     }
 
     private val onActivityResult = object : OnActivityResultListener {
         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-            if (requestCode == REQUEST_GOOGLE_SIGN_IN) {
-                val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-
-                _signInOutResult.postValue(
-                    if (result!!.isSuccess) {
-                        SignInOutResult(
-                            SIGNED_IN,
-                            result
-                        )
-                    } else {
-                        SignInOutResult.SIGNED_FAIL
-                    }
-                )
-
+            if (requestCode == RC_SIGN_IN) {
+                handleResult(GoogleSignIn.getSignedInAccountFromIntent(data))
             }
         }
     }
@@ -83,32 +68,35 @@ class GoogleAccountController(
         activity.addOnActivityResultListener(onActivityResult)
     }
 
+    private fun handleResult(task: Task<GoogleSignInAccount>) {
+        handleResult(if (task.isSuccessful) task.result else null)
+    }
+
+    private fun handleResult(account: GoogleSignInAccount?) {
+        _signInOutResult.postValue(
+            if (account == null) {
+                SignInOutResult.SIGNED_FAIL
+            } else {
+                SignInOutResult(SIGNED_IN, account)
+            }
+        )
+    }
+
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     private fun onStart() {
-        val pendingResult = Auth.GoogleSignInApi.silentSignIn(apiClient)
-        if (pendingResult.isDone) {
-            Log.d(LOG_TAG, "Silent Sign In to Google : Success")
-            _signInOutResult.postValue(SignInOutResult(SIGNED_IN, pendingResult.get()))
+        val account = GoogleSignIn.getLastSignedInAccount(activity)
+        if (account == null) {
+            signInToGoogle()
         } else {
-            pendingResult.setResultCallback { result ->
-                _signInOutResult.postValue(SignInOutResult(SIGNED_IN, result))
-                Log.d(
-                    LOG_TAG,
-                    "Silent Sign In to Google Success : ${result.isSuccess}, ${result.status}"
-                )
-            }
+            handleResult(account)
         }
     }
 
     fun signInToGoogle() =
-        activity.startActivityForResult(
-            Auth.GoogleSignInApi.getSignInIntent(apiClient),
-            REQUEST_GOOGLE_SIGN_IN
-        )
+        activity.startActivityForResult(signInClient.signInIntent, RC_SIGN_IN)
 
     fun signOutToGoogle() =
-        Auth.GoogleSignInApi.signOut(apiClient).setResultCallback { status ->
-            // update sign out status
+        signInClient.signOut().also {
             _signInOutResult.postValue(SignInOutResult.SIGNED_OUT)
         }
 }

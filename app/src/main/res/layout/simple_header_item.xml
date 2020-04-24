@@ -7,14 +7,14 @@
 
         <variable
             name="model"
-            type="com.dd.android.dailysimple.daily.SimpleHeaderItemModel" />
+            type="com.dd.android.dailysimple.daily.viewholders.DailySimpleHeaderItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/basic_view_margin_vertical"
         android:paddingStart="@dimen/basic_view_margin_horizontal"
+        android:paddingTop="@dimen/basic_view_margin_vertical"
         android:paddingEnd="@dimen/basic_view_margin_horizontal"
         android:paddingBottom="@dimen/basic_view_margin_vertical">
 

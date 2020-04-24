@@ -39,11 +39,13 @@ class DailyHabitItemHolder(
         sharedScrollStatus
     ) {
 
-    private val adapter = CheckStatusAdapter(lifecycleOwner)
-
     private val checkedVm = ViewModelProvider(viewModelStoreOwner).get(
         HabitCheckStatusViewModel::class.java
     )
+
+    private val adapter = CheckStatusAdapter(lifecycleOwner).apply {
+        setHasStableIds(true)
+    }
 
     init {
         recycler.adapter = adapter
@@ -51,7 +53,7 @@ class DailyHabitItemHolder(
             orientation = RecyclerView.HORIZONTAL
             reverseLayout = true
         }
-        bind.habitTitle.setOnClickListener(::onClick)
+        itemClickListener = ::onClick
     }
 
     private val observerAdapter = Observer<PagedList<CheckStatus>> {

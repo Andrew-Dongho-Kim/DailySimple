@@ -1,6 +1,7 @@
 package com.dd.android.dailysimple.db.dao
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.*
 import com.dd.android.dailysimple.db.data.CheckStatus
 import com.dd.android.dailysimple.db.data.DailyHabit
@@ -22,6 +23,9 @@ interface DailyHabitDao {
 
     @Query("SELECT * FROM daily_habit WHERE daily_habit.id=:id")
     fun getHabit(id: Long): LiveData<DailyHabit>
+
+    @Query("SELECT * FROM daily_habit")
+    fun getAllHabits2(): DataSource.Factory<Integer, DailyHabit>
 }
 
 @Dao

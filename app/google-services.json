@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "183375368543",
+    "firebase_url": "https://dailysimple.firebaseio.com",
+    "project_id": "dailysimple",
+    "storage_bucket": "dailysimple.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183375368543:android:19d4d0cd2f8acb0bc026ea",
+        "android_client_info": {
+          "package_name": "com.dd.android.dailysimple"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "183375368543-1usichse8cmrg8rjo59q6srneb4ubadp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dd.android.dailysimple",
+            "certificate_hash": "244c7dbf4dc07681e821caf2416c43012e04d084"
+          }
+        },
+        {
+          "client_id": "183375368543-rd5s447q3brfuidlapo2lmjqq1t8mbv5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsQSjIRUnYylocFf4t2Fm3mfL6GSfQD-0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "183375368543-rd5s447q3brfuidlapo2lmjqq1t8mbv5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

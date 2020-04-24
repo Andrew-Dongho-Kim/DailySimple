@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="accountViewModel"
+            type="com.dd.android.dailysimple.google.GoogleAccountViewModel" />
+
+        <variable
+            name="itemModel"
+            type="com.dd.android.dailysimple.daily.viewmodel.DailyHabitHeader" />
+    </data>
+
+    <com.dd.android.dailysimple.common.widget.CollapsibleToolbar
+        android:id="@+id/collapsible_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="110dp"
+        app:layoutDescription="@xml/scene_daily_tool_bar"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/profile_thumbnail"
+            android:layout_width="@dimen/profile_picture_size"
+            android:layout_height="@dimen/profile_picture_size"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical"
+            android:background="@drawable/oval"
+            android:backgroundTint="@color/appGray"
+            android:src="@drawable/ic_person_black_24dp"
+            android:tint="@color/appWhite"
+            app:circleThumbnail="@{accountViewModel.thumbnailUrl}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/profile_name"
+            style="@style/BasicTextDpNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal"
+            android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:text="@{accountViewModel.name}"
+            app:layout_constraintStart_toEndOf="@id/profile_thumbnail"
+            app:layout_constraintTop_toTopOf="@id/profile_thumbnail" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/profile_email"
+            style="@style/BasicTextDpNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical_small"
+            android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:text="@{accountViewModel.email}"
+            android:textColor="@color/basic_text2_color"
+            app:layout_constraintStart_toEndOf="@id/profile_thumbnail"
+            app:layout_constraintTop_toBottomOf="@id/profile_name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/ym_text"
+            style="@style/BasicHeaderTextDpTinyBig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:paddingStart="@dimen/basic_view_margin_horizontal_small"
+            android:paddingTop="@dimen/basic_view_margin_vertical_small"
+            android:paddingEnd="@dimen/basic_view_margin_horizontal_small"
+            android:paddingBottom="@dimen/basic_view_margin_vertical_small"
+            android:text="2020년 4월"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/calendar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/calendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical_small"
+            android:layout_marginBottom="@dimen/basic_view_margin_vertical_small"
+            android:paddingStart="@dimen/basic_view_margin_horizontal_small"
+            android:paddingEnd="@dimen/basic_view_margin_horizontal_small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </com.dd.android.dailysimple.common.widget.CollapsibleToolbar>
+</layout>

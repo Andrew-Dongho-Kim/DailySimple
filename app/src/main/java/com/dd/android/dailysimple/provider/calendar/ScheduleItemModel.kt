@@ -1,8 +1,14 @@
 package com.dd.android.dailysimple.provider.calendar
 
+
+import com.dd.android.dailysimple.R
+import com.dd.android.dailysimple.common.di.getString
 import com.dd.android.dailysimple.common.recycler.ItemModel
+import com.dd.android.dailysimple.common.utils.DateUtils.MS_DAY
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
+
 
 data class ScheduleItemModel(
     override val id: Long,
@@ -14,6 +20,13 @@ data class ScheduleItemModel(
     val locale: Locale
 ) : ItemModel {
 
+    val isAllDay = (end.time - begin.time) == MS_DAY
+
     val beginTime: String =
-        SimpleDateFormat("hh:mm a", locale).format(begin)
+        if (isAllDay) {
+            getString(R.string.all_day)
+        } else {
+            SimpleDateFormat("hh:mm a", locale).format(begin)
+        }
+
 }

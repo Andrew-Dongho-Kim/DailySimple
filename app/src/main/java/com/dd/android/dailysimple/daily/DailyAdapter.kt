@@ -13,14 +13,15 @@ import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.recycler.ItemModel
 import com.dd.android.dailysimple.common.recycler.RecyclerViewAdapter2
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
-import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.HABIT_HEADER
-import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.HABIT_ITEM
-import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.OVERDUE_TODO_GROUP
-import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.SCHEDULE_ITEM
-import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.SIMPLE_HEADER
-import com.dd.android.dailysimple.daily.DailyScheduleViewType.Companion.TODO_ITEM
+import com.dd.android.dailysimple.daily.DailyViewType.Companion.EMPTY_ITEM
+import com.dd.android.dailysimple.daily.DailyViewType.Companion.HABIT_HEADER
+import com.dd.android.dailysimple.daily.DailyViewType.Companion.HABIT_ITEM
+import com.dd.android.dailysimple.daily.DailyViewType.Companion.OVERDUE_TODO_GROUP
+import com.dd.android.dailysimple.daily.DailyViewType.Companion.SCHEDULE_ITEM
+import com.dd.android.dailysimple.daily.DailyViewType.Companion.SIMPLE_HEADER
+import com.dd.android.dailysimple.daily.DailyViewType.Companion.TODO_ITEM
 import com.dd.android.dailysimple.daily.viewholders.*
-import com.dd.android.dailysimple.daily.viewmodel.HabitHeaderItemModel
+import com.dd.android.dailysimple.daily.viewmodel.DailyHabitHeader
 import com.dd.android.dailysimple.db.data.DailyHabit
 import com.dd.android.dailysimple.db.data.DailyTodo
 import com.dd.android.dailysimple.provider.calendar.ScheduleItemModel
@@ -31,35 +32,57 @@ private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, messa
 
 private const val RECYCLER_VIEW_CACHE_SIZE = 10
 
-@IntDef(HABIT_HEADER, SIMPLE_HEADER, SCHEDULE_ITEM, TODO_ITEM, HABIT_ITEM)
-private annotation class DailyScheduleViewType {
+@IntDef(
+    SIMPLE_HEADER,
+    HABIT_HEADER,
+    EMPTY_ITEM,
+    SCHEDULE_ITEM,
+    TODO_ITEM,
+    HABIT_ITEM,
+    OVERDUE_TODO_GROUP
+)
+annotation class DailyViewType {
     companion object {
         const val SIMPLE_HEADER = -1
         const val HABIT_HEADER = -2
-        const val SCHEDULE_ITEM = 0
-        const val TODO_ITEM = 1
-        const val HABIT_ITEM = 2
-        const val OVERDUE_TODO_GROUP = 3
+        const val EMPTY_ITEM = 0
+        const val SCHEDULE_ITEM = 1
+        const val TODO_ITEM = 2
+        const val HABIT_ITEM = 3
+        const val OVERDUE_TODO_GROUP = 4
     }
 }
 
-fun RecyclerView.setUpCache() {
-//    setItemViewCacheSize(RECYCLER_VIEW_CACHE_SIZE)
-//
-//    with(recycledViewPool) {
-//        setMaxRecycledViews(HABIT_HEADER, 1)
-//        setMaxRecycledViews(SIMPLE_HEADER, 2)
-//        setMaxRecycledViews(HABIT_HEADER, 20)
-//    }
+enum class IdBase(val viewType: Int, val idBase: Long) {
+    SIMPLE_HEADER(-1, -10L),
+    HABIT_HEADER(-2, -50L),
+    EMPTY_ITEM(0, 10L),
+    SCHEDULE_ITEM(1, 50L),
+    TODO_ITEM(2, 1000000L),
+    HABIT_ITEM(3, 2000000L),
+    OVERDUE_TODO_GROUP(4, 3000000L)
 }
 
-class SimpleHeaderItemHolder(parent: ViewGroup) :
-    ViewHolder2<ViewDataBinding, SimpleHeaderItemModel>(
-        parent,
-        R.layout.simple_header_item,
-        BR.model
-    )
 
+private val ViewTypeIdBaseMap = mapOf(
+    Pair(DailySimpleHeaderItem::class.java, IdBase.SIMPLE_HEADER),
+    Pair(DailyHabitHeader::class.java, IdBase.HABIT_HEADER),
+    Pair(DailyEmptyItemModel::class.java, IdBase.EMPTY_ITEM),
+    Pair(ScheduleItemModel::class.java, IdBase.SCHEDULE_ITEM),
+    Pair(DailyTodo::class.java, IdBase.TODO_ITEM),
+    Pair(DailyHabit::class.java, IdBase.HABIT_ITEM),
+    Pair(DailyTodoGroup::class.java, IdBase.OVERDUE_TODO_GROUP)
+)
+
+fun RecyclerView.setUpCache() {
+    setItemViewCacheSize(RECYCLER_VIEW_CACHE_SIZE)
+
+    with(recycledViewPool) {
+        setMaxRecycledViews(HABIT_HEADER, 1)
+        setMaxRecycledViews(SIMPLE_HEADER, 2)
+        setMaxRecycledViews(HABIT_ITEM, 20)
+    }
+}
 
 class DailyScheduleItemHolder(parent: ViewGroup) :
     ViewHolder2<ViewDataBinding, ScheduleItemModel>(
@@ -79,7 +102,6 @@ class DailyAdapter(
         LinkedList<SlaveScrollViewHolder<out ViewDataBinding, out ItemModel>>()
 
     private val sharedScrollStatus = SharedScrollStatus()
-
 
     private val slaveScroll = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -105,38 +127,48 @@ class DailyAdapter(
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder2<out ViewDataBinding, out ItemModel> {
+
         logD { "+onCreateViewHolder(#$viewType)" }
         return when (viewType) {
-            SIMPLE_HEADER -> SimpleHeaderItemHolder(parent)
+            SIMPLE_HEADER -> DailySimpleHeaderHolder(parent)
             HABIT_HEADER -> DailyHabitHeaderHolder(parent, lifecycleOwner).also {
                 it.recyclerView.addOnScrollListener(slaveScroll)
             }
+            EMPTY_ITEM -> DailyEmptyItemHolder(parent, navController)
             SCHEDULE_ITEM -> DailyScheduleItemHolder(parent)
             TODO_ITEM -> DailyTodoItemHolder(parent, viewModelStoreOwner)
-            OVERDUE_TODO_GROUP -> DailyOverdueTodoGroupHolder(parent)
+            OVERDUE_TODO_GROUP -> DailyTodoGroupHolder(parent)
             HABIT_ITEM -> DailyHabitItemHolder(
                 parent,
                 lifecycleOwner,
                 viewModelStoreOwner,
                 navController,
                 sharedScrollStatus
-            ).also {
-//                slaveScrollHolders.add(it)
-            }
+            )
             else -> throw IllegalArgumentException("Unknown viewType:$viewType")
         }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return when (items[position]) {
-            is SimpleHeaderItemModel -> SIMPLE_HEADER
-            is HabitHeaderItemModel -> HABIT_HEADER
-            is ScheduleItemModel -> SCHEDULE_ITEM
-            is DailyTodo -> TODO_ITEM
-            is DailyOverdueTodoGroup -> OVERDUE_TODO_GROUP
-            is DailyHabit -> HABIT_ITEM
-            else -> throw IllegalArgumentException("Unknown types :${items[position]}")
-        }
+    override fun onBindViewHolder(
+        holder: ViewHolder2<out ViewDataBinding, out ItemModel>,
+        position: Int
+    ) {
+        super.onBindViewHolder(holder, position)
+        if (holder is SlaveScrollViewHolder) slaveScrollHolders.add(holder)
     }
 
+    override fun onViewRecycled(holder: ViewHolder2<out ViewDataBinding, out ItemModel>) {
+        slaveScrollHolders.remove(holder)
+    }
+
+    override fun getItemId(position: Int) =
+        items[position].run {
+            (ViewTypeIdBaseMap[javaClass] ?: error("unknown : $this")).idBase + id
+        }
+
+    override fun getItemViewType(position: Int) =
+        items[position].run {
+            (ViewTypeIdBaseMap[javaClass] ?: error("unknown : $this")).viewType
+        }
 }
+

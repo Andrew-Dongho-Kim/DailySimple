@@ -61,13 +61,18 @@
         <item name="android:textColor">@color/basic_text1_color</item>
     </style>
 
+    <style name="BasicHeaderTextDpTinySmall">
+        <item name="android:textSize">@dimen/basic_text_size_dp_tiny_small</item>
+        <item name="android:textColor">@color/basic_text1_color</item>
+    </style>
+
     <style name="BasicHeaderTextDpNormal">
         <item name="android:textSize">@dimen/basic_text_size_dp_normal</item>
         <item name="android:textColor">@color/basic_text1_color</item>
     </style>
 
     <style name="BasicHeaderTextDpTinyBig">
-        <item name="android:textSize">@dimen/basic_text_size_dp_little_Big</item>
+        <item name="android:textSize">@dimen/basic_text_size_dp_tiny_big</item>
         <item name="android:textColor">@color/basic_text1_color</item>
     </style>
 
@@ -77,7 +82,7 @@
     </style>
 
     <style name="BasicTextDpTinyBig">
-        <item name="android:textSize">@dimen/basic_text_size_dp_little_Big</item>
+        <item name="android:textSize">@dimen/basic_text_size_dp_tiny_big</item>
         <item name="android:textColor">@color/basic_text1_color</item>
     </style>
 
@@ -87,7 +92,7 @@
     </style>
 
     <style name="BasicTextDpTinySmall">
-        <item name="android:textSize">@dimen/basic_text_size_dp_little_small</item>
+        <item name="android:textSize">@dimen/basic_text_size_dp_tiny_small</item>
         <item name="android:textColor">@color/basic_text1_color</item>
     </style>
 

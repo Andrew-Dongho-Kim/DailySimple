@@ -12,13 +12,13 @@ import com.dd.android.dailysimple.common.recycler.ItemModel
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
 import com.dd.android.dailysimple.daily.DayDateAdapter
 import com.dd.android.dailysimple.daily.DayDateItemModel
-import com.dd.android.dailysimple.daily.viewmodel.HabitHeaderItemModel
+import com.dd.android.dailysimple.daily.viewmodel.DailyHabitHeader
 import com.dd.android.dailysimple.databinding.DailyHabitHeaderItemBinding
 
 class DailyHabitHeaderHolder(
     parent: ViewGroup, private val lifecycleOwner: LifecycleOwner
 ) :
-    ViewHolder2<DailyHabitHeaderItemBinding, HabitHeaderItemModel>(
+    ViewHolder2<DailyHabitHeaderItemBinding, DailyHabitHeader>(
         parent,
         R.layout.daily_habit_header_item,
         BR.itemModel
@@ -26,13 +26,15 @@ class DailyHabitHeaderHolder(
 
     private val adapter = DayDateAdapter(lifecycleOwner)
 
+    private val observer = Observer<PagedList<DayDateItemModel>> { adapter.submitList(it) }
+
     private val layoutManager = LinearLayoutManager(parent.context)
         .apply {
             orientation = RecyclerView.HORIZONTAL
             reverseLayout = true
         }
 
-    private val yearAndMonthDetector = object : RecyclerView.OnScrollListener() {
+    private val ymDetector = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             model?.refresh(
                 layoutManager.findFirstCompletelyVisibleItemPosition()
@@ -42,19 +44,16 @@ class DailyHabitHeaderHolder(
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {}
     }
 
-    val recyclerView = bind.checkedRecyclerView.apply {
-        adapter = this@DailyHabitHeaderHolder.adapter
-        layoutManager = this@DailyHabitHeaderHolder.layoutManager
-        removeOnScrollListener(yearAndMonthDetector)
-        addOnScrollListener(yearAndMonthDetector)
+    val recyclerView = bind.checkedRecyclerView.also {
+        it.adapter = adapter
+        it.layoutManager = layoutManager
+        it.removeOnScrollListener(ymDetector)
+        it.addOnScrollListener(ymDetector)
     }
-
-    private val observer = Observer<PagedList<DayDateItemModel>> { adapter.submitList(it) }
-
 
     override fun bindTo(itemModel: ItemModel) {
         super.bindTo(itemModel)
-       model?.also {
+        model?.also {
             it.dayDatePagedList.observe(lifecycleOwner, observer)
         }
     }

@@ -1,34 +1,20 @@
 package com.dd.android.dailysimple.daily
 
-import androidx.activity.viewModels
-import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.recycler.ItemModel
-import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
-import com.dd.android.dailysimple.daily.viewmodel.ScheduleViewModel
-import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
 
-private const val TAG = "DailyItemModels"
+
+private const val TAG = "DailyMergeItem"
 private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
 
-class DailyItemModels(activity: FragmentActivity) : ViewModel() {
+class DailyMergeItem(vararg liveDataArray: LiveData<out Any>) :
+    MediatorLiveData<List<ItemModel>>() {
 
-    private val scheduleVm by activity.viewModels<ScheduleViewModel>()
-    private val todoVm by activity.viewModels<TodoViewModel>()
-    private val habitsVm by activity.viewModels<HabitViewModel>()
+    private val models = liveDataArray
 
-    private val models = arrayOf(
-        scheduleVm.header,
-        scheduleVm.schedule,
-        todoVm.header,
-        todoVm.wholeTodo,
-        habitsVm.header,
-        habitsVm.allHabits
-    )
-
-    val data = MediatorLiveData<List<ItemModel>>().apply {
+    init {
         models.forEach { liveData ->
             addSource(liveData) {
                 if (ensureVm()) value = createModel()

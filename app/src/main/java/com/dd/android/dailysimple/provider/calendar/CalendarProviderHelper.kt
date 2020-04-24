@@ -50,6 +50,8 @@ class CalendarProviderHelper(
 ) {
     private val cancelSignal by lazy { CancellationSignal() }
 
+    private val utcTimeZone by lazy { TimeZone.getTimeZone("UTC") }
+
     fun addEvents(activity: Activity, event: CalendarEvent) =
         activity.startActivity(
             Intent(Intent.ACTION_INSERT).apply {
@@ -101,7 +103,11 @@ class CalendarProviderHelper(
 //        }
     }
 
-    fun getTodayEvents() = getEvents(DateUtils.msDateOnlyFrom(), DateUtils.msDateOnlyFrom(1))
+    fun getTodayEvents() =
+        getEvents(
+            DateUtils.msDateOnlyFrom() + 1,
+            DateUtils.msDateOnlyFrom(date = 1) - 1
+        )
 
     fun getEvents(beginTime: Long, endTime: Long): LiveData<List<ScheduleItemModel>> {
         val uriBuilder = Instances.CONTENT_URI.buildUpon()
@@ -120,7 +126,7 @@ class CalendarProviderHelper(
                 do {
                     list.add(
                         ScheduleItemModel(
-                            id = 1000L, // TODO
+                            id = cursor.getLong(Instances.EVENT_ID),
                             title = cursor.getString(Instances.TITLE),
                             begin = Date(cursor.getLong(Instances.BEGIN)),
                             end = Date(cursor.getLong(Instances.END)),
@@ -129,6 +135,7 @@ class CalendarProviderHelper(
                             locale = context.resources.configuration.locale
                         )
                     )
+
                 } while (cursor.moveToNext())
             }
             emit(list as List<ScheduleItemModel>)
@@ -149,7 +156,7 @@ class CalendarProviderHelper(
         }
     }
 
-    fun getCalendar(accountName: String, accountType: String) =
+    fun getCalendar(accountName: String, accountType: String): Cursor =
         ContentResolverCompat.query(
             context.contentResolver,
             Calendars.CONTENT_URI,

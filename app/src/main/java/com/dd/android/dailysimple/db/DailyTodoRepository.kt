@@ -1,7 +1,7 @@
 package com.dd.android.dailysimple.db
 
+import com.dd.android.dailysimple.common.utils.DateUtils.MS_DAY
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
-import com.dd.android.dailysimple.common.utils.DateUtils.msTimeNow
 import com.dd.android.dailysimple.db.dao.DailyTodoDao
 import com.dd.android.dailysimple.db.data.DailyTodo
 
@@ -9,11 +9,15 @@ class DailyTodoRepository(
     private val dailyTodoDao: DailyTodoDao
 ) {
 
-    val todayTodo = dailyTodoDao.getOngoingTodo(msDateOnlyFrom(date = 1))
+    fun overdueTodo() = dailyTodoDao.getOverdueTodo(msDateOnlyFrom())
 
-    val overdueTodo = dailyTodoDao.getOverdueTodo(msTimeNow())
+    fun upcomingTodo() = dailyTodoDao.getTodo(msDateOnlyFrom(), msDateOnlyFrom(3))
 
-    fun getTodo(todoId: Long) = dailyTodoDao.getTodo(todoId)
+    fun getTodoInDay(time: Long) = dailyTodoDao.getTodo(time, time + MS_DAY)
+
+    fun getTodoById(todoId: Long) = dailyTodoDao.getTodo(todoId)
+
+    fun makeToDone(todoId: Long) = dailyTodoDao.makeToDone(todoId)
 
     suspend fun insert(vararg todo: DailyTodo) =
         dailyTodoDao.insert(*todo)

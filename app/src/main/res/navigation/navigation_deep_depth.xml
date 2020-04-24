@@ -52,7 +52,7 @@
 
     <fragment
         android:id="@+id/daily_detail_fragment"
-        android:name="com.dd.android.dailysimple.daily.detail.DailyDetailFragment"
+        android:name="com.dd.android.dailysimple.daily.detail.DailyHabitDetailFragment"
         tools:layout="@layout/fragment_daily_habit_detail">
         <argument
             android:name="habitId"

@@ -7,7 +7,7 @@
 
         <variable
             name="itemModel"
-            type="com.dd.android.dailysimple.daily.viewmodel.HabitHeaderItemModel" />
+            type="com.dd.android.dailysimple.daily.viewmodel.DailyHabitHeader" />
     </data>
 
     <androidx.constraintlayout.motion.widget.MotionLayout

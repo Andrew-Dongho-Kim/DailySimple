@@ -4,11 +4,11 @@
 
     <data>
 
-        <import type="com.dd.android.dailysimple.daily.viewholders.DailyOverdueTodoGroup" />
+        <import type="com.dd.android.dailysimple.daily.viewholders.DailyTodoGroup" />
 
         <variable
             name="itemModel"
-            type="com.dd.android.dailysimple.daily.viewholders.DailyOverdueTodoGroup" />
+            type="com.dd.android.dailysimple.daily.viewholders.DailyTodoGroup" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

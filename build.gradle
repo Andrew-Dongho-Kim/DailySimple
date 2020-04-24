@@ -10,6 +10,8 @@ buildscript {
         preferenceVersion = '1.1.1'
 
         glideVersion='4.10.0'
+        gradleVersion='3.6.3'
+        googleServiceVersion='4.3.3'
     }
 
     repositories {
@@ -18,9 +20,10 @@ buildscript {
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath "com.android.tools.build:gradle:$gradleVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
+        classpath "com.google.gms:google-services:$googleServiceVersion"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

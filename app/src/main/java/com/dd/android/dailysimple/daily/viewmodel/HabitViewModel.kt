@@ -5,10 +5,19 @@ import androidx.lifecycle.*
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.appDb
+import com.dd.android.dailysimple.common.di.getString
 import com.dd.android.dailysimple.common.recycler.ItemModel
+import com.dd.android.dailysimple.daily.DailyConst
+import com.dd.android.dailysimple.daily.DailyConst.EMPTY_ITEM_ID_TODO
+import com.dd.android.dailysimple.daily.DailyConst.SIMPLE_HEADER_ID_HABIT
+import com.dd.android.dailysimple.daily.DailyViewType
+import com.dd.android.dailysimple.daily.DailyViewType.Companion.HABIT_ITEM
 import com.dd.android.dailysimple.daily.DayDateDataSource
 import com.dd.android.dailysimple.daily.DayDateItemModel
+import com.dd.android.dailysimple.daily.viewholders.DailyEmptyItemModel
+import com.dd.android.dailysimple.daily.viewholders.DailySimpleHeaderItem
 import com.dd.android.dailysimple.db.DailyHabitRepository
 import com.dd.android.dailysimple.db.data.DailyHabit
 import kotlinx.coroutines.launch
@@ -24,12 +33,30 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     val header = liveData {
-        emit(HabitHeaderItemModel(application))
+        emit(
+            DailySimpleHeaderItem(
+                SIMPLE_HEADER_ID_HABIT,
+                application.getString(R.string.habit)
+            )
+        )
     }
 
-    val allHabits = repository.allHabits
+    val allHabits = Transformations.map(repository.allHabits) { habits ->
+        if (habits.isEmpty()) {
+            listOf(
+                DailyEmptyItemModel(
+                    EMPTY_ITEM_ID_TODO,
+                    HABIT_ITEM,
+                    getString(R.string.no_habit_message)
+                )
+            )
+        } else {
+            habits
+        }
+    }
 
     fun getHabit(habitId: Long) = repository.getHabit(habitId)
+
 
     /**
      * The implementation of insert() in the database is completely hidden from the UI.
@@ -47,7 +74,7 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
     }
 }
 
-data class HabitHeaderItemModel(private val app: Application) : ItemModel {
+data class DailyHabitHeader(private val app: Application) : ItemModel {
     override val id: Long = -1L
 
     private val _year = MutableLiveData<String>()

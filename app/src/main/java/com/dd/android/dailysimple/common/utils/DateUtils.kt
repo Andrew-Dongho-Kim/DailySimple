@@ -8,16 +8,16 @@ import java.util.*
 
 object DateUtils {
 
-    private const val MS_SECOND = 1000
+    private const val MS_SECOND = 1000L
 
     private const val MS_MINUTE = MS_SECOND * 60
 
     private const val MS_HOUR = MS_MINUTE * 60
 
-    private const val MS_DAY = MS_HOUR * 24
+    const val MS_DAY = MS_HOUR * 24
 
-    fun calendarDateOnly(): Calendar =
-        Calendar.getInstance().apply {
+    fun calendarDateOnly(timezone: TimeZone? = null): Calendar =
+        Calendar.getInstance(timezone ?: TimeZone.getDefault()).apply {
             time = Date()
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
@@ -35,8 +35,14 @@ object DateUtils {
         }
 
 
-    fun msDateOnlyFrom(date: Int = 0, hours: Int = 0, minutes: Int = 0, seconds: Int = 0) =
-        calendarDateOnly().run {
+    fun msDateOnlyFrom(
+        date: Int = 0,
+        hours: Int = 0,
+        minutes: Int = 0,
+        seconds: Int = 0,
+        timezone: TimeZone? = null
+    ) =
+        calendarDateOnly(timezone).run {
             add(Calendar.DATE, date)
             add(Calendar.HOUR_OF_DAY, hours)
             add(Calendar.MINUTE, minutes)
@@ -71,9 +77,9 @@ object DateUtils {
 
     fun toRemain(context: Context, remain: Long): String {
         val left = remain > 0
-        var time = (if (left) remain else -remain).toInt()
+        var time = (if (left) remain else -remain)
         val resources = context.resources
-        val days = (time / MS_DAY)
+        val days = (time / MS_DAY).toInt()
         if (days > 0) {
             return "${resources.getQuantityString(
                 R.plurals.plurals_day,

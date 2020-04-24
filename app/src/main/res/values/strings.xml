@@ -13,6 +13,7 @@
 
     <string name="schedule">Schedule</string>
     <string name="todo">To do</string>
+    <string name="habit">Habit</string>
     <string name="schedule_overview">Schedule Overview</string>
 
     <string name="done">Done</string>
@@ -66,6 +67,7 @@
     </plurals>
     <string name="day">%d day</string>
     <string name="days">%d days</string>
+    <string name="all_day">All day</string>
 
     <string name="abb_hour">h</string>
     <string name="abb_minute">m</string>
@@ -78,9 +80,13 @@
         <item quantity="one">@string/overdue_task_message</item>
         <item quantity="other">@string/overdue_tasks_message</item>
     </plurals>
-    <string name="overdue_tasks_message">You have %d overdue tasks</string>
-    <string name="overdue_task_message">You have %d overdue task</string>
+    <string name="overdue_tasks_message">You have <b><u>%d</u></b> overdue tasks</string>
+    <string name="overdue_task_message">You have <b><u>%d</u></b> overdue task</string>
 
     <string name="make_a_habit">Make a habit</string>
     <string name="make_a_todo">Make a todo</string>
+
+    <string name="no_schedule_message">There are no schedules</string>
+    <string name="no_todo_message">There are no todo list</string>
+    <string name="no_habit_message">There are no habits</string>
 </resources>

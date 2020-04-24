@@ -8,13 +8,16 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.dd.android.dailysimple.HomeFragmentDirections
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.BaseFragment
 import com.dd.android.dailysimple.common.FabViewModel
+import com.dd.android.dailysimple.daily.viewmodel.DailyHabitHeader
 import com.dd.android.dailysimple.databinding.FragmentScheduleCommonBinding
 import com.dd.android.dailysimple.google.GoogleAccountViewModel
 import com.dd.android.dailysimple.plan.ScheduleCardItemDecoration
@@ -24,13 +27,17 @@ class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>() {
 
     private lateinit var fabModel: FabViewModel
 
+    private lateinit var calendarModel: DailyHabitHeader
+
     override val layout: Int = R.layout.fragment_schedule_common
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         fabModel = ViewModelProvider(activity).get(FabViewModel::class.java)
+        calendarModel = DailyHabitHeader(activity.application)
 
         setUpViewModel()
-        setUpRecycler()
+        setUpHeader()
+        setUpContent()
         setUpFab()
 
         setHasOptionsMenu(true)
@@ -41,11 +48,33 @@ class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>() {
         bind.fabModel = fabModel
     }
 
-    private fun setUpRecycler() {
+
+    private fun setUpHeader() {
+        val recycler = bind.customToolbar.calendar
+
+        val layoutManager = LinearLayoutManager(context)
+            .apply {
+                orientation = RecyclerView.HORIZONTAL
+                reverseLayout = true
+            }
+
+        val adapter = DayDateAdapter2(viewLifecycleOwner)
+        val observer = Observer<PagedList<DayDateItemModel>> { adapter.submitList(it) }
+
+        recycler.adapter = adapter
+        recycler.layoutManager = layoutManager
+
+        PagerSnapHelper().attachToRecyclerView(recycler)
+
+        calendarModel.dayDatePagedList.observe(viewLifecycleOwner, observer)
+    }
+
+    private fun setUpContent() {
         val recycler = bind.recycler
 
         val layoutManager = LinearLayoutManager(activity)
         val adapter = DailyAdapter(viewLifecycleOwner, this, navController)
+        adapter.setHasStableIds(true)
 
         recycler.adapter = adapter
         recycler.layoutManager = layoutManager
@@ -63,9 +92,9 @@ class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>() {
             ScheduleCardItemDecoration(activity)
         )
 
-        ItemTouchHelper(
-            DailyItemTouchAction(activity, adapter, navController)
-        ).attachToRecyclerView(recycler)
+//        ItemTouchHelper(
+//            DailyItemTouchAction(activity, adapter, navController)
+//        ).attachToRecyclerView(recycler)
 
         recycler.setUpCache()
     }

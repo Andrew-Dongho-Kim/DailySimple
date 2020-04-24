@@ -23,9 +23,7 @@ class HomeActivity : BaseActivity() {
         setContentView(R.layout.activity_home)
         accountController.signInOutResult.observe(this,
             Observer {
-                it.result?.signInAccount?.let { account ->
-                    accountViewModel.update(account)
-                }
+                it.result?.let { account -> accountViewModel.update(account) }
             })
 
         fabViewModel.isOpen.observe(this, Observer { opened ->

@@ -12,6 +12,7 @@
 
     <string name="schedule">일정</string>
     <string name="todo">할 일</string>
+    <string name="habit">습관</string>
 
     <string name="title">제목</string>
     <string name="memo">메모</string>
@@ -52,6 +53,7 @@
 
     <string name="day">%d 일</string>
     <string name="days">%d 일</string>
+    <string name="all_day">하루종일</string>
 
     <string name="abb_hour">시간</string>
     <string name="abb_minute">분</string>
@@ -59,9 +61,13 @@
     <string name="left">남음</string>
     <string name="past">지남</string>
 
-    <string name="overdue_tasks_message">밀린 할 일이 %d개 있습니다</string>
-    <string name="overdue_task_message">밀린 할 일이 %d개 있습니다</string>
+    <string name="overdue_tasks_message">밀린 할 일이 <b><u>%d개</u></b> 있습니다</string>
+    <string name="overdue_task_message">밀린 할 일이 <b><u>%d개</u></b> 있습니다</string>
 
     <string name="make_a_habit">습관 만들기</string>
     <string name="make_a_todo">할 일 만들기</string>
+
+    <string name="no_schedule_message">등록된 일정이 없습니다</string>
+    <string name="no_todo_message">등록된 할 일이 없습니다</string>
+    <string name="no_habit_message">등록된 습관이 없습니다.</string>
 </resources>

@@ -3,7 +3,9 @@ package com.dd.android.dailysimple.db.data
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.liveData
 import androidx.room.*
+import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.appContext
+import com.dd.android.dailysimple.common.di.getString
 import com.dd.android.dailysimple.common.di.systemLocale
 import com.dd.android.dailysimple.common.recycler.ItemModel
 import com.dd.android.dailysimple.common.utils.DateUtils.delayRemain
@@ -23,13 +25,15 @@ data class DailyTodo(
 ) : ItemModel {
 
     @Ignore
+    val isOverdue = System.currentTimeMillis() > until
+
+    @Ignore
     val timeStart: String =
         SimpleDateFormat("a hh:mm", systemLocale()).format(start)
 
     @Ignore
-    val remain = liveData {
+    private val remain = liveData {
         var left: Long
-
         do {
             left = until - System.currentTimeMillis()
             emit(left)
@@ -39,8 +43,13 @@ data class DailyTodo(
 
     @Ignore
     val timeRemain = Transformations.map(remain) { remain ->
-        toRemain(appContext, remain)
+        if (done == ONGOING) {
+            toRemain(appContext, remain)
+        } else {
+            getString(R.string.done)
+        }
     }
+
 
     fun toggleDone() {
         done = if (done == ONGOING) DONE else ONGOING

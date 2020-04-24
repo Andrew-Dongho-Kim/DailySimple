@@ -1,16 +1,24 @@
 package com.dd.android.dailysimple.daily.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
+import android.util.Log
+import androidx.lifecycle.*
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.appDb
-import com.dd.android.dailysimple.daily.SimpleHeaderItemModel
-import com.dd.android.dailysimple.daily.viewholders.DailyOverdueTodoGroup
+import com.dd.android.dailysimple.common.di.getString
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
+import com.dd.android.dailysimple.daily.DailyConst.EMPTY_ITEM_ID_TODO
+import com.dd.android.dailysimple.daily.DailyConst.OVERDUE_TODO_GROUP
+import com.dd.android.dailysimple.daily.DailyConst.SIMPLE_HEADER_ID_TODO
+import com.dd.android.dailysimple.daily.DailyConst.UPCOMING_TODO_GROUP
+import com.dd.android.dailysimple.daily.DailyMergeItem
+import com.dd.android.dailysimple.daily.DailyViewType.Companion.TODO_ITEM
+import com.dd.android.dailysimple.daily.viewholders.DailyEmptyItemModel
+import com.dd.android.dailysimple.daily.viewholders.DailySimpleHeaderItem
+import com.dd.android.dailysimple.daily.viewholders.DailyTodoGroup
 import com.dd.android.dailysimple.db.DailyTodoRepository
 import com.dd.android.dailysimple.db.data.DailyTodo
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 /**
@@ -27,21 +35,76 @@ class TodoViewModel(app: Application) : AndroidViewModel(app) {
 
     val header = liveData {
         emit(
-            SimpleHeaderItemModel(
-                0,
-                app.getString(R.string.todo)
-            )
+            DailySimpleHeaderItem(SIMPLE_HEADER_ID_TODO, app.getString(R.string.todo))
         )
     }
 
-    fun getTodo(todoId: Long) = repository.getTodo(todoId)
+    fun getTodo(todoId: Long) = repository.getTodoById(todoId)
 
-    val todayTodo = repository.todayTodo
+    fun makeToDone(todoId: Long) = GlobalScope.launch {
+        repository.makeToDone(todoId)
+    }
 
-    val overdueTodo = repository.overdueTodo
+    val selectedDate = liveData {
+        emit(msDateOnlyFrom())
+    } as MutableLiveData<Long>
 
-    val overdueGroup = Transformations.map(overdueTodo) {
-        DailyOverdueTodoGroup(0, it)
+    private val currTodo = Transformations.switchMap(selectedDate) { time ->
+        repository.getTodoInDay(time)
+    }
+
+    private val isOverdueExpanded = liveData {
+        emit(false)
+    } as MutableLiveData<Boolean>
+
+    private val overdueTodo = repository.overdueTodo()
+
+    private val overdueGroup = Transformations.map(overdueTodo) {
+
+        Log.d("TEST-DH", "OVERDUE : ${it.size}")
+
+
+        DailyTodoGroup(OVERDUE_TODO_GROUP, isOverdueExpanded, it)
+    }
+
+    private val overdueGroupChild = Transformations.switchMap(overdueGroup) {
+        it.listLiveData
+    }
+
+    private val isUpcomingExpanded = liveData {
+        emit(false)
+    } as MutableLiveData<Boolean>
+
+    private val upcomingTodo = repository.upcomingTodo()
+
+    private val upcomingGroup = Transformations.map(upcomingTodo) {
+        DailyTodoGroup(UPCOMING_TODO_GROUP, isUpcomingExpanded, it)
+    }
+
+    private val upcomingGroupChild = Transformations.switchMap(upcomingGroup) {
+        it.listLiveData
+    }
+
+    val wholeTodo = Transformations.map(
+        DailyMergeItem(
+            overdueGroup,
+            overdueGroupChild,
+            currTodo,
+            upcomingGroup,
+            upcomingGroupChild
+        )
+    ) { todoList ->
+        if (todoList.isEmpty()) {
+            listOf(
+                DailyEmptyItemModel(
+                    EMPTY_ITEM_ID_TODO,
+                    TODO_ITEM,
+                    getString(R.string.no_todo_message)
+                )
+            )
+        } else {
+            todoList
+        }
     }
 
     /**
@@ -55,7 +118,11 @@ class TodoViewModel(app: Application) : AndroidViewModel(app) {
         repository.insert(*todo)
     }
 
-    fun update(vararg todo:DailyTodo) = viewModelScope.launch {
+    fun update(vararg todo: DailyTodo) = viewModelScope.launch {
         repository.update(*todo)
+    }
+
+    fun delete(todoId: Long) = viewModelScope.launch {
+        repository.delete(todoId)
     }
 }

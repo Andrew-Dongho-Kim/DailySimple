@@ -20,7 +20,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/begin"
             style="@style/BasicTextDpTinySmall"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/schedule_item_title_width"
             android:layout_height="wrap_content"
             android:text="@{viewModel.beginTime}"
             android:textStyle="bold"
@@ -28,21 +28,40 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            style="@style/BasicTextDpNormal"
+        <View
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginStart="@dimen/basic_view_margin_horizontal_small"
             android:background="@drawable/rounded_view_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/begin"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            style="@style/BasicTextDpNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal_small"
             android:gravity="center_vertical"
             android:paddingStart="@dimen/basic_view_margin_horizontal_small"
             android:paddingTop="@dimen/basic_view_margin_vertical_small"
             android:paddingEnd="@dimen/basic_view_margin_vertical_small"
             android:paddingBottom="@dimen/basic_view_margin_vertical_small"
             android:text="@{viewModel.title}"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/begin"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/color"
+            android:layout_width="@dimen/schedule_item_color_width"
+            android:layout_height="@dimen/schedule_item_color_height"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal"
+            android:layout_marginBottom="@dimen/schedule_item_color_margin_vertical"
+            android:background="@{viewModel.color}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

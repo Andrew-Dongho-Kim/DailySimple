@@ -9,6 +9,7 @@
     <color name="basic_view_background_dim">#3f3f3f</color>
     <color name="basic_view_background_highlight">#606060</color>
     <color name="basic_view_background_stroke">#202020</color>
+    <color name="basic_view_background_dashed_stroke">@color/appWhite</color>
 
     <color name="basic_ripple_background">@color/basic_ripple_light</color>
     <color name="basic_divider_background">#505050</color>

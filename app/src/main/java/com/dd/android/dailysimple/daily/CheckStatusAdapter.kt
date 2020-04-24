@@ -112,7 +112,6 @@ class CheckStatusDataSource(
     private val pageSize = 7
 
     override fun loadBefore(params: LoadParams<Key>, callback: LoadCallback<Key, CheckStatus>) {
-        logD { "loadBefore" }
     }
 
     override fun loadInitial(
@@ -132,7 +131,6 @@ class CheckStatusDataSource(
     }
 
     override fun loadAfter(params: LoadParams<Key>, callback: LoadCallback<Key, CheckStatus>) {
-        logD { "loadAfter" }
         val cal = Calendar.getInstance()
         cal.time = Date(params.key.date)
 

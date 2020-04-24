@@ -17,6 +17,7 @@
     <color name="basic_view_background_dim">#dfdfdf</color>
     <color name="basic_view_background_highlight">@color/appGray</color>
     <color name="basic_view_background_stroke">@color/appGray</color>
+    <color name="basic_view_background_dashed_stroke">#5f5f5f</color>
 
     <color name="basic_icon_background">#5f5f5f</color>
     <color name="basic_divider_background">@color/appGray</color>

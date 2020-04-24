@@ -4,6 +4,7 @@
 
     <data>
 
+        <import type="com.dd.android.dailysimple.db.data.DailyTodo" />
         <variable
             name="itemModel"
             type="com.dd.android.dailysimple.db.data.DailyTodo" />
@@ -37,6 +38,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/basic_view_margin_horizontal_small"
+            android:alpha="@{(itemModel.done == DailyTodo.DONE) ? 0.4f : 1f}"
             android:gravity="center_vertical"
             android:text="@{itemModel.title}"
             app:layout_constraintBottom_toBottomOf="parent"
