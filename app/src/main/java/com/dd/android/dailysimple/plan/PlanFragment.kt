@@ -3,12 +3,10 @@ package com.dd.android.dailysimple.plan
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dd.android.dailysimple.HomeFragmentDirections
 import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.databinding.FragmentScheduleCommonBinding
 import com.dd.android.dailysimple.common.BaseFragment
+import com.dd.android.dailysimple.databinding.FragmentScheduleCommonBinding
 import com.dd.android.dailysimple.google.GoogleAccountViewModel
 
 class PlanFragment : BaseFragment<FragmentScheduleCommonBinding>() {

@@ -14,8 +14,6 @@ import com.google.android.gms.tasks.Task
 private const val RC_SIGN_IN = 1
 private const val LOG_TAG = "GoogleAccount"
 
-private const val SIGN_IN_REQUIRED = 4
-
 enum class SignedState {
     SIGNED_IN,
     SIGNED_OUT,

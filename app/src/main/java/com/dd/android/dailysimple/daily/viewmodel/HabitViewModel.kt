@@ -9,10 +9,8 @@ import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.appDb
 import com.dd.android.dailysimple.common.di.getString
 import com.dd.android.dailysimple.common.recycler.ItemModel
-import com.dd.android.dailysimple.daily.DailyConst
-import com.dd.android.dailysimple.daily.DailyConst.EMPTY_ITEM_ID_TODO
+import com.dd.android.dailysimple.daily.DailyConst.EMPTY_ITEM_ID_HABIT
 import com.dd.android.dailysimple.daily.DailyConst.SIMPLE_HEADER_ID_HABIT
-import com.dd.android.dailysimple.daily.DailyViewType
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.HABIT_ITEM
 import com.dd.android.dailysimple.daily.DayDateDataSource
 import com.dd.android.dailysimple.daily.DayDateItemModel
@@ -45,7 +43,7 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
         if (habits.isEmpty()) {
             listOf(
                 DailyEmptyItemModel(
-                    EMPTY_ITEM_ID_TODO,
+                    EMPTY_ITEM_ID_HABIT,
                     HABIT_ITEM,
                     getString(R.string.no_habit_message)
                 )

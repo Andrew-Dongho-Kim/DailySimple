@@ -13,7 +13,7 @@ import com.dd.android.dailysimple.databinding.DailyOverduePopupWindowBinding
 
 class DailyOverduePopup(
     context: Context,
-    private val viewModelStoreOwner: ViewModelStoreOwner,
+    viewModelStoreOwner: ViewModelStoreOwner,
     private val todoId: Long
 ) :
     PopupWindow(

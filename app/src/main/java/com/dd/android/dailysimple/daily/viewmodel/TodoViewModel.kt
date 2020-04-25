@@ -1,7 +1,6 @@
 package com.dd.android.dailysimple.daily.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.appDb
@@ -60,10 +59,6 @@ class TodoViewModel(app: Application) : AndroidViewModel(app) {
     private val overdueTodo = repository.overdueTodo()
 
     private val overdueGroup = Transformations.map(overdueTodo) {
-
-        Log.d("TEST-DH", "OVERDUE : ${it.size}")
-
-
         DailyTodoGroup(OVERDUE_TODO_GROUP, isOverdueExpanded, it)
     }
 

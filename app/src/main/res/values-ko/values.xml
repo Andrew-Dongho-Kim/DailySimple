@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="plan">계획</string>
+    <string name="daily">매일</string>
+    <string name="setting">설정</string>
+
     <string name="done">완료</string>
     <string name="cancel">취소</string>
     <string name="edit">수정</string>

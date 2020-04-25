@@ -36,7 +36,7 @@ object DependencyInjector : AppDependencyInjector()
 
 val appContext: Context = DependencyInjector.appContext
 
-val appResources = appContext.resources
+val appResources: Resources = appContext.resources
 
 fun getString(@StringRes strResId:Int) = appContext.getString(strResId)
 
