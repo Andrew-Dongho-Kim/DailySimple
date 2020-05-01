@@ -5,6 +5,7 @@
     <data>
 
         <import type="com.dd.android.dailysimple.db.data.DailyTodo" />
+
         <variable
             name="itemModel"
             type="com.dd.android.dailysimple.db.data.DailyTodo" />
@@ -17,7 +18,7 @@
         android:foreground="@drawable/ripple_list_item"
         android:paddingStart="@dimen/basic_view_margin_horizontal"
         android:paddingTop="@dimen/basic_view_margin_vertical_small"
-        android:paddingEnd="@dimen/basic_zero_dp"
+        android:paddingEnd="@dimen/basic_view_margin_horizontal"
         android:paddingBottom="@dimen/basic_view_margin_vertical_small">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -37,7 +38,7 @@
             style="@style/BasicTextDpNormal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/basic_view_margin_horizontal_small"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal_tiny_small"
             android:alpha="@{(itemModel.done == DailyTodo.DONE) ? 0.4f : 1f}"
             android:gravity="center_vertical"
             android:text="@{itemModel.title}"
@@ -51,7 +52,6 @@
             style="@style/BasicTextDpTinySmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
             android:text="@{itemModel.timeRemain}"
             android:textColor="@color/basic_text2_color"
             android:textStyle="bold"

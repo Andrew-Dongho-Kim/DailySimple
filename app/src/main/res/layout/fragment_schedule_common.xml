@@ -44,35 +44,6 @@
                     android:id="@+id/custom_toolbar"
                     layout="@layout/daily_calendar_toolbar"
                     bind:accountViewModel="@{accountViewModel}" />
-<!--                <com.google.android.material.appbar.CollapsingToolbarLayout-->
-<!--                    android:id="@+id/toolbar_layout"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:background="@android:color/transparent"-->
-<!--                    android:paddingTop="2dp"-->
-<!--                    android:paddingBottom="2dp"-->
-<!--                    app:collapsedTitleTextAppearance="@style/CollapsingTitleStyle"-->
-<!--                    app:contentScrim="@color/basic_common_background"-->
-<!--                    app:expandedTitleTextAppearance="@style/ExpandedTitleStyle"-->
-<!--                    app:layout_scrollFlags="scroll|exitUntilCollapsed"-->
-<!--                    app:scrimAnimationDuration="200"-->
-<!--                    app:title="@string/app_name"-->
-<!--                    app:toolbarId="@id/toolbar">-->
-
-<!--                    &lt;!&ndash;                    <include&ndash;&gt;-->
-<!--                    &lt;!&ndash;                        layout="@layout/google_account_card"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                        app:layout_collapseMode="parallax"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                        bind:accountViewModel="@{accountViewModel}" />&ndash;&gt;-->
-
-<!--                    &lt;!&ndash;                    <androidx.appcompat.widget.Toolbar&ndash;&gt;-->
-<!--                    &lt;!&ndash;                        android:id="@+id/toolbar"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                        android:layout_width="match_parent"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                        android:layout_height="?attr/actionBarSize"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                        app:contentInsetStartWithNavigation="0dp"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                        app:layout_collapseMode="pin"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                        app:menu="@menu/daily_menu" />&ndash;&gt;-->
-<!--               -->
-<!--                </com.google.android.material.appbar.CollapsingToolbarLayout>-->
 
             </com.google.android.material.appbar.AppBarLayout>
 

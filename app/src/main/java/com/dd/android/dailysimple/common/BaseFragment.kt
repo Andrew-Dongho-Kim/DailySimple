@@ -7,14 +7,13 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.CallSuper
+import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -28,8 +27,7 @@ import java.util.*
 
 abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
 
-    private val dateChangeReceiver by lazy { DateChangeReceiver(this) }
-    val dateChangedObserver: OnDateChangedObserver = dateChangeReceiver
+    val dateChangedObserver: OnDateChangedObserver by lazy { DateChangeReceiver(this) }
 
     val navController by lazy {
         Navigation.findNavController(
@@ -77,6 +75,12 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
         }
     }
 
+    fun setStatusBarColor(@ColorRes colorResId: Int) {
+        val window = activity.window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = ContextCompat.getColor(activity, colorResId)
+    }
+
     fun popBackStack() {
         navController.popBackStack()
         hideSoftInput()
@@ -101,7 +105,12 @@ class DateChangeReceiver(private val fragment: Fragment) :
 
     private val listeners = mutableSetOf<OnDateChangedListener>()
 
+    init {
+        fragment.lifecycle.addObserver(this)
+    }
+
     override fun onReceive(context: Context, intent: Intent) {
+        logD("onReceive : $intent")
         if (intent.action in ACTIONS) {
             notifyIfNeed()
         }
@@ -121,6 +130,7 @@ class DateChangeReceiver(private val fragment: Fragment) :
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
+        logD("onStart")
         started = true
         registerReceiver()
         notifyIfNeed()
@@ -128,24 +138,17 @@ class DateChangeReceiver(private val fragment: Fragment) :
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop() {
+        logD("onStop")
         started = false
         unregisterReceiver()
     }
 
     private fun registerReceiver() {
-        if (registered) {
-            logD("Receiver is already registered")
-            return
-        }
-        if (listeners.size == 0) {
-            logD("Listeners for date changes size is 0")
-            return
-        }
-        if (!started) {
-            logD("Lifecyle for date changes is not active!")
-            return
-        }
+        if (registered) return
+        if (listeners.size == 0) return
+        if (!started) return
 
+        logD("registerReceiver")
         context.registerReceiver(this, IntentFilter().apply {
             ACTIONS.forEach { addAction(it) }
         })
@@ -155,6 +158,7 @@ class DateChangeReceiver(private val fragment: Fragment) :
     private fun unregisterReceiver() {
         if (!registered) return
 
+        logD("unregisterReceiver")
         context.unregisterReceiver(this)
         registered = false
     }
@@ -167,6 +171,7 @@ class DateChangeReceiver(private val fragment: Fragment) :
         if (lastDay != currDay) {
             lastDate = currDate
             listeners.forEach { it.onDateChanged() }
+            logD("Notify Date Changed last : $lastDay, curr : $currDay")
         }
     }
 

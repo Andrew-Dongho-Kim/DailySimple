@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/basic_common_background" />
+    <stroke
+        android:width="@dimen/basic_view_background_round_stroke"
+        android:color="@color/basic_view_background_stroke" />
+    <corners
+        android:bottomLeftRadius="@dimen/basic_view_background_round"
+        android:bottomRightRadius="@dimen/basic_view_background_round" />
+</shape>

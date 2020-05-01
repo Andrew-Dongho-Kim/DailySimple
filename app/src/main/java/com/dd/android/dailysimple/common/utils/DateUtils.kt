@@ -16,6 +16,10 @@ object DateUtils {
 
     const val MS_DAY = MS_HOUR * 24
 
+    fun calendarFrom(time:Long) = Calendar.getInstance().apply {
+        timeInMillis = time
+    }
+
     fun calendarDateOnly(timezone: TimeZone? = null): Calendar =
         Calendar.getInstance(timezone ?: TimeZone.getDefault()).apply {
             time = Date()
@@ -23,6 +27,16 @@ object DateUtils {
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
+        }
+
+    fun calendarWeekOnly(timezone: TimeZone? = null): Calendar =
+        calendarDateOnly().apply {
+            set(Calendar.DAY_OF_WEEK, 0)
+        }
+
+    fun calendarMonthOnly(timeZone: TimeZone? = null): Calendar =
+        calendarDateOnly().apply {
+            set(Calendar.DAY_OF_MONTH, 0)
         }
 
 
@@ -50,6 +64,35 @@ object DateUtils {
             timeInMillis
         }
 
+    fun msWeekOnlyFrom(timezone: TimeZone? = null) =
+        calendarWeekOnly(timezone).run {
+            timeInMillis
+        }
+
+    fun msMonthOnlyFrom(timezone: TimeZone? = null) =
+        calendarMonthOnly(timezone).run {
+            timeInMillis
+        }
+
+    fun msFrom(
+        msTime: Long,
+        months: Int = 0,
+        weeks: Int = 0,
+        dates: Int = 0,
+        hours: Int = 0,
+        minutes: Int = 0,
+        seconds: Int = 0
+    ) =
+        Calendar.getInstance().run {
+            timeInMillis = msTime
+            add(Calendar.MONTH, months)
+            add(Calendar.WEEK_OF_YEAR, weeks)
+            add(Calendar.DATE, dates)
+            add(Calendar.HOUR_OF_DAY, hours)
+            add(Calendar.MINUTE, minutes)
+            add(Calendar.SECOND, seconds)
+            timeInMillis
+        }
 
     fun getDate(date: Date) = Calendar.getInstance().run {
         time = date
@@ -65,7 +108,7 @@ object DateUtils {
         }
 
     @JvmOverloads
-    fun msTimeOnlyFrom(hour: Int, minute: Int = 0, second: Int = 0): Long =
+    fun msTimeOnlyFrom(hour: Int = 0, minute: Int = 0, second: Int = 0): Long =
         calendarTimeOnly().run {
             add(Calendar.HOUR_OF_DAY, hour)
             add(Calendar.MINUTE, minute)
@@ -137,6 +180,9 @@ object DateUtils {
 
     fun toYMD(date: Long, locale: Locale): String =
         SimpleDateFormat("yyyy. MM. dd", locale).format(Date(date))
+
+    fun strYmdToLong(text: String, locale: Locale) =
+        SimpleDateFormat("yyyy. MM. dd", locale).parse(text)?.time ?: 0L
 
     fun todayYMD(locale: Locale): String =
         toYMD(

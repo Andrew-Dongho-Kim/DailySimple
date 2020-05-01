@@ -36,7 +36,7 @@ class AlarmObservable(alarm: Alarm) : BaseObservable() {
         }
 
     @get:Bindable
-    var alarmTime: Int
+    var alarmTime: Long
         get() = alarm.alarmTime
         set(value) {
             alarm.alarmTime = value

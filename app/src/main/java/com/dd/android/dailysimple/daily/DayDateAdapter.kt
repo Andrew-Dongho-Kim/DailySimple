@@ -47,85 +47,72 @@ class DayDateAdapter(
 class DayDateViewHolder(parent: ViewGroup) :
     ViewHolder2<ViewDataBinding, DayDateItemModel>(
         parent,
-        R.layout.daily_habit_day_date_item,
+        R.layout.day_date_item,
         BR.itemModel
-    )
+    ) {
 
+}
+
+
+private const val PAGE_SIZE = 7
 
 class DayDateDataSource(
     private val context: Context
 ) : PageKeyedDataSource<Long, DayDateItemModel>() {
 
-    private val pageSize = 7
 
     override fun loadInitial(
         params: LoadInitialParams<Long>,
         callback: LoadInitialCallback<Long, DayDateItemModel>
     ) {
-        val cal = DateUtils.calendarDateOnly()
-        val list = loadFrom(cal)
-        callback.onResult(list, null, cal.timeInMillis)
+        val cal = DateUtils.calendarDateOnly().apply {
+            add(Calendar.DATE, 3)
+        }
+        val prevKey = cal.timeInMillis
+        val list = fetch(cal, FetchDir.LEFT)
+        callback.onResult(list, prevKey, cal.timeInMillis)
     }
 
     override fun loadAfter(
         params: LoadParams<Long>,
         callback: LoadCallback<Long, DayDateItemModel>
-    ) {
-        val cal = Calendar.getInstance()
-        cal.time = Date(params.key)
-        val list = loadFrom(cal)
-
-        callback.onResult(list, cal.timeInMillis)
-    }
+    ) =
+        start(params.key).run {
+            callback.onResult(fetch(this, FetchDir.LEFT), timeInMillis)
+        }
 
     override fun loadBefore(
         params: LoadParams<Long>,
         callback: LoadCallback<Long, DayDateItemModel>
-    ) {
-    }
-
-    private fun loadFrom(cal: Calendar) =
-        mutableListOf<DayDateItemModel>().apply {
-            for (i in 0 until pageSize) {
-                val monthIndex = cal.get(Calendar.MONTH)
-                val dayIndex = cal.get(Calendar.DAY_OF_WEEK)
-                add(
-                    DayDateItemModel(
-                        cal.timeInMillis,
-                        "${cal.get(Calendar.YEAR)}",
-                        context.getString(MONTHS[monthIndex]),
-                        "${cal.get(Calendar.DATE)}",
-                        context.getString(DAYS[dayIndex - 1]),
-                        dayIndex == Calendar.SUNDAY
-                    )
-                )
-                cal.add(Calendar.DATE, -1)
-            }
+    ) =
+        start(params.key).run {
+            callback.onResult(fetch(this, FetchDir.RIGHT), timeInMillis)
         }
+
+    private fun start(time: Long) =
+        Calendar.getInstance().apply {
+            timeInMillis = time
+        }
+
+    private fun fetch(cal: Calendar, fetchDir: FetchDir) =
+        mutableListOf<DayDateItemModel>()
+            .apply {
+                var dir = if (fetchDir == FetchDir.LEFT) -1 else 1
+                if (dir > 0) {
+                    cal.add(Calendar.DATE, PAGE_SIZE)
+                    dir = -dir
+                }
+                for (i in 0 until PAGE_SIZE) {
+                    add(DayDateItemModel(cal.timeInMillis))
+                    cal.add(Calendar.DATE, dir)
+                }
+                if (fetchDir == FetchDir.RIGHT) {
+                    cal.add(Calendar.DATE, PAGE_SIZE)
+                }
+            }
+
+    private enum class FetchDir {
+        LEFT, RIGHT
+    }
 }
 
-val DAYS = listOf(
-    R.string.sunday,
-    R.string.monday,
-    R.string.tuesday,
-    R.string.wednesday,
-    R.string.thursday,
-    R.string.friday,
-    R.string.saturday
-)
-
-val MONTHS = listOf(
-    R.string.january,
-    R.string.february,
-    R.string.march,
-    R.string.april,
-    R.string.may,
-    R.string.june,
-    R.string.july,
-    R.string.august,
-    R.string.september,
-    R.string.september,
-    R.string.october,
-    R.string.november,
-    R.string.december
-)

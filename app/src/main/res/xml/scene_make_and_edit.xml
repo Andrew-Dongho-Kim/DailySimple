@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        app:constraintSetEnd="@id/scene_end"
+        app:constraintSetStart="@id/scene_start"
+        app:duration="100"
+        app:motionInterpolator="easeInOut" />
+
+    <ConstraintSet android:id="@+id/scene_start">
+        <Constraint
+            android:id="@+id/color"
+            android:layout_width="@dimen/make_and_edit_habit_color_width"
+            android:layout_height="@dimen/make_and_edit_habit_color_height"
+            android:layout_marginTop="@dimen/make_and_edit_habit_color_picker_icon_margin_top"
+            app:layout_constraintBottom_toBottomOf="@id/color_picker"
+            app:layout_constraintStart_toStartOf="@id/title_editor" />
+
+        <Constraint
+            android:id="@+id/color_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/make_and_edit_habit_color_picker_icon_margin_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/repeat" />
+
+        <Constraint
+            android:id="@+id/title_editor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/make_and_edit_habit_title_height"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Constraint
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_editor" />
+
+        <Constraint
+            android:id="@+id/end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/start" />
+
+        <Constraint
+            android:id="@+id/repeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/end" />
+
+        <Constraint
+            android:id="@+id/start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical_small"
+            android:paddingStart="@dimen/basic_view_margin_horizontal_tiny_small"
+            android:paddingTop="@dimen/basic_view_margin_vertical_small"
+            android:paddingEnd="@dimen/basic_view_margin_horizontal_tiny_small"
+            android:paddingBottom="@dimen/basic_view_margin_vertical_small"
+            app:layout_constraintBottom_toBottomOf="@id/start"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/start" />
+
+        <Constraint
+            android:id="@+id/end_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingStart="@dimen/basic_view_margin_horizontal_tiny_small"
+            android:paddingTop="@dimen/basic_view_margin_vertical_small"
+            android:paddingEnd="@dimen/basic_view_margin_horizontal_tiny_small"
+            android:paddingBottom="@dimen/basic_view_margin_vertical_small"
+            app:layout_constraintBottom_toBottomOf="@id/end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/end" />
+    </ConstraintSet>
+
+
+    <ConstraintSet android:id="@+id/scene_end">
+        <Constraint
+            android:id="@+id/color"
+            android:layout_width="@dimen/make_and_edit_habit_color_width"
+            android:layout_height="@dimen/make_and_edit_habit_color_height"
+            android:layout_marginTop="@dimen/make_and_edit_habit_color_picker_icon_margin_top"
+            android:alpha="0"
+            app:layout_constraintBottom_toBottomOf="@id/color_picker"
+            app:layout_constraintStart_toStartOf="@id/title_editor" />
+
+        <Constraint
+            android:id="@+id/color_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/make_and_edit_habit_color_picker_icon_margin_top"
+            android:alpha="0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/repeat" />
+
+        <Constraint
+            android:id="@+id/title_editor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:translationY="@dimen/make_and_edit_habit_title_y_movement"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Constraint
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical"
+            android:alpha="0"
+            android:translationX="@dimen/make_and_edit_header_text_left_movement"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_editor" />
+
+        <Constraint
+            android:id="@+id/end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical"
+            android:alpha="0"
+            android:translationX="@dimen/make_and_edit_header_text_left_movement"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/start" />
+
+        <Constraint
+            android:id="@+id/repeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical"
+            android:alpha="0"
+            android:translationX="@dimen/make_and_edit_header_text_left_movement"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/end" />
+
+        <Constraint
+            android:id="@+id/start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical_small"
+            android:alpha="0"
+            android:paddingStart="@dimen/basic_view_margin_horizontal_tiny_small"
+            android:paddingTop="@dimen/basic_view_margin_vertical_small"
+            android:paddingEnd="@dimen/basic_view_margin_horizontal_tiny_small"
+            android:paddingBottom="@dimen/basic_view_margin_vertical_small"
+            android:translationX="@dimen/make_and_edit_header_text_right_movement"
+            app:layout_constraintBottom_toBottomOf="@id/start"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/start" />
+
+        <Constraint
+            android:id="@+id/end_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:alpha="0"
+            android:paddingStart="@dimen/basic_view_margin_horizontal_tiny_small"
+            android:paddingTop="@dimen/basic_view_margin_vertical_small"
+            android:paddingEnd="@dimen/basic_view_margin_horizontal_tiny_small"
+            android:paddingBottom="@dimen/basic_view_margin_vertical_small"
+            android:translationX="@dimen/make_and_edit_header_text_right_movement"
+            app:layout_constraintBottom_toBottomOf="@id/end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/end" />
+    </ConstraintSet>
+</MotionScene>

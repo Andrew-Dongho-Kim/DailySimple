@@ -13,6 +13,7 @@
         <item name="android:colorAccent">@color/appAccent</item>
         <item name="android:navigationBarColor">@color/basic_common_background</item>
         <item name="android:statusBarColor">@color/basic_common_background</item>
+        <item name="dialogTheme">@style/AppDialogTheme</item>
     </style>
 
     <style name="Widget.AppCompat.DropDownItem.Spinner" parent="android:Widget.Material.DropDownItem.Spinner" tools:override="true">
@@ -26,6 +27,10 @@
         <item name="android:paddingTop">@dimen/basic_popup_menu_item_top_padding</item>
         <item name="android:paddingBottom">@dimen/basic_popup_menu_item_bottom_padding</item>
         <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="AppDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:gravity">bottom</item>
     </style>
 
     <style name="ToolbarTitleStyleParent">

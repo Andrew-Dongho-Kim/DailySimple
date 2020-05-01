@@ -1,18 +1,21 @@
 package com.dd.android.dailysimple.daily.edit
 
-import android.content.res.ColorStateList
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.BaseFragment
 import com.dd.android.dailysimple.common.Logger
+import com.dd.android.dailysimple.common.TimePickerDialogFragment
+import com.dd.android.dailysimple.common.di.systemLocale
+import com.dd.android.dailysimple.common.setUnderlineText
 import com.dd.android.dailysimple.common.utils.DateUtils
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
+import com.dd.android.dailysimple.common.utils.DateUtils.strYmdToLong
 import com.dd.android.dailysimple.daily.edit.observable.AlarmObservable
 import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
 import com.dd.android.dailysimple.databinding.FragmentMakeDailyHabitBinding
@@ -21,7 +24,9 @@ import com.dd.android.dailysimple.db.data.DailyHabit
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 
+
 private const val TAG = "MakeAndEdit"
+
 private const val ARG_ID = "habitId"
 
 private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
@@ -32,88 +37,101 @@ class MakeAndEditHabitFragment : BaseFragment<FragmentMakeDailyHabitBinding>() {
 
     private val viewModel by viewModels<HabitViewModel>()
 
+    private lateinit var habitModel: DailyHabit
+
     override val layout: Int = R.layout.fragment_make_daily_habit
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setUpModel()
-        setUpToolbar()
-        setUpColorPicker()
+        setUpDataBinding()
+        setStatusBarColor(R.color.basic_view_background)
     }
 
-    private fun setUpModel() {
-        val habitId = arguments?.get(ARG_ID) as Long?
-
-        habitId?.let {
-            viewModel.getHabit(it).observe(viewLifecycleOwner, Observer { habitModel ->
-                bind.habitModel = habitModel
-                habitModel?.alarm?.let { alarm ->
-                    alarmObservable.alarm = alarm
-                    alarmObservable.isOn = true
-                    logD { "Habit(${habitId}) alarm : $alarm" }
-                }
-            })
-        }
+    private fun setUpDataBinding() {
+        val habitId = arguments?.get(ARG_ID) as Long
+        viewModel.getHabit(habitId).observe(viewLifecycleOwner, Observer { model ->
+            habitModel = (model ?: DailyHabit.create(requireContext())).apply {
+                alarm = ensureAlarm(habitId, alarm)
+            }
+            bind.habitModel = habitModel
+            logD { "habitId : $habitId, model:$habitModel" }
+        })
         bind.alarmModel = alarmObservable
+        bind.ui = this
     }
 
-    private fun setUpToolbar() {
-        activity.setSupportActionBar(bind.toolbar)
-        activity.supportActionBar?.apply {
-            setDisplayShowCustomEnabled(false)
-            setDisplayShowTitleEnabled(true)
-            setDisplayHomeAsUpEnabled(true)
-            title = activity.getString(R.string.make_a_habit)
-        }
-
-        setHasOptionsMenu(true)
-    }
-
-    private fun setUpColorPicker() {
-        bind.colorPicker.setOnClickListener {
-            ColorPickerDialog.newBuilder()
-                .create()
-                .apply {
-                    setColorPickerDialogListener(object : ColorPickerDialogListener {
-                        override fun onDialogDismissed(dialogId: Int) {}
-                        override fun onColorSelected(dialogId: Int, color: Int) {
-                            Log.e("TEST-DH", Integer.toHexString(color))
-                            bind.color.imageTintList = ColorStateList.valueOf(color)
-                        }
-                    })
-                }
-                .show(activity.supportFragmentManager, "color-picker-dialog")
-        }
-    }
+    private fun ensureAlarm(habitId: Long, alarm: Alarm?) = alarm?.also { it ->
+        alarmObservable.alarm = it
+        alarmObservable.isOn = true
+        logD { "Habit(${habitId}) alarm : $it" }
+    } ?: alarmObservable.alarm
 
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.create_daily_schedule_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.done -> {
-                viewModel.insert(
-                    DailyHabit(
-                        id = bind.habitModel?.id ?: 0,
-                        title = bind.titleEditor.text.toString(),
-                        color = bind.color.imageTintList!!.defaultColor,
-                        memo = bind.memoEditor.text.toString(),
-                        startTime = DateUtils.msDateOnlyFrom(),
-                        finishTime = DateUtils.msDateOnlyFrom(66),
-                        alarm = alarmObservable.alarm
-                    )
-                )
-                logD { "Alarm  : ${alarmObservable.alarm}" }
-                popBackStack()
-                true
+    fun onColorPickerClick(view: View) {
+        ColorPickerDialog.newBuilder()
+            .create()
+            .apply {
+                setColorPickerDialogListener(object : ColorPickerDialogListener {
+                    override fun onDialogDismissed(dialogId: Int) {}
+                    override fun onColorSelected(dialogId: Int, color: Int) {
+                        Log.e("TEST-DH", Integer.toHexString(color))
+                        bind.color.background = ColorDrawable(color)
+                        habitModel.color = color
+                    }
+                })
             }
-            R.id.cancel -> {
-                popBackStack()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
+            .show(activity.supportFragmentManager, "color-picker-dialog")
     }
+
+    fun onDatePickClick(view: View) {
+        val tv = view as TextView
+        TimePickerDialogFragment.with(
+            minDate = msDateOnlyFrom(),
+            currDate = strYmdToLong(tv.text.toString(), systemLocale()),
+            useTime = false
+        ).show(
+            parentFragmentManager,
+            Observer {
+                tv.setUnderlineText(DateUtils.toYMD(it, systemLocale()))
+            }
+        )
+    }
+
+    fun onTimePickClick(view: View) {
+        val tv = view as TextView
+        TimePickerDialogFragment.with(
+            useDate = false
+        ).show(
+            parentFragmentManager,
+            Observer {
+                tv.setUnderlineText(DateUtils.toTime(it, systemLocale()))
+                alarmObservable.alarmTime = it
+            }
+        )
+    }
+
+    fun onDoneClick() {
+        if (bind.titleEditor.text.isNullOrEmpty()) {
+            return
+        }
+
+        viewModel.insert(
+            DailyHabit(
+                id = habitModel.id,
+                title = bind.titleEditor.text.toString(),
+                color = habitModel.color,
+                memo = bind.memoEditor.text.toString(),
+                start = strYmdToLong(bind.startDate.text.toString(), systemLocale()),
+                until = strYmdToLong(bind.endDate.text.toString(), systemLocale()),
+                alarm = alarmObservable.alarm
+            )
+        )
+        logD { "Alarm  : ${alarmObservable.alarm}" }
+        popBackStack()
+    }
+
+    fun onCancelClick() {
+        popBackStack()
+    }
+
 }
 

@@ -21,8 +21,8 @@ import com.dd.android.dailysimple.daily.DailyViewType.Companion.SCHEDULE_ITEM
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.SIMPLE_HEADER
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.TODO_ITEM
 import com.dd.android.dailysimple.daily.viewholders.*
-import com.dd.android.dailysimple.daily.viewmodel.DailyHabitHeader
-import com.dd.android.dailysimple.db.data.DailyHabit
+import com.dd.android.dailysimple.daily.viewmodel.DailyCalendarModel
+import com.dd.android.dailysimple.db.data.DailyHabitWithCheckStatus
 import com.dd.android.dailysimple.db.data.DailyTodo
 import com.dd.android.dailysimple.provider.calendar.ScheduleItemModel
 import java.util.*
@@ -66,11 +66,11 @@ enum class IdBase(val viewType: Int, val idBase: Long) {
 
 private val ViewTypeIdBaseMap = mapOf(
     Pair(DailySimpleHeaderItem::class.java, IdBase.SIMPLE_HEADER),
-    Pair(DailyHabitHeader::class.java, IdBase.HABIT_HEADER),
+    Pair(DailyCalendarModel::class.java, IdBase.HABIT_HEADER),
     Pair(DailyEmptyItemModel::class.java, IdBase.EMPTY_ITEM),
     Pair(ScheduleItemModel::class.java, IdBase.SCHEDULE_ITEM),
     Pair(DailyTodo::class.java, IdBase.TODO_ITEM),
-    Pair(DailyHabit::class.java, IdBase.HABIT_ITEM),
+    Pair(DailyHabitWithCheckStatus::class.java, IdBase.HABIT_ITEM),
     Pair(DailyTodoGroup::class.java, IdBase.OVERDUE_TODO_GROUP)
 )
 
@@ -138,12 +138,8 @@ class DailyAdapter(
             SCHEDULE_ITEM -> DailyScheduleItemHolder(parent)
             TODO_ITEM -> DailyTodoItemHolder(parent, viewModelStoreOwner)
             OVERDUE_TODO_GROUP -> DailyTodoGroupHolder(parent)
-            HABIT_ITEM -> DailyHabitItemHolder(
-                parent,
-                lifecycleOwner,
-                viewModelStoreOwner,
-                navController,
-                sharedScrollStatus
+            HABIT_ITEM -> DailyHabitItemHolder2(
+                parent, viewModelStoreOwner, navController
             )
             else -> throw IllegalArgumentException("Unknown viewType:$viewType")
         }

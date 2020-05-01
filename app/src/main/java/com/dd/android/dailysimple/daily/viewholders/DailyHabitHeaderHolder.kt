@@ -12,13 +12,13 @@ import com.dd.android.dailysimple.common.recycler.ItemModel
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
 import com.dd.android.dailysimple.daily.DayDateAdapter
 import com.dd.android.dailysimple.daily.DayDateItemModel
-import com.dd.android.dailysimple.daily.viewmodel.DailyHabitHeader
+import com.dd.android.dailysimple.daily.viewmodel.DailyCalendarModel
 import com.dd.android.dailysimple.databinding.DailyHabitHeaderItemBinding
 
 class DailyHabitHeaderHolder(
     parent: ViewGroup, private val lifecycleOwner: LifecycleOwner
 ) :
-    ViewHolder2<DailyHabitHeaderItemBinding, DailyHabitHeader>(
+    ViewHolder2<DailyHabitHeaderItemBinding, DailyCalendarModel>(
         parent,
         R.layout.daily_habit_header_item,
         BR.itemModel

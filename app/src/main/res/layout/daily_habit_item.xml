@@ -18,9 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/rounded_view_background"
-            android:paddingStart="@dimen/basic_view_margin_horizontal_small"
+            android:paddingStart="@dimen/basic_view_margin_horizontal_tiny_small"
             android:paddingTop="5dp"
-            android:paddingEnd="@dimen/basic_view_margin_horizontal_small"
+            android:paddingEnd="@dimen/basic_view_margin_horizontal_tiny_small"
             android:paddingBottom="5dp">
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -38,7 +38,7 @@
                 style="@style/BasicTextDpNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/basic_view_margin_horizontal_small"
+                android:layout_marginStart="@dimen/basic_view_margin_horizontal_tiny_small"
                 android:text="@string/delete"
                 android:textColor="@color/appWhite"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -60,7 +60,7 @@
                 style="@style/BasicTextDpNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/basic_view_margin_horizontal_small"
+                android:layout_marginEnd="@dimen/basic_view_margin_horizontal_tiny_small"
                 android:text="@string/edit"
                 android:textColor="@color/appWhite"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -74,9 +74,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_view_background"
             android:foreground="@drawable/ripple_list_item"
-            android:paddingStart="@dimen/basic_view_margin_horizontal_small"
+            android:paddingStart="@dimen/basic_view_margin_horizontal_tiny_small"
             android:paddingTop="5dp"
-            android:paddingEnd="@dimen/basic_view_margin_horizontal_small"
+            android:paddingEnd="@dimen/basic_view_margin_horizontal_tiny_small"
             android:paddingBottom="5dp">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -92,7 +92,7 @@
                 style="@style/BasicTextDpNormal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/basic_view_margin_horizontal_small"
+                android:layout_marginStart="@dimen/basic_view_margin_horizontal_tiny_small"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:singleLine="true"

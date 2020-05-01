@@ -105,8 +105,8 @@ class CalendarProviderHelper(
 
     fun getTodayEvents() =
         getEvents(
-            DateUtils.msDateOnlyFrom() + 1,
-            DateUtils.msDateOnlyFrom(date = 1) - 1
+            DateUtils.msDateOnlyFrom(timezone = utcTimeZone) + 1,
+            DateUtils.msDateOnlyFrom(date = 1, timezone = utcTimeZone) - 1
         )
 
     fun getEvents(beginTime: Long, endTime: Long): LiveData<List<ScheduleItemModel>> {

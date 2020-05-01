@@ -2,7 +2,9 @@ package com.dd.android.dailysimple.db.data
 
 import androidx.annotation.IntDef
 import androidx.room.ColumnInfo
-
+import androidx.room.Ignore
+import com.dd.android.dailysimple.common.di.systemLocale
+import com.dd.android.dailysimple.common.utils.DateUtils.toTime
 import com.dd.android.dailysimple.db.data.Alarm.Days.Companion.FRI
 import com.dd.android.dailysimple.db.data.Alarm.Days.Companion.MON
 import com.dd.android.dailysimple.db.data.Alarm.Days.Companion.NONE
@@ -18,9 +20,12 @@ import com.dd.android.dailysimple.db.data.Alarm.Power.Companion.WEAK
 data class Alarm(
     var repeat: Boolean = false,
     @ColumnInfo(name = "alarm_days") var alarmDays: Int = NONE,
-    @ColumnInfo(name = "alarm_time") var alarmTime: Int = 0,
+    @ColumnInfo(name = "alarm_time") var alarmTime: Long = 0,
     @ColumnInfo(name = "alarm_power") var alarmPower: Int = NORMAL
 ) {
+
+    @Ignore
+    fun formattedAlarmTime() = toTime(alarmTime, systemLocale())
 
     @IntDef(WEAK, NORMAL, STRONG)
     annotation class Power {

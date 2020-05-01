@@ -9,6 +9,7 @@ import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.appDb
 import com.dd.android.dailysimple.common.di.getString
 import com.dd.android.dailysimple.common.recycler.ItemModel
+import com.dd.android.dailysimple.common.utils.DateUtils
 import com.dd.android.dailysimple.daily.DailyConst.EMPTY_ITEM_ID_HABIT
 import com.dd.android.dailysimple.daily.DailyConst.SIMPLE_HEADER_ID_HABIT
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.HABIT_ITEM
@@ -20,6 +21,7 @@ import com.dd.android.dailysimple.db.DailyHabitRepository
 import com.dd.android.dailysimple.db.data.DailyHabit
 import kotlinx.coroutines.launch
 
+
 class HabitViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository by lazy {
@@ -30,6 +32,7 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
         )
     }
 
+
     val header = liveData {
         emit(
             DailySimpleHeaderItem(
@@ -39,22 +42,31 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
         )
     }
 
-    val allHabits = Transformations.map(repository.allHabits) { habits ->
-        if (habits.isEmpty()) {
-            listOf(
-                DailyEmptyItemModel(
-                    EMPTY_ITEM_ID_HABIT,
-                    HABIT_ITEM,
-                    getString(R.string.no_habit_message)
+    val selectedDate = liveData {
+        emit(DateUtils.msDateOnlyFrom())
+    } as MutableLiveData<Long>
+
+    val allHabits = Transformations.switchMap(selectedDate) {
+        Transformations.map(repository.allHabits) { habits ->
+            if (habits.isEmpty()) {
+                listOf(
+                    DailyEmptyItemModel(
+                        EMPTY_ITEM_ID_HABIT,
+                        HABIT_ITEM,
+                        getString(R.string.no_habit_message)
+                    )
                 )
-            )
-        } else {
-            habits
+            } else {
+                habits
+            }
         }
     }
 
     fun getHabit(habitId: Long) = repository.getHabit(habitId)
 
+    fun toggleIt(habitId: Long) = viewModelScope.launch {
+        repository.toggleIt(habitId)
+    }
 
     /**
      * The implementation of insert() in the database is completely hidden from the UI.
@@ -72,7 +84,7 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
     }
 }
 
-data class DailyHabitHeader(private val app: Application) : ItemModel {
+data class DailyCalendarModel(private val app: Application) : ItemModel {
     override val id: Long = -1L
 
     private val _year = MutableLiveData<String>()

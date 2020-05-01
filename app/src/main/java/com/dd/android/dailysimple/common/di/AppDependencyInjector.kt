@@ -2,6 +2,7 @@ package com.dd.android.dailysimple.common.di
 
 import android.app.Application
 import android.content.Context
+import android.content.res.Resources
 import androidx.annotation.StringRes
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.db.AppDatabase
@@ -38,7 +39,7 @@ val appContext: Context = DependencyInjector.appContext
 
 val appResources: Resources = appContext.resources
 
-fun getString(@StringRes strResId:Int) = appContext.getString(strResId)
+fun getString(@StringRes strResId: Int) = appContext.getString(strResId)
 
 fun systemLocale(): Locale = DependencyInjector.provideLocale()
 

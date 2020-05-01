@@ -21,7 +21,9 @@
     <string name="title">제목</string>
     <string name="memo">메모</string>
     <string name="start">시작</string>
-    <string name="finish">완료</string>
+    <string name="repeat">반복</string>
+    <string name="end">완료</string>
+    <string name="infinite">무기한</string>
     <string name="alarm">알람</string>
 
     <string name="every_day">매일</string>
@@ -47,6 +49,7 @@
     <string name="november">11월</string>
     <string name="december">12월</string>
 
+    <string name="today">오늘</string>
     <string name="sunday">일</string>
     <string name="monday">월</string>
     <string name="tuesday">화</string>
@@ -59,6 +62,9 @@
     <string name="days">%d 일</string>
     <string name="all_day">하루종일</string>
 
+    <string name="abb_month">월</string>
+    <string name="abb_week">주</string>
+    <string name="abb_day">일</string>
     <string name="abb_hour">시간</string>
     <string name="abb_minute">분</string>
     <string name="abb_second">초</string>

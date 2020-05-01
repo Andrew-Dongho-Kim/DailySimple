@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="ui"
+            type="com.dd.android.dailysimple.common.TimePickerDialogFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rounded_view_background"
+        android:paddingBottom="@dimen/basic_view_margin_vertical">
+
+        <CalendarView
+            android:id="@+id/calendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:onDateChanged="@{ui.onSelectedDateChanged}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/basic_divider_size"
+            android:background="@color/basic_divider_background"
+            app:layout_constraintTop_toBottomOf="@id/calendar" />
+
+        <TimePicker
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:timePickerMode="spinner"
+            app:onTimeChanged="@{ui.onTimeChanged}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider1" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/basic_divider_size"
+            android:background="@color/basic_divider_background"
+            app:layout_constraintTop_toBottomOf="@id/time" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/cancel"
+            style="@style/BasicTextDpTinyBig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical"
+            android:layout_marginEnd="@dimen/basic_view_margin_horizontal_big"
+            android:layout_marginBottom="@dimen/basic_view_margin_vertical"
+            android:background="@drawable/rounded_view_background"
+            android:foreground="@drawable/ripple_list_item"
+            android:onClick="@{view-> ui.onCancelClicked()}"
+            android:paddingStart="@dimen/basic_view_margin_horizontal"
+            android:paddingTop="@dimen/basic_view_margin_vertical"
+            android:paddingEnd="@dimen/basic_view_margin_horizontal"
+            android:paddingBottom="@dimen/basic_view_margin_vertical"
+            android:text="@string/cancel"
+            app:layout_constraintEnd_toStartOf="@id/done"
+            app:layout_constraintTop_toBottomOf="@id/divider2" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/done"
+            style="@style/BasicTextDpTinyBig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical"
+            android:layout_marginEnd="@dimen/basic_view_margin_horizontal_big"
+            android:layout_marginBottom="@dimen/basic_view_margin_vertical"
+            android:background="@drawable/rounded_view_background"
+            android:foreground="@drawable/ripple_list_item"
+            android:onClick="@{view-> ui.onDoneClicked()}"
+            android:paddingStart="@dimen/basic_view_margin_horizontal"
+            android:paddingTop="@dimen/basic_view_margin_vertical"
+            android:paddingEnd="@dimen/basic_view_margin_horizontal"
+            android:paddingBottom="@dimen/basic_view_margin_vertical"
+            android:text="@string/done"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider2" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

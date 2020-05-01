@@ -12,10 +12,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="5dp"
+        android:paddingStart="@dimen/basic_view_margin_horizontal_small"
         android:paddingTop="5dp"
         android:paddingEnd="5dp"
-        android:paddingBottom="5dp">
+        android:paddingBottom="@dimen/basic_view_margin_horizontal_small">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/date"
@@ -26,7 +26,6 @@
             android:gravity="center"
             android:singleLine="true"
             android:text="@{itemModel.date}"
-            android:textColor="@{itemModel.holiday ? @android:color/holo_red_dark : @color/basic_text1_color}"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/day"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +48,6 @@
             android:gravity="center"
             android:singleLine="true"
             android:text="@{itemModel.day}"
-            android:textColor="@{itemModel.holiday ? @android:color/holo_red_dark : @color/basic_text1_color}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/date"
             app:layout_constraintStart_toStartOf="@id/date"

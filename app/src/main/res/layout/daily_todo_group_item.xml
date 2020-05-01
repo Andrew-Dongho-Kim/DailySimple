@@ -41,7 +41,7 @@
             style="@style/BasicTextDpNormal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/basic_view_margin_horizontal_small"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal_tiny_small"
             android:gravity="center_vertical"
             android:text="@{itemModel.message}"
             app:layout_constraintBottom_toBottomOf="parent"

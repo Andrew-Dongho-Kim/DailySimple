@@ -1,7 +1,7 @@
 package com.dd.android.dailysimple.daily
 
 object DailyConst {
-    const val NO_ID = -1L
+    const val NO_ID = 0L
 
     // SIMPLE HEADER
     const val SIMPLE_HEADER_ID_SCHEDULE = -1L

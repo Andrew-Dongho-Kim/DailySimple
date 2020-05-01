@@ -10,14 +10,15 @@
 
         <variable
             name="itemModel"
-            type="com.dd.android.dailysimple.daily.viewmodel.DailyHabitHeader" />
+            type="com.dd.android.dailysimple.daily.viewmodel.DailyCalendarModel" />
     </data>
 
     <com.dd.android.dailysimple.common.widget.CollapsibleToolbar
         android:id="@+id/collapsible_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="110dp"
+        android:background="@drawable/daily_simple_calendar_background"
+        android:minHeight="@dimen/daily_calendar_toolbar_height_min"
         app:layoutDescription="@xml/scene_daily_tool_bar"
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
@@ -70,11 +71,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/basic_view_margin_vertical"
             android:fontFamily="sans-serif-condensed-medium"
-            android:paddingStart="@dimen/basic_view_margin_horizontal_small"
+            android:paddingStart="@dimen/basic_view_margin_horizontal_tiny_small"
             android:paddingTop="@dimen/basic_view_margin_vertical_small"
-            android:paddingEnd="@dimen/basic_view_margin_horizontal_small"
+            android:paddingEnd="@dimen/basic_view_margin_horizontal_tiny_small"
             android:paddingBottom="@dimen/basic_view_margin_vertical_small"
-            android:text="2020년 4월"
+            android:text="2020년 5월"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/calendar"
             app:layout_constraintEnd_toEndOf="parent"
@@ -84,10 +85,10 @@
             android:id="@+id/calendar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/basic_view_margin_vertical_small"
-            android:layout_marginBottom="@dimen/basic_view_margin_vertical_small"
-            android:paddingStart="@dimen/basic_view_margin_horizontal_small"
-            android:paddingEnd="@dimen/basic_view_margin_horizontal_small"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical_tiny_small"
+            android:layout_marginBottom="@dimen/basic_view_margin_vertical_tiny_small"
+            android:paddingStart="@dimen/basic_view_margin_horizontal_tiny_small"
+            android:paddingEnd="@dimen/basic_view_margin_horizontal_tiny_small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

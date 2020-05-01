@@ -17,25 +17,31 @@ import com.dd.android.dailysimple.HomeFragmentDirections
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.BaseFragment
 import com.dd.android.dailysimple.common.FabViewModel
-import com.dd.android.dailysimple.daily.viewmodel.DailyHabitHeader
+import com.dd.android.dailysimple.common.OnDateChangedListener
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
+import com.dd.android.dailysimple.daily.DailyConst.NO_ID
+import com.dd.android.dailysimple.daily.viewmodel.DailyCalendarModel
+import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
+import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
 import com.dd.android.dailysimple.databinding.FragmentScheduleCommonBinding
 import com.dd.android.dailysimple.google.GoogleAccountViewModel
 import com.dd.android.dailysimple.plan.ScheduleCardItemDecoration
 
 
-class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>() {
+class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>(), OnDateChangedListener {
 
-    private lateinit var fabModel: FabViewModel
+    private lateinit var fabVm: FabViewModel
+    private lateinit var todoVm: TodoViewModel
+    private lateinit var habitVm: HabitViewModel
 
-    private lateinit var calendarModel: DailyHabitHeader
+    private lateinit var calendarModel: DailyCalendarModel
 
     override val layout: Int = R.layout.fragment_schedule_common
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        fabModel = ViewModelProvider(activity).get(FabViewModel::class.java)
-        calendarModel = DailyHabitHeader(activity.application)
-
+        setStatusBarColor(R.color.basic_common_background)
         setUpViewModel()
+        setUpObserver()
         setUpHeader()
         setUpContent()
         setUpFab()
@@ -43,11 +49,25 @@ class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>() {
         setHasOptionsMenu(true)
     }
 
-    private fun setUpViewModel() {
-        bind.accountViewModel = activity.viewModels<GoogleAccountViewModel>().value
-        bind.fabModel = fabModel
+    override fun onDateChanged() {
+        val date = msDateOnlyFrom()
+        todoVm.selectedDate.postValue(date)
+        habitVm.selectedDate.postValue(date)
     }
 
+    private fun setUpViewModel() {
+        fabVm = ViewModelProvider(activity).get(FabViewModel::class.java)
+        todoVm = ViewModelProvider(activity).get(TodoViewModel::class.java)
+        habitVm = ViewModelProvider(activity).get(HabitViewModel::class.java)
+        calendarModel = DailyCalendarModel(activity.application)
+
+        bind.accountViewModel = activity.viewModels<GoogleAccountViewModel>().value
+        bind.fabModel = fabVm
+    }
+
+    private fun setUpObserver() {
+        dateChangedObserver.addOnDateChangedListener(this)
+    }
 
     private fun setUpHeader() {
         val recycler = bind.customToolbar.calendar
@@ -100,20 +120,20 @@ class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>() {
     }
 
     private fun setUpFab() {
-        fabModel.fab1Text.postValue(getString(R.string.make_a_habit))
-        fabModel.fab2Text.postValue(getString(R.string.make_a_todo))
+        fabVm.fab1Text.postValue(getString(R.string.make_a_habit))
+        fabVm.fab2Text.postValue(getString(R.string.make_a_todo))
 
-        fabModel.onFab1Click = {
+        fabVm.onFab1Click = {
             navController.navigate(
-                HomeFragmentDirections.homeToMakeAndEditHabit(-1)
+                HomeFragmentDirections.homeToMakeAndEditHabit(NO_ID)
             )
         }
-        fabModel.onFab2Click = {
+        fabVm.onFab2Click = {
             navController.navigate(
-                HomeFragmentDirections.homeToMakeAndEditTodo(-1)
+                HomeFragmentDirections.homeToMakeAndEditTodo(NO_ID)
             )
         }
-        fabModel.isOpen.observe(viewLifecycleOwner, Observer { opened ->
+        fabVm.isOpen.observe(viewLifecycleOwner, Observer { opened ->
             with(bind.fabLayout) {
                 fabAdd.animate().rotation(if (opened) 45f else 0f)
 

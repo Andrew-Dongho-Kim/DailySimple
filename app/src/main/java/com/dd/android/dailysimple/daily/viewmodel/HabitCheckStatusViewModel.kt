@@ -84,7 +84,7 @@ class HabitCheckStatusViewModel : ViewModel() {
         habitId: Long
     ): LiveData<List<CheckStatus>> {
         return cacheLiveData[habitId]
-            ?: checkStatusDao.getAllCheckStatus(habitId).also {
+            ?: checkStatusDao.getAllChecked(habitId).also {
                 cacheLiveData.put(habitId, it)
             }
     }

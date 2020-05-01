@@ -24,8 +24,10 @@
     <string name="title">Title</string>
     <string name="memo">Memo</string>
     <string name="alarm">Alarm</string>
-    <string name="start">Begin</string>
-    <string name="finish">Finish</string>
+    <string name="start">Start</string>
+    <string name="repeat">Repeat</string>
+    <string name="end">End</string>
+    <string name="infinite">Infinite</string>
 
     <string name="every_day">Every day</string>
     <string name="every_week">Every week</string>
@@ -53,6 +55,7 @@
     <string name="november">NOV</string>
     <string name="december">DEC</string>
 
+    <string name="today">Today</string>
     <string name="sunday">SU</string>
     <string name="monday">MO</string>
     <string name="tuesday">TU</string>
@@ -69,6 +72,9 @@
     <string name="days">%d days</string>
     <string name="all_day">All day</string>
 
+    <string name="abb_month">M</string>
+    <string name="abb_week">W</string>
+    <string name="abb_day">D</string>
     <string name="abb_hour">h</string>
     <string name="abb_minute">m</string>
     <string name="abb_second">s</string>

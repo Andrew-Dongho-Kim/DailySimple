@@ -4,6 +4,8 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/appPrimary</item>
+        <item name="android:textColorPrimary">@color/basic_text1_color</item>
+        <item name="android:textColorSecondary">@color/basic_text2_color</item>
         <item name="android:colorPrimary">@color/appPrimary</item>
         <item name="colorPrimaryDark">@color/appPrimaryDark</item>
         <item name="android:colorPrimaryDark">@color/appPrimaryDark</item>
