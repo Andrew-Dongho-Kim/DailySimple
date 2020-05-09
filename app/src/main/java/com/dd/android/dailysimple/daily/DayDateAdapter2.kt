@@ -1,25 +1,34 @@
 package com.dd.android.dailysimple.daily
 
+import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
+import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
+import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
+import com.dd.android.dailysimple.databinding.DailyCalendarItemBinding
+
+typealias scrollTo = (Int) -> Unit
 
 class DayDateAdapter2(
-    private val lifecycleOwner: LifecycleOwner
+    private val lifecycleOwner: LifecycleOwner,
+    private val viewModelStoreOwner: ViewModelStoreOwner,
+    private val scrollTo: scrollTo
 ) : PagedListAdapter<DayDateItemModel, DayDateViewHolder2>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        DayDateViewHolder2(parent).also {
+        DayDateViewHolder2(parent, viewModelStoreOwner, scrollTo).also {
             it.bind.lifecycleOwner = lifecycleOwner
         }
 
     override fun onBindViewHolder(holder: DayDateViewHolder2, position: Int) {
-        holder.bind.setVariable(holder.variableId, getItem(position))
+        holder.bindTo(getItem(position)!!)
     }
 
     companion object {
@@ -40,9 +49,45 @@ class DayDateAdapter2(
     }
 }
 
-class DayDateViewHolder2(parent: ViewGroup) :
-    ViewHolder2<ViewDataBinding, DayDateItemModel>(
+class DayDateViewHolder2(
+    parent: ViewGroup,
+    viewModelStoreOwner: ViewModelStoreOwner,
+    private val scrollTo: scrollTo
+) :
+    ViewHolder2<DailyCalendarItemBinding, DayDateItemModel>(
         parent,
         R.layout.daily_calendar_item,
         BR.itemModel
+    ) {
+
+    private val habitVm = ViewModelProvider(viewModelStoreOwner).get(
+        HabitViewModel::class.java
     )
+
+    private val todoVm = ViewModelProvider(viewModelStoreOwner).get(
+        TodoViewModel::class.java
+    )
+
+    init {
+        itemClickListener = ::onClick
+    }
+
+    fun onClick(view: View) {
+        model?.let {
+            val date = it.id
+            habitVm.selectedDate.postValue(date)
+            todoVm.selectedDate.postValue(date)
+            scrollTo(adapterPosition)
+
+            it.isSelected.postValue(true)
+            if (SELECTED != it) {
+                SELECTED?.isSelected?.postValue(false)
+                SELECTED = it
+            }
+        }
+    }
+
+    companion object {
+        private var SELECTED: DayDateItemModel? = null
+    }
+}

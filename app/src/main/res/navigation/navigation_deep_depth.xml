@@ -39,6 +39,14 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+
+        <action
+            android:id="@+id/home_to_daily_calendar"
+            app:destination="@id/daily_calendar_fragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -48,6 +56,13 @@
         <argument
             android:name="planId"
             app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/daily_calendar_fragment"
+        android:name="com.dd.android.dailysimple.daily.calendar.DailyCalendarFragment"
+        tools:layout="@layout/fragment_daily_calendar">
+
     </fragment>
 
     <fragment

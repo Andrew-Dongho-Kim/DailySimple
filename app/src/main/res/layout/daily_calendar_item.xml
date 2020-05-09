@@ -16,8 +16,7 @@
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/basic_view_margin_horizontal"
         android:paddingTop="@dimen/basic_view_margin_vertical_small"
-        android:paddingEnd="@dimen/basic_view_margin_horizontal"
-        android:paddingBottom="@dimen/basic_view_margin_vertical_small">
+        android:paddingEnd="@dimen/basic_view_margin_horizontal">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/today"
@@ -47,13 +46,14 @@
             app:layout_constraintStart_toStartOf="@id/date"
             app:layout_constraintTop_toBottomOf="@id/today" />
 
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/date"
             style="@style/BasicHeaderTextDpTinyBig"
             android:layout_width="@dimen/daily_calendar_item_width"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/basic_view_margin_vertical_small"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:duplicateParentState="true"
             android:gravity="center"
             android:singleLine="true"
             android:text="@{itemModel.date}"
@@ -61,6 +61,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/day" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/daily_calendar_item_selector_height"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical_small"
+            android:background="@color/appPrimary"
+            android:visibility="@{itemModel.isSelected ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/date" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

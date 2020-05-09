@@ -1,5 +1,7 @@
 package com.dd.android.dailysimple.daily
 
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.getString
 import com.dd.android.dailysimple.common.recycler.ItemModel
@@ -20,6 +22,10 @@ data class DayDateItemModel(
     val day = getString(DAYS[calendarFrom(id).get(DAY_OF_WEEK) - 1])
 
     val isToday = (id == msDateOnlyFrom())
+
+    val isSelected = liveData {
+        emit(false)
+    } as MutableLiveData<Boolean>
 
     companion object {
 

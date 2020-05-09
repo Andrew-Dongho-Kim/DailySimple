@@ -80,27 +80,34 @@ class TodoViewModel(app: Application) : AndroidViewModel(app) {
         it.listLiveData
     }
 
-    val wholeTodo = Transformations.map(
-        DailyMergeItem(
-            overdueGroup,
-            overdueGroupChild,
-            currTodo,
-            upcomingGroup,
-            upcomingGroupChild
-        )
-    ) { todoList ->
-        if (todoList.isEmpty()) {
-            listOf(
-                DailyEmptyItemModel(
-                    EMPTY_ITEM_ID_TODO,
-                    TODO_ITEM,
-                    getString(R.string.no_todo_message)
+    val wholeTodo = Transformations.switchMap(selectedDate) { time ->
+        Transformations.map(
+            if (time == msDateOnlyFrom()) {
+                DailyMergeItem(
+                    overdueGroup,
+                    overdueGroupChild,
+                    currTodo,
+                    upcomingGroup,
+                    upcomingGroupChild
                 )
-            )
-        } else {
-            todoList
+            } else {
+                currTodo
+            }
+        ) { todoList ->
+            if (todoList.isEmpty()) {
+                listOf(
+                    DailyEmptyItemModel(
+                        EMPTY_ITEM_ID_TODO,
+                        TODO_ITEM,
+                        getString(R.string.no_todo_message)
+                    )
+                )
+            } else {
+                todoList
+            }
         }
     }
+
 
     /**
      * A ViewModelScope id defined for each ViewModel in your app

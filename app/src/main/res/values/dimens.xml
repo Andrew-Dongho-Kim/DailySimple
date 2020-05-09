@@ -60,6 +60,7 @@
 
     <!-- Calendar item -->
     <dimen name="daily_calendar_item_width">24dp</dimen>
+    <dimen name="daily_calendar_item_selector_height">3dp</dimen>
 
     <!-- Day Date Stroke -->
 

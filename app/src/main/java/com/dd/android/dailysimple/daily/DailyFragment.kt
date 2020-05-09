@@ -1,6 +1,7 @@
 package com.dd.android.dailysimple.daily
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dd.android.dailysimple.HomeFragmentDirections
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.BaseFragment
+import com.dd.android.dailysimple.common.CenterScrollLinearLayoutManager
 import com.dd.android.dailysimple.common.FabViewModel
 import com.dd.android.dailysimple.common.OnDateChangedListener
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
@@ -70,15 +72,26 @@ class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>(), OnDateChang
     }
 
     private fun setUpHeader() {
+        bind.customToolbar.ymText.setOnClickListener {
+            navController.navigate(
+                HomeFragmentDirections.homeToDailyCalendar()
+            )
+        }
         val recycler = bind.customToolbar.calendar
 
-        val layoutManager = LinearLayoutManager(context)
+        val layoutManager = CenterScrollLinearLayoutManager(requireContext())
             .apply {
                 orientation = RecyclerView.HORIZONTAL
                 reverseLayout = true
             }
 
-        val adapter = DayDateAdapter2(viewLifecycleOwner)
+        val adapter = DayDateAdapter2(
+            viewLifecycleOwner,
+            activity,
+            { pos ->
+                recycler.smoothScrollToPosition(pos)
+                Log.d("TEST-DH", "Scroll to :$pos")
+            })
         val observer = Observer<PagedList<DayDateItemModel>> { adapter.submitList(it) }
 
         recycler.adapter = adapter
