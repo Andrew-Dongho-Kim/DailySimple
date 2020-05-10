@@ -1,4 +1,4 @@
-package com.dd.android.dailysimple.common
+package com.dd.android.dailysimple.maker
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData
@@ -15,11 +15,13 @@ class FabViewModel : ViewModel() {
         emit(false)
     } as MutableLiveData<Boolean>
 
-    val fab1Text = MutableLiveData<String>()
+    val isKeyboardOpened = liveData {
+        emit(false)
+    } as MutableLiveData<Boolean>
 
-    val fab2Text = MutableLiveData<String>()
-
-    val fab3Text = MutableLiveData<String>()
+    val text1 = MutableLiveData<String>()
+    val text2 = MutableLiveData<String>()
+    val text3 = MutableLiveData<String>()
 
     var onFab1Click: onClick? = null
         set(onClick) {
@@ -42,6 +44,14 @@ class FabViewModel : ViewModel() {
                 toggle()
             }
         }
+
+    fun onFabAddClick(view: View) {
+        if (isKeyboardOpened.value == true) {
+
+        } else {
+            toggle(view)
+        }
+    }
 
     @JvmOverloads
     fun toggle(view: View? = null) {

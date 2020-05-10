@@ -8,7 +8,7 @@
 
         <variable
             name="fabModel"
-            type="com.dd.android.dailysimple.common.FabViewModel" />
+            type="com.dd.android.dailysimple.maker.FabViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,27 +16,152 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <View
+            android:id="@+id/simple_maker_background"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/common_stroke_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/simple_maker_top" />
+
+        <Space
+            android:id="@+id/simple_maker_top"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/basic_view_margin_vertical_small"
+            app:layout_constraintBottom_toTopOf="@id/fab_add" />
+
+        <com.dd.android.dailysimple.common.widget.ClearFocusEditText
+            android:id="@+id/simple_maker"
+            style="@style/BasicTextDpTinyBig"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical_small"
+            android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
+            android:layout_marginBottom="@dimen/basic_view_margin_vertical_small"
+            android:background="@drawable/rounded_view_background"
+            android:hint="간편 작업 만들기"
+            android:paddingStart="@dimen/basic_view_margin_horizontal"
+            android:paddingTop="@dimen/basic_view_margin_vertical_small"
+            android:paddingEnd="@dimen/basic_view_margin_horizontal"
+            android:paddingBottom="@dimen/basic_view_margin_vertical_small"
+            app:layout_constraintBottom_toBottomOf="@id/simple_maker_background"
+            app:layout_constraintEnd_toStartOf="@id/fab_add"
+            app:layout_constraintStart_toStartOf="@id/simple_maker_background"
+            app:layout_constraintTop_toTopOf="@id/simple_maker_background" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_simple_make_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{fabModel.isKeyboardOpened ? View.VISIBLE : View.GONE}"
+            app:constraint_referenced_ids="simple_make_detail_background,
+            simple_make_detail_type1, simple_make_detail_type2, simple_make_detail_type3" />
+
+        <View
+            android:id="@+id/simple_make_detail_background"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/common_stroke_background"
+            app:layout_constraintBottom_toBottomOf="@id/simple_make_detail_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/simple_maker_top2" />
+
+        <Space
+            android:id="@+id/simple_make_detail_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/basic_view_margin_vertical_small"
+            app:layout_constraintBottom_toTopOf="@id/simple_maker_background" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/simple_make_detail_type1"
+            style="@style/BasicTextDpNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal"
+            android:background="@drawable/rounded_view_background"
+            android:foreground="@drawable/ripple_list_item"
+            android:onClick="@{view->fabModel.onFab1Click.invoke(view)}"
+            android:paddingStart="@dimen/basic_view_margin_horizontal"
+            android:paddingTop="@dimen/basic_view_margin_vertical_small"
+            android:paddingEnd="@dimen/basic_view_margin_horizontal"
+            android:paddingBottom="@dimen/basic_view_margin_vertical_small"
+            android:text="@{fabModel.text1}"
+            android:visibility="@{fabModel.onFab1Click != null ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/simple_make_detail_background"
+            app:layout_constraintStart_toStartOf="@id/simple_make_detail_background"
+            app:layout_constraintTop_toTopOf="@id/simple_make_detail_background" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/simple_make_detail_type2"
+            style="@style/BasicTextDpNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal"
+            android:background="@drawable/rounded_view_background"
+            android:foreground="@drawable/ripple_list_item"
+            android:onClick="@{view->fabModel.onFab2Click.invoke(view)}"
+            android:paddingStart="@dimen/basic_view_margin_horizontal"
+            android:paddingTop="@dimen/basic_view_margin_vertical_small"
+            android:paddingEnd="@dimen/basic_view_margin_horizontal"
+            android:paddingBottom="@dimen/basic_view_margin_vertical_small"
+            android:text="@{fabModel.text2}"
+            android:visibility="@{fabModel.onFab2Click != null ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/simple_make_detail_background"
+            app:layout_constraintStart_toEndOf="@id/simple_make_detail_type1"
+            app:layout_constraintTop_toTopOf="@id/simple_make_detail_background" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/simple_make_detail_type3"
+            style="@style/BasicTextDpNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal"
+            android:background="@drawable/rounded_view_background"
+            android:foreground="@drawable/ripple_list_item"
+            android:onClick="@{view->fabModel.onFab3Click.invoke(view)}"
+            android:paddingStart="@dimen/basic_view_margin_horizontal"
+            android:paddingTop="@dimen/basic_view_margin_vertical_small"
+            android:paddingEnd="@dimen/basic_view_margin_horizontal"
+            android:paddingBottom="@dimen/basic_view_margin_vertical_small"
+            android:text="@{fabModel.text3}"
+            android:visibility="@{fabModel.onFab3Click != null ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/simple_make_detail_background"
+            app:layout_constraintStart_toEndOf="@id/simple_make_detail_type2"
+            app:layout_constraintTop_toTopOf="@id/simple_make_detail_background" />
+
+        <Space
+            android:id="@+id/simple_maker_top2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/basic_view_margin_vertical_small"
+            app:layout_constraintBottom_toTopOf="@id/simple_make_detail_type1" />
+
         <FrameLayout
             android:id="@+id/fab_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:alpha="@{fabModel.isOpen()? 1f : 0f}"
-            android:background="@color/appBlackAlpha" />
+            android:background="@color/appBlackAlpha"
+            android:visibility="visible" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
-            android:layout_marginBottom="@dimen/basic_view_margin_vertical"
-            android:backgroundTint="#5a9bff"
+            android:backgroundTint="@{fabModel.isKeyboardOpened? @color/appWhite : @color/appPrimary}"
             android:onClick="@{(view)->fabModel.toggle()}"
-            android:src="@drawable/ic_add_black"
-            android:tint="@color/appWhite"
+            android:src="@{fabModel.isKeyboardOpened? @drawable/ic_arrow_upward : @drawable/ic_add_black}"
+            android:tint="@{fabModel.isKeyboardOpened? @color/appPrimary : @color/appWhite}"
             app:elevation="5dp"
-            app:fabSize="normal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:fabSize="mini"
+            app:layout_constraintBottom_toBottomOf="@id/simple_maker_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/simple_maker"
+            app:layout_constraintTop_toTopOf="@id/simple_maker_background" />
 
         <androidx.constraintlayout.widget.Group
             android:layout_width="wrap_content"
@@ -51,7 +176,7 @@
             android:layout_marginBottom="@dimen/basic_view_margin_vertical_big"
             android:backgroundTint="@color/basic_view_background"
             android:onClick="@{(view)-> fabModel.onFab1Click.invoke(view)}"
-            android:src="@drawable/ic_edit"
+            android:src="@drawable/ic_habit"
             android:tint="@color/appPrimary"
             app:elevation="5dp"
             app:fabSize="mini"
@@ -65,7 +190,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
-            android:text="@{fabModel.fab1Text}"
+            android:text="@{fabModel.text1}"
             android:textColor="@color/appWhite"
             app:layout_constraintBottom_toBottomOf="@id/sub_fab_1"
             app:layout_constraintEnd_toStartOf="@id/sub_fab_1"
@@ -84,7 +209,7 @@
             android:layout_marginBottom="@dimen/basic_view_margin_vertical_big"
             android:backgroundTint="@color/basic_view_background"
             android:onClick="@{(view)-> fabModel.onFab2Click.invoke(view)}"
-            android:src="@drawable/ic_add_black"
+            android:src="@drawable/ic_todo"
             android:tint="@color/appPrimary"
             app:elevation="5dp"
             app:fabSize="mini"
@@ -98,7 +223,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
-            android:text="@{fabModel.fab2Text}"
+            android:text="@{fabModel.text2}"
             android:textColor="@color/appWhite"
             app:layout_constraintBottom_toBottomOf="@id/sub_fab_2"
             app:layout_constraintEnd_toStartOf="@id/sub_fab_2"
@@ -117,7 +242,7 @@
             android:layout_marginBottom="@dimen/basic_view_margin_vertical_big"
             android:backgroundTint="@color/basic_view_background"
             android:onClick="@{(view)-> fabModel.onFab3Click.invoke(view)}"
-            android:src="@drawable/ic_add_black"
+            android:src="@drawable/ic_schedule"
             android:tint="@color/appPrimary"
             app:elevation="5dp"
             app:fabSize="mini"
@@ -131,7 +256,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
-            android:text="@{fabModel.fab3Text}"
+            android:text="@{fabModel.text3}"
             android:textColor="@color/appWhite"
             app:layout_constraintBottom_toBottomOf="@id/sub_fab_3"
             app:layout_constraintEnd_toStartOf="@id/sub_fab_3"

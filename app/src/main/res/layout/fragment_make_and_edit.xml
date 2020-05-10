@@ -8,26 +8,31 @@
 
         <import type="com.dd.android.dailysimple.common.utils.DateUtils" />
 
+        <import type="com.dd.android.dailysimple.db.data.DailyHabit" />
+
         <import type="com.dd.android.dailysimple.common.di.AppDependencyInjectorKt" />
+
+        <variable
+            name="ui"
+            type="com.dd.android.dailysimple.daily.edit.MakeAndEditFragment" />
 
         <variable
             name="alarmModel"
             type="com.dd.android.dailysimple.daily.edit.observable.AlarmObservable" />
 
         <variable
-            name="todoModel"
-            type="com.dd.android.dailysimple.db.data.DailyTodo" />
+            name="content"
+            type="com.dd.android.dailysimple.daily.edit.EditContent" />
     </data>
 
-    <androidx.constraintlayout.motion.widget.MotionLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="@dimen/basic_view_margin_vertical"
-            app:layout_constraintBottom_toTopOf="@id/cancel"
+            app:layout_constraintBottom_toTopOf="@id/done"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.appbar.AppBarLayout
@@ -37,131 +42,160 @@
                 android:background="@android:color/transparent"
                 android:stateListAnimator="@animator/show_toolbar">
 
-                <com.google.android.material.appbar.CollapsingToolbarLayout
+                <com.dd.android.dailysimple.common.widget.CollapsibleToolbar
+                    android:id="@+id/collapsible_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
-                    app:collapsedTitleTextAppearance="@style/CollapsingTitleStyle"
-                    app:contentScrim="@color/basic_common_background"
-                    app:expandedTitleTextAppearance="@style/ExpandedTitleStyle"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                    app:scrimAnimationDuration="200"
-                    app:toolbarId="@id/toolbar">
+                    android:background="@drawable/make_and_edit_title_background"
+                    android:minHeight="@dimen/make_and_edit_habit_title_height_min"
+                    android:paddingStart="@dimen/basic_view_margin_horizontal_tiny_big"
+                    android:paddingTop="@dimen/make_and_edit_habit_title_margin_top"
+                    android:paddingEnd="@dimen/basic_view_margin_horizontal_tiny_big"
+                    android:paddingBottom="@dimen/basic_view_margin_vertical"
+                    app:layoutDescription="@xml/scene_make_and_edit"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/type"
+                        style="@style/BasicTextDpTinySmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:text="@{content.type}"
+                        android:textColor="@color/appPrimary"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/toolbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
-                        app:contentInsetStartWithNavigation="0dp"
-                        app:layout_collapseMode="pin"
-                        app:menu="@menu/daily_menu" />
-                </com.google.android.material.appbar.CollapsingToolbarLayout>
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/title_editor"
+                        style="@style/BasicTextDpBig"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:ellipsize="end"
+                        android:gravity="top|start"
+                        android:hint="@string/title"
+                        android:minHeight="@dimen/make_and_edit_habit_title_height"
+                        android:text="@{content.title}"
+                        android:textColor="@color/basic_header_text_color"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/type" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/start"
+                        style="@style/BasicTextDpTinyBig"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/basic_view_margin_vertical"
+                        android:text="@string/start"
+                        android:textColor="@color/basic_header_text_color"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/title_editor" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/start_date"
+                        style="@style/BasicTextDpTinyBig"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/basic_view_margin_vertical_small"
+                        android:background="@drawable/ripple_list_item"
+                        android:onClick="@{ui::onDatePickClick}"
+                        android:paddingStart="@dimen/basic_view_margin_horizontal_tiny_small"
+                        android:paddingTop="@dimen/basic_view_margin_vertical_small"
+                        android:paddingEnd="@dimen/basic_view_margin_horizontal_tiny_small"
+                        android:paddingBottom="@dimen/basic_view_margin_vertical_small"
+                        android:textColor="@color/basic_header_text_color"
+                        app:layout_constraintBottom_toBottomOf="@id/start"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/start"
+                        app:underlineText="@{content.formattedStart}" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/end"
+                        style="@style/BasicTextDpTinyBig"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/basic_view_margin_vertical"
+                        android:text="@string/end"
+                        android:textColor="@color/basic_header_text_color"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/start" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/end_date"
+                        style="@style/BasicTextDpTinyBig"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/ripple_list_item"
+                        android:onClick="@{ui::onDatePickClick}"
+                        android:paddingStart="@dimen/basic_view_margin_horizontal_tiny_small"
+                        android:paddingTop="@dimen/basic_view_margin_vertical_small"
+                        android:paddingEnd="@dimen/basic_view_margin_horizontal_tiny_small"
+                        android:paddingBottom="@dimen/basic_view_margin_vertical_small"
+                        android:textColor="@color/basic_header_text_color"
+                        app:layout_constraintBottom_toBottomOf="@id/end"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/end"
+                        app:underlineText="@{content.formattedEnd}" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/repeat"
+                        style="@style/BasicTextDpTinyBig"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/basic_view_margin_vertical"
+                        android:text="@string/repeat"
+                        android:textColor="@color/basic_header_text_color"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/end" />
+
+                    <View
+                        android:id="@+id/color"
+                        android:layout_width="@dimen/make_and_edit_habit_color_width"
+                        android:layout_height="@dimen/make_and_edit_habit_color_height"
+                        android:layout_marginTop="@dimen/make_and_edit_habit_color_picker_icon_margin_top"
+                        android:background="@{content.color}"
+                        app:layout_constraintBottom_toBottomOf="@id/color_picker"
+                        app:layout_constraintStart_toStartOf="@id/title_editor" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/color_picker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/make_and_edit_habit_color_picker_icon_margin_top"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{ui::onColorPickerClick}"
+                        android:src="@drawable/ic_color"
+                        android:tint="@color/basic_icon_background"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/repeat" />
+
+                </com.dd.android.dailysimple.common.widget.CollapsibleToolbar>
+
             </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingTop="@dimen/basic_view_margin_vertical"
+                android:paddingBottom="@dimen/basic_view_margin_vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingStart="@dimen/basic_view_margin_horizontal"
-                    android:paddingEnd="@dimen/basic_view_margin_horizontal">
+                    android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/rounded_view_background"
-                        android:paddingStart="@dimen/basic_view_margin_horizontal"
+                        android:background="@drawable/rounded_view_background_big"
+                        android:paddingStart="@dimen/basic_view_margin_horizontal_tiny_big"
                         android:paddingTop="@dimen/basic_view_margin_vertical"
-                        android:paddingEnd="@dimen/basic_view_margin_horizontal"
+                        android:paddingEnd="@dimen/basic_zero_dp"
                         android:paddingBottom="@dimen/basic_view_margin_vertical">
-
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/title_editor"
-                            style="@style/BasicTextDpBig"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/basic_view_margin_vertical"
-                            android:background="@android:color/transparent"
-                            android:ellipsize="end"
-                            android:hint="@string/title"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:text="@{todoModel.title}"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/color_picker"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/make_and_edit_habit_color_picker_icon_margin_top"
-                            android:background="?android:attr/selectableItemBackgroundBorderless"
-                            android:src="@drawable/ic_color"
-                            android:tint="@color/basic_icon_background"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/title_editor" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/basic_view_margin_vertical"
-                        android:background="@drawable/rounded_view_background"
-                        android:paddingStart="@dimen/basic_view_margin_horizontal"
-                        android:paddingTop="@dimen/basic_view_margin_vertical"
-                        android:paddingEnd="@dimen/basic_view_margin_horizontal"
-                        android:paddingBottom="@dimen/basic_view_margin_vertical">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/start"
-                            style="@style/BasicTextDpTinyBig"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/basic_view_margin_vertical"
-                            android:text="@string/start"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/start_date"
-                            style="@style/BasicTextDpTinyBig"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="@{todoModel==null ? DateUtils.INSTANCE.todayYMD(AppDependencyInjectorKt.systemLocale()) : DateUtils.INSTANCE.toYMD(todoModel.start, AppDependencyInjectorKt.systemLocale())}"
-                            app:layout_constraintBottom_toBottomOf="@id/start"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/start" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/end"
-                            style="@style/BasicTextDpTinyBig"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/basic_view_margin_vertical"
-                            android:text="@string/end"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/start" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/end_date"
-                            style="@style/BasicTextDpTinyBig"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="@{todoModel==null ? DateUtils.INSTANCE.todayAfterYMD(66, AppDependencyInjectorKt.systemLocale()) : DateUtils.INSTANCE.toYMD(todoModel.until, AppDependencyInjectorKt.systemLocale())}"
-                            app:layout_constraintBottom_toBottomOf="@id/end"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/end" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/alarm"
@@ -170,13 +204,15 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/basic_view_margin_vertical_small"
                             android:text="@string/alarm"
+                            android:textColor="@color/basic_header_text_color"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/end" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/alarm_switcher"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/basic_view_margin_vertical_big"
                             android:checked="@{alarmModel.on}"
                             app:layout_constraintBottom_toBottomOf="@id/alarm"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -204,7 +240,6 @@
                             android:id="@+id/repeat_icon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/make_and_edit_habit_icon_margin_horizontal"
                             android:layout_marginTop="@dimen/basic_view_margin_vertical"
                             android:src="@drawable/ic_repeat"
                             android:tint="@color/basic_icon_background"
@@ -214,8 +249,9 @@
                         <androidx.appcompat.widget.AppCompatSpinner
                             android:id="@+id/repeat_spinner"
                             style="@style/Widget.AppCompat.DropDownItem.Spinner"
-                            android:layout_width="@dimen/make_and_edit_habit_spinner_width"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/basic_view_margin_horizontal_small"
                             android:entries="@array/alarm_repeat"
                             app:layout_constraintBottom_toBottomOf="@id/repeat_icon"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -225,7 +261,6 @@
                             android:id="@+id/alarm_power_icon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/make_and_edit_habit_icon_margin_horizontal"
                             android:layout_marginTop="@dimen/basic_view_margin_vertical_big"
                             android:src="@drawable/ic_volume"
                             android:tint="@color/basic_icon_background"
@@ -235,8 +270,9 @@
                         <androidx.appcompat.widget.AppCompatSpinner
                             android:id="@+id/time_spinner"
                             style="@style/Widget.AppCompat.DropDownItem.Spinner"
-                            android:layout_width="@dimen/make_and_edit_habit_spinner_width"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/basic_view_margin_horizontal_small"
                             android:entries="@array/alarm_power"
                             app:layout_constraintBottom_toBottomOf="@id/alarm_power_icon"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -248,7 +284,6 @@
                             android:id="@+id/time_icon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/make_and_edit_habit_icon_margin_horizontal"
                             android:layout_marginTop="@dimen/basic_view_margin_vertical_big"
                             android:src="@drawable/ic_time"
                             android:tint="@color/basic_icon_background"
@@ -258,26 +293,29 @@
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/time_text"
                             style="@style/BasicTextDpTinyBig"
-                            android:layout_width="@dimen/make_and_edit_habit_text_width"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:paddingStart="0dp"
-                            android:paddingEnd="@dimen/basic_view_margin_horizontal"
-                            android:text="@{DateUtils.INSTANCE.toTime(DateUtils.INSTANCE.msTimeOnlyFrom(1), AppDependencyInjectorKt.systemLocale())}"
+                            android:layout_marginEnd="@dimen/basic_view_margin_horizontal_small"
+                            android:foreground="@drawable/ripple_list_item"
+                            android:gravity="center_vertical|end"
+                            android:onClick="@{ui::onTimePickClick}"
+                            android:paddingStart="@dimen/basic_zero_dp"
+                            android:paddingEnd="@dimen/basic_view_margin_horizontal_tiny_big"
+                            android:textColor="@color/basic_header_text_color"
                             app:layout_constraintBottom_toBottomOf="@id/time_icon"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/time_icon" />
-
+                            app:layout_constraintTop_toTopOf="@id/time_icon"
+                            app:underlineText="@{DateUtils.INSTANCE.toTime(alarmModel.alarmTime, AppDependencyInjectorKt.systemLocale())}" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/basic_view_margin_vertical"
-                        android:background="@drawable/rounded_view_background"
-                        android:paddingStart="@dimen/basic_view_margin_horizontal"
+                        android:background="@drawable/rounded_view_background_big"
+                        android:paddingStart="@dimen/basic_view_margin_horizontal_tiny_big"
                         android:paddingTop="@dimen/basic_view_margin_vertical"
-                        android:paddingEnd="@dimen/basic_view_margin_horizontal"
+                        android:paddingEnd="@dimen/basic_view_margin_horizontal_tiny_big"
                         android:paddingBottom="@dimen/basic_view_margin_vertical">
 
                         <androidx.appcompat.widget.AppCompatEditText
@@ -292,7 +330,8 @@
                             android:hint="@string/memo"
                             android:lineSpacingMultiplier="1.5"
                             android:minHeight="@dimen/make_and_edit_habit_memo_min_height"
-                            android:text="@{todoModel.memo}"
+                            android:text="@{content.memo}"
+                            android:textColor="@color/basic_header_text_color"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -323,23 +362,25 @@
             </androidx.core.widget.NestedScrollView>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/basic_divider_size"
+            android:background="@color/basic_divider_background"
+            app:layout_constraintBottom_toTopOf="@id/cancel" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/cancel"
             style="@style/BasicTextDpTinyBig"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/basic_view_margin_horizontal_big"
-            android:layout_marginTop="@dimen/basic_view_margin_vertical"
-            android:layout_marginEnd="@dimen/basic_view_margin_horizontal_big"
-            android:layout_marginBottom="@dimen/basic_view_margin_vertical"
-            android:background="@drawable/rounded_view_background"
             android:foreground="@drawable/ripple_list_item"
             android:gravity="center"
-            android:paddingStart="@dimen/basic_view_margin_horizontal"
-            android:paddingTop="@dimen/basic_view_margin_vertical"
-            android:paddingEnd="@dimen/basic_view_margin_horizontal"
-            android:paddingBottom="@dimen/basic_view_margin_vertical"
+            android:onClick="@{view-> ui.onCancelClick()}"
+            android:paddingTop="@dimen/basic_view_margin_vertical_tiny_big"
+            android:paddingBottom="@dimen/basic_view_margin_vertical_tiny_big"
             android:text="@string/cancel"
+            android:textColor="@color/appPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/done"
             app:layout_constraintHorizontal_weight="1"
@@ -350,21 +391,16 @@
             style="@style/BasicTextDpTinyBig"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/basic_view_margin_vertical"
-            android:layout_marginEnd="@dimen/basic_view_margin_horizontal_big"
-            android:layout_marginBottom="@dimen/basic_view_margin_vertical"
-            android:background="@drawable/rounded_view_background"
             android:foreground="@drawable/ripple_list_item"
             android:gravity="center"
-            android:paddingStart="@dimen/basic_view_margin_horizontal"
-            android:paddingTop="@dimen/basic_view_margin_vertical"
-            android:paddingEnd="@dimen/basic_view_margin_horizontal"
-            android:paddingBottom="@dimen/basic_view_margin_vertical"
+            android:onClick="@{view-> ui.onDoneClick()}"
+            android:paddingTop="@dimen/basic_view_margin_vertical_tiny_big"
+            android:paddingBottom="@dimen/basic_view_margin_vertical_tiny_big"
             android:text="@string/done"
+            android:textColor="@color/appPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@id/cancel" />
-
-    </androidx.constraintlayout.motion.widget.MotionLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

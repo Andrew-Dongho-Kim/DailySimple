@@ -25,16 +25,8 @@
             app:popExitAnim="@android:anim/slide_out_right" />
 
         <action
-            android:id="@+id/home_to_make_and_edit_habit"
-            app:destination="@id/make_and_edit_habit_fragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
-
-        <action
-            android:id="@+id/home_to_make_and_edit_todo"
-            app:destination="@id/make_and_edit_todo_fragment"
+            android:id="@+id/home_to_make_and_edit"
+            app:destination="@id/make_and_edit_fragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
@@ -75,20 +67,15 @@
     </fragment>
 
     <fragment
-        android:id="@+id/make_and_edit_habit_fragment"
-        android:name="com.dd.android.dailysimple.daily.edit.MakeAndEditHabitFragment"
-        tools:layout="@layout/fragment_make_daily_habit">
+        android:id="@+id/make_and_edit_fragment"
+        android:name="com.dd.android.dailysimple.daily.edit.MakeAndEditFragment"
+        tools:layout="@layout/fragment_make_and_edit">
         <argument
-            android:name="habitId"
+            android:name="id"
             app:argType="long" />
+        <argument
+            android:name="type"
+            app:argType="integer" />
     </fragment>
 
-    <fragment
-        android:id="@+id/make_and_edit_todo_fragment"
-        android:name="com.dd.android.dailysimple.daily.edit.MakeAndEditTodoFragment"
-        tools:layout="@layout/fragment_make_daily_todo">
-        <argument
-            android:name="todoId"
-            app:argType="long" />
-    </fragment>
 </navigation>

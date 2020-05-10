@@ -26,12 +26,20 @@
             app:layout_constraintTop_toBottomOf="@id/repeat" />
 
         <Constraint
+            android:id="@+id/type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
             android:id="@+id/title_editor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:minHeight="@dimen/make_and_edit_habit_title_height"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/type" />
 
         <Constraint
             android:id="@+id/start"
@@ -105,12 +113,21 @@
             app:layout_constraintTop_toBottomOf="@id/repeat" />
 
         <Constraint
+            android:id="@+id/type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:translationY="@dimen/make_and_edit_habit_title_y_movement"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
             android:id="@+id/title_editor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:translationY="@dimen/make_and_edit_habit_title_y_movement"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/type" />
 
         <Constraint
             android:id="@+id/start"

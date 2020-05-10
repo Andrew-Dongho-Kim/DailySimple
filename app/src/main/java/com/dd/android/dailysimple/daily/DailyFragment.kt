@@ -18,27 +18,26 @@ import com.dd.android.dailysimple.HomeFragmentDirections
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.BaseFragment
 import com.dd.android.dailysimple.common.CenterScrollLinearLayoutManager
-import com.dd.android.dailysimple.common.FabViewModel
 import com.dd.android.dailysimple.common.OnDateChangedListener
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
-import com.dd.android.dailysimple.daily.DailyConst.NO_ID
 import com.dd.android.dailysimple.daily.viewmodel.DailyCalendarModel
 import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
 import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
-import com.dd.android.dailysimple.databinding.FragmentScheduleCommonBinding
+import com.dd.android.dailysimple.databinding.FragmentDailyBinding
 import com.dd.android.dailysimple.google.GoogleAccountViewModel
+import com.dd.android.dailysimple.maker.MakeAndEditBottom
+import com.dd.android.dailysimple.maker.FabViewModel
 import com.dd.android.dailysimple.plan.ScheduleCardItemDecoration
 
 
-class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>(), OnDateChangedListener {
+class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListener {
 
     private lateinit var fabVm: FabViewModel
     private lateinit var todoVm: TodoViewModel
     private lateinit var habitVm: HabitViewModel
-
     private lateinit var calendarModel: DailyCalendarModel
 
-    override val layout: Int = R.layout.fragment_schedule_common
+    override val layout: Int = R.layout.fragment_daily
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setStatusBarColor(R.color.basic_common_background)
@@ -46,7 +45,13 @@ class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>(), OnDateChang
         setUpObserver()
         setUpHeader()
         setUpContent()
-        setUpFab()
+        MakeAndEditBottom(
+            requireContext(),
+            bind.fabLayout,
+            fabVm,
+            viewLifecycleOwner,
+            navController
+        )
 
         setHasOptionsMenu(true)
     }
@@ -132,31 +137,6 @@ class DailyFragment : BaseFragment<FragmentScheduleCommonBinding>(), OnDateChang
         recycler.setUpCache()
     }
 
-    private fun setUpFab() {
-        fabVm.fab1Text.postValue(getString(R.string.make_a_habit))
-        fabVm.fab2Text.postValue(getString(R.string.make_a_todo))
-
-        fabVm.onFab1Click = {
-            navController.navigate(
-                HomeFragmentDirections.homeToMakeAndEditHabit(NO_ID)
-            )
-        }
-        fabVm.onFab2Click = {
-            navController.navigate(
-                HomeFragmentDirections.homeToMakeAndEditTodo(NO_ID)
-            )
-        }
-        fabVm.isOpen.observe(viewLifecycleOwner, Observer { opened ->
-            with(bind.fabLayout) {
-                fabAdd.animate().rotation(if (opened) 45f else 0f)
-
-                fabRoot.setOnClickListener(if (opened) ::blockTouch else null)
-                fabRoot.isClickable = opened
-            }
-        })
-    }
-
-    private fun blockTouch(view: View) {}
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.daily_menu, menu)

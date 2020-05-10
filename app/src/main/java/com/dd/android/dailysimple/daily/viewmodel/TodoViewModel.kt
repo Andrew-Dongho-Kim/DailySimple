@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
  * class just to load the data. The purpose of ViewModel is to encapsulate
  * the data for a UI controller to let the data survive configuration changes.
  */
-class TodoViewModel(app: Application) : AndroidViewModel(app) {
+class TodoViewModel(private val app: Application) : AndroidViewModel(app) {
 
     private val repository by lazy {
         val db = appDb()
@@ -59,7 +59,16 @@ class TodoViewModel(app: Application) : AndroidViewModel(app) {
     private val overdueTodo = repository.overdueTodo()
 
     private val overdueGroup = Transformations.map(overdueTodo) {
-        DailyTodoGroup(OVERDUE_TODO_GROUP, isOverdueExpanded, it)
+        DailyTodoGroup(
+            OVERDUE_TODO_GROUP,
+            app.resources.getQuantityString(
+                R.plurals.plurals_overdue_task_message,
+                it.size,
+                it.size
+            ),
+            isOverdueExpanded,
+            it
+        )
     }
 
     private val overdueGroupChild = Transformations.switchMap(overdueGroup) {
@@ -73,7 +82,13 @@ class TodoViewModel(app: Application) : AndroidViewModel(app) {
     private val upcomingTodo = repository.upcomingTodo()
 
     private val upcomingGroup = Transformations.map(upcomingTodo) {
-        DailyTodoGroup(UPCOMING_TODO_GROUP, isUpcomingExpanded, it)
+        DailyTodoGroup(
+            UPCOMING_TODO_GROUP, app.resources.getQuantityString(
+                R.plurals.plurals_upcoming_task_message,
+                it.size,
+                it.size
+            ), isUpcomingExpanded, it
+        )
     }
 
     private val upcomingGroupChild = Transformations.switchMap(upcomingGroup) {

@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import com.dd.android.dailysimple.BR
 import com.dd.android.dailysimple.HomeFragmentDirections
+import com.dd.android.dailysimple.HomeFragmentDirections.Companion.homeToMakeAndEdit
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
+import com.dd.android.dailysimple.daily.edit.EditType
 import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
 import com.dd.android.dailysimple.databinding.DailyHabitItem2Binding
 import com.dd.android.dailysimple.db.data.DailyHabitWithCheckStatus
@@ -34,9 +36,7 @@ class DailyHabitItemHolder2(
     }
 
     private fun onItemClick(view: View) {
-        navController.navigate(
-            HomeFragmentDirections.homeToMakeAndEditHabit(model!!.id)
-        )
+        navController.navigate(homeToMakeAndEdit(model!!.id, EditType.HABIT))
     }
 
     private fun onCheckClick(view: View) {

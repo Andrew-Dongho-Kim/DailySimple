@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/daily_fragment"
         android:name="com.dd.android.dailysimple.daily.DailyFragment"
-        tool:layout="@layout/fragment_schedule_common">
+        tool:layout="@layout/fragment_daily">
         <action
             android:id="@+id/to_plan"
             app:destination="@id/plan_fragment"
@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/plan_fragment"
         android:name="com.dd.android.dailysimple.plan.PlanFragment"
-        tool:layout="@layout/fragment_schedule_common">
+        tool:layout="@layout/fragment_daily">
         <action
             android:id="@+id/to_setting"
             app:destination="@id/setting_fragment"

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
 import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
+import com.dd.android.dailysimple.daily.viewmodel.ScheduleViewModel
 import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
 import com.dd.android.dailysimple.databinding.DailyCalendarItemBinding
 
@@ -60,12 +61,16 @@ class DayDateViewHolder2(
         BR.itemModel
     ) {
 
-    private val habitVm = ViewModelProvider(viewModelStoreOwner).get(
-        HabitViewModel::class.java
+    private val scheduleVm = ViewModelProvider(viewModelStoreOwner).get(
+        ScheduleViewModel::class.java
     )
 
     private val todoVm = ViewModelProvider(viewModelStoreOwner).get(
         TodoViewModel::class.java
+    )
+
+    private val habitVm = ViewModelProvider(viewModelStoreOwner).get(
+        HabitViewModel::class.java
     )
 
     init {
@@ -75,6 +80,7 @@ class DayDateViewHolder2(
     fun onClick(view: View) {
         model?.let {
             val date = it.id
+            scheduleVm.selectedDate.postValue(date)
             habitVm.selectedDate.postValue(date)
             todoVm.selectedDate.postValue(date)
             scrollTo(adapterPosition)

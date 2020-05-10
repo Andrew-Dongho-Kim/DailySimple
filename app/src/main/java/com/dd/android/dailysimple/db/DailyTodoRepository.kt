@@ -11,7 +11,7 @@ class DailyTodoRepository(
 
     fun overdueTodo() = dailyTodoDao.getOverdueTodo(msDateOnlyFrom())
 
-    fun upcomingTodo() = dailyTodoDao.getTodo(msDateOnlyFrom(), msDateOnlyFrom(3))
+    fun upcomingTodo() = dailyTodoDao.getTodo(msDateOnlyFrom(1) + 1, msDateOnlyFrom(1) + 1)
 
     fun getTodoInDay(time: Long) = dailyTodoDao.getTodo(time, time + MS_DAY)
 

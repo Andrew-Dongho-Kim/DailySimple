@@ -19,6 +19,7 @@ import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
 import com.dd.android.dailysimple.common.recycler.ViewHolder2.Companion.findViewById
 import com.dd.android.dailysimple.common.recycler.ViewHolder2.Companion.isHeader
+import com.dd.android.dailysimple.daily.edit.EditType
 import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
 import kotlin.math.abs
 
@@ -93,7 +94,7 @@ class DailyItemTouchAction(
 
         if (direction == ItemTouchHelper.LEFT) {
             navController.navigate(
-                HomeFragmentDirections.homeToMakeAndEditHabit(vh.model!!.id)
+                HomeFragmentDirections.homeToMakeAndEdit(vh.model!!.id, EditType.HABIT)
             )
         } else {
             habitVm.delete(vh.model!!.id)

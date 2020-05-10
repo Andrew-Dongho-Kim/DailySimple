@@ -9,8 +9,9 @@ import com.dd.android.dailysimple.common.di.getString
 import com.dd.android.dailysimple.common.di.systemLocale
 import com.dd.android.dailysimple.common.recycler.ItemModel
 import com.dd.android.dailysimple.common.utils.DateUtils.delayRemain
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
 import com.dd.android.dailysimple.common.utils.DateUtils.toRemain
-import java.text.SimpleDateFormat
+import com.dd.android.dailysimple.common.utils.DateUtils.toYMD
 
 
 @Entity(tableName = "daily_todo")
@@ -28,8 +29,10 @@ data class DailyTodo(
     val isOverdue = System.currentTimeMillis() > until
 
     @Ignore
-    val timeStart: String =
-        SimpleDateFormat("a hh:mm", systemLocale()).format(start)
+    val formattedStart = toYMD(start, systemLocale())
+
+    @Ignore
+    val formattedEnd = toYMD(until, systemLocale())
 
     @Ignore
     private val remain = liveData {
@@ -50,12 +53,24 @@ data class DailyTodo(
         }
     }
 
-
     fun toggleDone() {
         done = if (done == ONGOING) DONE else ONGOING
     }
 
     companion object {
+        fun create() = DailyTodo(
+            id = NO_ID,
+            title = "",
+            memo = "",
+            start = msDateOnlyFrom(),
+            until = msDateOnlyFrom(DEFAULT_END),
+            done = ONGOING
+        )
+
+        private const val NO_ID = 0L
+
+        private const val DEFAULT_END = 1
+
         const val ONGOING = 0
         const val DONE = 1
     }

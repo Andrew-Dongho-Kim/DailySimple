@@ -9,7 +9,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.liveData
 import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.common.di.appResources
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
 import com.dd.android.dailysimple.daily.DailyExpandableItem
 import com.dd.android.dailysimple.daily.viewholders.DailyTodoGroup.Companion.iconDegree
@@ -45,11 +44,10 @@ class DailyTodoGroupHolder(parent: ViewGroup) :
 
 data class DailyTodoGroup(
     override val id: Long,
+    val message: String,
     private val expanded: MutableLiveData<Boolean>,
     private val todoList: List<DailyTodo>
 ) : DailyExpandableItem(todoList, expanded) {
-
-    private val size = todoList.size
 
     val isAnimating = liveData {
         emit(false)
@@ -58,9 +56,6 @@ data class DailyTodoGroup(
     val iconDegree = Transformations.map(isExpanded) { isExpanded ->
         iconDegree(isExpanded)
     }
-
-    val message: String =
-        appResources.getQuantityString(R.plurals.plurals_overdue_task_message, size, size)
 
     companion object {
         private const val ROT_EXPANDED = 90f

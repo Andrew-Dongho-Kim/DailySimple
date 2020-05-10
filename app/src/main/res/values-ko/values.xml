@@ -74,6 +74,9 @@
     <string name="overdue_tasks_message">밀린 할 일이 <b><u>%d개</u></b> 있습니다</string>
     <string name="overdue_task_message">밀린 할 일이 <b><u>%d개</u></b> 있습니다</string>
 
+    <string name="upcoming_task_message">곧 해야할 일이 <b>%d개</b> 있습니다</string>
+    <string name="upcoming_tasks_message">곧 해야할 일이 <b>%d개</b> 있습니다</string>
+
     <string name="make_a_habit">습관 만들기</string>
     <string name="make_a_todo">할 일 만들기</string>
 

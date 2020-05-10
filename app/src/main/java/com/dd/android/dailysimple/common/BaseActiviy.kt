@@ -1,6 +1,8 @@
 package com.dd.android.dailysimple.common
 
 import android.content.Intent
+import android.graphics.Rect
+import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
 
 interface OnActivityResultListener {
@@ -65,4 +67,5 @@ abstract class BaseActivity : AppCompatActivity(),
 
     override fun removeOnRequestPermissionResultListener(listener: OnRequestPermissionResultListener) =
         onRequestPermissionResultListeners.remove(listener)
+
 }

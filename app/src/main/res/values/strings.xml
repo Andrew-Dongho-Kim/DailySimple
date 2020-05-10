@@ -86,8 +86,15 @@
         <item quantity="one">@string/overdue_task_message</item>
         <item quantity="other">@string/overdue_tasks_message</item>
     </plurals>
-    <string name="overdue_tasks_message">You have <b><u>%d</u></b> overdue tasks</string>
     <string name="overdue_task_message">You have <b><u>%d</u></b> overdue task</string>
+    <string name="overdue_tasks_message">You have <b><u>%d</u></b> overdue tasks</string>
+
+    <plurals name="plurals_upcoming_task_message">
+        <item quantity="one">@string/upcoming_task_message</item>
+        <item quantity="other">@string/upcoming_tasks_message</item>
+    </plurals>
+    <string name="upcoming_task_message">You have <b>%d</b> upcoming task</string>
+    <string name="upcoming_tasks_message">You have <b>%d</b> upcoming tasks</string>
 
     <string name="make_a_habit">Make a habit</string>
     <string name="make_a_todo">Make a todo</string>

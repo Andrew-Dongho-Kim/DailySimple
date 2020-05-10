@@ -7,7 +7,7 @@
 
         <variable
             name="fabModel"
-            type="com.dd.android.dailysimple.common.FabViewModel" />
+            type="com.dd.android.dailysimple.maker.FabViewModel" />
 
         <variable
             name="accountViewModel"

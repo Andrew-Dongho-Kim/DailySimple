@@ -14,6 +14,7 @@ import androidx.core.os.CancellationSignal
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.dd.android.dailysimple.common.utils.DateUtils
+import com.dd.android.dailysimple.db.data.DailySchedule
 import com.dd.android.dailysimple.provider.calendar.EventReminderMethod.Companion.ALERT
 import com.dd.android.dailysimple.provider.calendar.EventReminderMethod.Companion.DEFAULT
 import com.dd.android.dailysimple.provider.calendar.EventReminderMethod.Companion.EMAIL
@@ -109,7 +110,7 @@ class CalendarProviderHelper(
             DateUtils.msDateOnlyFrom(date = 1, timezone = utcTimeZone) - 1
         )
 
-    fun getEvents(beginTime: Long, endTime: Long): LiveData<List<ScheduleItemModel>> {
+    fun getEvents(beginTime: Long, endTime: Long): LiveData<List<DailySchedule>> {
         val uriBuilder = Instances.CONTENT_URI.buildUpon()
         ContentUris.appendId(uriBuilder, beginTime)
         ContentUris.appendId(uriBuilder, endTime)
@@ -121,24 +122,23 @@ class CalendarProviderHelper(
         )
 
         return liveData {
-            val list = mutableListOf<ScheduleItemModel>()
+            val list = mutableListOf<DailySchedule>()
             if (cursor.moveToFirst()) {
                 do {
                     list.add(
-                        ScheduleItemModel(
+                        DailySchedule(
                             id = cursor.getLong(Instances.EVENT_ID),
                             title = cursor.getString(Instances.TITLE),
-                            begin = Date(cursor.getLong(Instances.BEGIN)),
-                            end = Date(cursor.getLong(Instances.END)),
-                            description = cursor.getString(Instances.DESCRIPTION),
-                            color = cursor.getInt(Instances.DISPLAY_COLOR),
-                            locale = context.resources.configuration.locale
+                            start = cursor.getLong(Instances.BEGIN),
+                            end = cursor.getLong(Instances.END),
+                            memo = cursor.getString(Instances.DESCRIPTION),
+                            color = cursor.getInt(Instances.DISPLAY_COLOR)
                         )
                     )
 
                 } while (cursor.moveToNext())
             }
-            emit(list as List<ScheduleItemModel>)
+            emit(list as List<DailySchedule>)
         }
     }
 

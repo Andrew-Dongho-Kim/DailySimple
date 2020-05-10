@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.dd.android.dailysimple.common.BaseActivity
-import com.dd.android.dailysimple.common.FabViewModel
+import com.dd.android.dailysimple.maker.FabViewModel
 import com.dd.android.dailysimple.google.GoogleAccountController
 import com.dd.android.dailysimple.google.GoogleAccountViewModel
 

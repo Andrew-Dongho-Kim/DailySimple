@@ -6,16 +6,21 @@ import android.view.ViewGroup
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
+import androidx.navigation.NavController
+import com.dd.android.dailysimple.HomeFragmentDirections
+import com.dd.android.dailysimple.HomeFragmentDirections.Companion.homeToMakeAndEdit
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.recycler.ViewHolder2
 import com.dd.android.dailysimple.daily.DailyOverduePopup
+import com.dd.android.dailysimple.daily.edit.EditType
 import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
 import com.dd.android.dailysimple.databinding.DailyTodoItemBinding
 import com.dd.android.dailysimple.db.data.DailyTodo
 
 class DailyTodoItemHolder(
     parent: ViewGroup,
-    private val viewModelStoreOwner: ViewModelStoreOwner
+    private val viewModelStoreOwner: ViewModelStoreOwner,
+    private val navController: NavController
 ) : ViewHolder2<DailyTodoItemBinding, DailyTodo>(
     parent,
     R.layout.daily_todo_item,
@@ -26,10 +31,15 @@ class DailyTodoItemHolder(
     )
 
     init {
-        itemClickListener = ::onClick
+        itemClickListener = ::onItemClick
+        bind.check.setOnClickListener(::onToggleDone)
     }
 
-    private fun onClick(view: View) {
+    private fun onItemClick(view: View) {
+        navController.navigate(homeToMakeAndEdit(model!!.id, EditType.TODO))
+    }
+
+    private fun onToggleDone(view: View) {
         model?.let {
             if (it.isOverdue) {
                 DailyOverduePopup(

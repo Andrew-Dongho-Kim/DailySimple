@@ -24,7 +24,7 @@ import com.dd.android.dailysimple.daily.viewholders.*
 import com.dd.android.dailysimple.daily.viewmodel.DailyCalendarModel
 import com.dd.android.dailysimple.db.data.DailyHabitWithCheckStatus
 import com.dd.android.dailysimple.db.data.DailyTodo
-import com.dd.android.dailysimple.provider.calendar.ScheduleItemModel
+import com.dd.android.dailysimple.db.data.DailySchedule
 import java.util.*
 
 private const val TAG = "DailyAdapter"
@@ -68,7 +68,7 @@ private val ViewTypeIdBaseMap = mapOf(
     Pair(DailySimpleHeaderItem::class.java, IdBase.SIMPLE_HEADER),
     Pair(DailyCalendarModel::class.java, IdBase.HABIT_HEADER),
     Pair(DailyEmptyItemModel::class.java, IdBase.EMPTY_ITEM),
-    Pair(ScheduleItemModel::class.java, IdBase.SCHEDULE_ITEM),
+    Pair(DailySchedule::class.java, IdBase.SCHEDULE_ITEM),
     Pair(DailyTodo::class.java, IdBase.TODO_ITEM),
     Pair(DailyHabitWithCheckStatus::class.java, IdBase.HABIT_ITEM),
     Pair(DailyTodoGroup::class.java, IdBase.OVERDUE_TODO_GROUP)
@@ -85,7 +85,7 @@ fun RecyclerView.setUpCache() {
 }
 
 class DailyScheduleItemHolder(parent: ViewGroup) :
-    ViewHolder2<ViewDataBinding, ScheduleItemModel>(
+    ViewHolder2<ViewDataBinding, DailySchedule>(
         parent,
         R.layout.daily_schedule_item,
         BR.viewModel
@@ -136,7 +136,7 @@ class DailyAdapter(
             }
             EMPTY_ITEM -> DailyEmptyItemHolder(parent, navController)
             SCHEDULE_ITEM -> DailyScheduleItemHolder(parent)
-            TODO_ITEM -> DailyTodoItemHolder(parent, viewModelStoreOwner)
+            TODO_ITEM -> DailyTodoItemHolder(parent, viewModelStoreOwner, navController)
             OVERDUE_TODO_GROUP -> DailyTodoGroupHolder(parent)
             HABIT_ITEM -> DailyHabitItemHolder2(
                 parent, viewModelStoreOwner, navController
