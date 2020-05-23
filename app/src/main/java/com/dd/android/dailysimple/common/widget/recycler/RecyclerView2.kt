@@ -1,4 +1,4 @@
-package com.dd.android.dailysimple.common.recycler
+package com.dd.android.dailysimple.common.widget.recycler
 
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 interface ItemModel {
     val id: Long
 }
-
 
 abstract class RecyclerViewAdapter2(
     private val lifecycleOwner: LifecycleOwner
@@ -36,6 +35,10 @@ abstract class RecyclerViewAdapter2(
         position: Int
     ) {
         holder.bindTo(items[position])
+    }
+
+    override fun getItemId(position: Int): Long {
+        return items[position].id
     }
 
     override fun getItemCount(): Int {

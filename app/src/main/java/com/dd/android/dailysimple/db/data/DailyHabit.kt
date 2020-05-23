@@ -1,16 +1,18 @@
 package com.dd.android.dailysimple.db.data
 
 import android.content.Context
-import androidx.core.content.ContextCompat.getColor
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.room.*
 import com.dd.android.dailysimple.R
+import com.dd.android.dailysimple.common.di.getColor
 import com.dd.android.dailysimple.common.di.getString
 import com.dd.android.dailysimple.common.di.systemLocale
-import com.dd.android.dailysimple.common.recycler.ItemModel
+import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
 import com.dd.android.dailysimple.common.utils.DateUtils.toYMD
+import com.dd.android.dailysimple.common.utils.htmlTextColor
 import com.dd.android.dailysimple.db.data.DailyHabit.CheckTerm.*
 
 class DailyHabitTypeConverters {
@@ -65,7 +67,7 @@ data class DailyHabit(
         fun create(context: Context) = DailyHabit(
             id = NO_ID,
             title = "",
-            color = getColor(context, R.color.appPrimary),
+            color = ContextCompat.getColor(context, R.color.appPrimary),
             start = msDateOnlyFrom(),
             until = msDateOnlyFrom(DEFAULT_END)
         )
@@ -93,7 +95,8 @@ data class CheckStatus(
 
 data class DailyHabitWithCheckStatus(
     val habit: DailyHabit,
-    val checkedList: LiveData<List<CheckStatus>>
+    val checkedList: LiveData<List<CheckStatus>>,
+    val selectedTime:Long
 ) : ItemModel {
 
     @Ignore
@@ -109,7 +112,17 @@ data class DailyHabitWithCheckStatus(
     )
 
     @Ignore
+    val done = Transformations.map(checkedList) {
+        it.isNotEmpty() && it.last().date == selectedTime
+    }
+
+    @Ignore
     val status = Transformations.map(checkedList) {
-        "${it.size}/${habit.checkLimits}"
+        val color = if (it.isEmpty() || it.last().date != selectedTime) {
+            R.color.appDarkGray
+        } else {
+            R.color.appBlack
+        }
+        "${htmlTextColor(it.size.toString(), getColor(color))}/${habit.checkLimits}"
     }
 }

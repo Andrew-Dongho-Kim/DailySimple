@@ -7,7 +7,7 @@ import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.appContext
 import com.dd.android.dailysimple.common.di.getString
 import com.dd.android.dailysimple.common.di.systemLocale
-import com.dd.android.dailysimple.common.recycler.ItemModel
+import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.common.utils.DateUtils.delayRemain
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
 import com.dd.android.dailysimple.common.utils.DateUtils.toRemain
@@ -77,20 +77,43 @@ data class DailyTodo(
 }
 
 
-@Entity(tableName = "daily_todo_sub_job")
-data class DailyTodoSubJob(
+@Entity(tableName = "todo_sub_task")
+data class TodoSubTask(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "sub_job_id")
-    var subJobId: Long,
+    @ColumnInfo(name = "id")
+    override var id: Long,
     @ForeignKey(
         entity = DailyTodo::class,
         parentColumns = ["id"],
-        childColumns = ["daily_todo_id"],
+        childColumns = ["todo_id"],
         onDelete = ForeignKey.CASCADE
     )
-    @ColumnInfo(name = "daily_todo_id")
-    var dailyTodoId: Long,
-    var title: String
+    @ColumnInfo(name = "todo_id")
+    var todoId: Long,
+    var title: String,
+    var state: Int = ONGOING
+) : ItemModel {
+
+    companion object {
+        const val ONGOING = 0
+        const val DONE = 1
+    }
+}
+
+
+@Entity(tableName = "todo_attachment")
+data class TodoAttachment(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    val id: Long,
+    @ForeignKey(
+        entity = DailyTodo::class,
+        parentColumns = ["id"],
+        childColumns = ["todo_id"],
+        onUpdate = ForeignKey.CASCADE,
+        onDelete = ForeignKey.CASCADE
+    )
+    @ColumnInfo(name = "todo_id")
+    val todoId: Long,
+    val uri: String
 )
-
-

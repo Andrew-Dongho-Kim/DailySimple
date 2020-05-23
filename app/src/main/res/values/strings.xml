@@ -21,6 +21,8 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
 
+    <string name="new_item">New</string>
+
     <string name="title">Title</string>
     <string name="memo">Memo</string>
     <string name="alarm">Alarm</string>
@@ -54,6 +56,7 @@
     <string name="october">OCT</string>
     <string name="november">NOV</string>
     <string name="december">DEC</string>
+    <string name="year">%d</string>
 
     <string name="today">Today</string>
     <string name="sunday">SU</string>
@@ -86,15 +89,15 @@
         <item quantity="one">@string/overdue_task_message</item>
         <item quantity="other">@string/overdue_tasks_message</item>
     </plurals>
-    <string name="overdue_task_message">You have <b><u>%d</u></b> overdue task</string>
-    <string name="overdue_tasks_message">You have <b><u>%d</u></b> overdue tasks</string>
+    <string name="overdue_task_message">You have &lt;u>%d&lt;/u>overdue task</string>
+    <string name="overdue_tasks_message">You have &lt;u>%d&lt;/u> overdue tasks</string>
 
     <plurals name="plurals_upcoming_task_message">
         <item quantity="one">@string/upcoming_task_message</item>
         <item quantity="other">@string/upcoming_tasks_message</item>
     </plurals>
-    <string name="upcoming_task_message">You have <b>%d</b> upcoming task</string>
-    <string name="upcoming_tasks_message">You have <b>%d</b> upcoming tasks</string>
+    <string name="upcoming_task_message">You have &lt;u>%d&lt;/u> upcoming task</string>
+    <string name="upcoming_tasks_message">You have &lt;u>%d&lt;/u> upcoming tasks</string>
 
     <string name="make_a_habit">Make a habit</string>
     <string name="make_a_todo">Make a todo</string>

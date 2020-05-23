@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.common.recycler.ViewHolder2
+import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2
 import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
 import com.dd.android.dailysimple.daily.viewmodel.ScheduleViewModel
 import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
@@ -30,6 +30,10 @@ class DayDateAdapter2(
 
     override fun onBindViewHolder(holder: DayDateViewHolder2, position: Int) {
         holder.bindTo(getItem(position)!!)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return getItem(position)!!.id
     }
 
     companion object {

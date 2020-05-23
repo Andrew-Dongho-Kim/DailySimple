@@ -4,11 +4,21 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="com.dd.android.dailysimple.db.data.DailyTodo" />
+
+        <import type="com.dd.android.dailysimple.daily.SelectedDateInfo" />
+
+        <import type="com.dd.android.dailysimple.daily.DailyConst" />
 
         <variable
             name="itemModel"
             type="com.dd.android.dailysimple.db.data.DailyTodo" />
+
+        <variable
+            name="dateInfo"
+            type="com.dd.android.dailysimple.daily.SelectedDateInfo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,9 +36,11 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
+            android:alpha="@{(itemModel.done == DailyTodo.DONE) ?  DailyConst.DIM_ALPHA : DailyConst.NORMAL_ALPHA}"
             android:duplicateParentState="true"
             android:padding="6dp"
             android:scaleType="centerInside"
+            android:visibility="@{dateInfo.state == SelectedDateInfo.FUTURE ? View.GONE : View.VISIBLE}"
             app:checkStatus="@{itemModel.done}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -39,8 +51,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/basic_view_margin_horizontal_tiny_small"
-            android:alpha="@{(itemModel.done == DailyTodo.DONE) ? 0.4f : 1f}"
+            android:alpha="@{(itemModel.done == DailyTodo.DONE) ?  DailyConst.DIM_ALPHA : DailyConst.NORMAL_ALPHA}"
+            android:ellipsize="end"
             android:gravity="center_vertical"
+            android:maxLines="1"
+            android:singleLine="true"
             android:text="@{itemModel.title}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/remain"
@@ -52,6 +67,7 @@
             style="@style/BasicTextDpTinySmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:alpha="@{(itemModel.done == DailyTodo.DONE) ? DailyConst.DIM_ALPHA : DailyConst.NORMAL_ALPHA}"
             android:text="@{itemModel.timeRemain}"
             android:textColor="@color/basic_text2_color"
             android:textStyle="bold"

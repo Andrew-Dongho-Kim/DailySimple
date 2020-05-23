@@ -1,16 +1,17 @@
 package com.dd.android.dailysimple.common.binder
 
+import android.text.Editable
+import android.text.Html
+import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.annotation.DrawableRes
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatSpinner
-import androidx.appcompat.widget.SwitchCompat
+import androidx.appcompat.widget.*
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.dd.android.dailysimple.common.setUnderlineText
+import com.dd.android.dailysimple.common.utils.setUnderlineText
 
 
 @BindingAdapter("app:thumbnail")
@@ -74,6 +75,11 @@ fun onCheckChanged(compound: SwitchCompat, listener: CompoundButton.OnCheckedCha
     compound.setOnCheckedChangeListener(listener)
 }
 
+@BindingAdapter("app:onCheckChanged")
+fun onCheckChanged(compound: AppCompatCheckBox, listener: CompoundButton.OnCheckedChangeListener) {
+    compound.setOnCheckedChangeListener(listener)
+}
+
 @BindingAdapter("app:onDateChanged")
 fun onDateChanged(calendar: CalendarView, listener: CalendarView.OnDateChangeListener) {
     calendar.setOnDateChangeListener(listener)
@@ -93,3 +99,24 @@ fun onEditorAction(textView: TextView, listener: TextView.OnEditorActionListener
 fun setUnderlineText(textView: TextView, text: String?) {
     text?.let { textView.setUnderlineText(it) }
 }
+
+@BindingAdapter("app:spannableText")
+fun setSpannableText(textView: TextView, text: String?) {
+    text?.let { textView.text = Html.fromHtml(it) }
+}
+
+interface OnTextChangeListener {
+    fun onTextChanged(text: String?)
+}
+
+@BindingAdapter("app:onTextChanged")
+fun onTextChanged(editText: AppCompatEditText, listener: OnTextChangeListener) {
+    editText.addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {}
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            listener.onTextChanged(s?.toString() ?: "")
+        }
+    })
+}
+

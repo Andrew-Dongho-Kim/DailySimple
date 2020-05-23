@@ -13,12 +13,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/rounded_bottom_common_background"
         android:paddingStart="@dimen/basic_view_margin_horizontal"
         android:paddingTop="@dimen/basic_view_margin_vertical"
         android:paddingEnd="@dimen/basic_view_margin_horizontal"
         android:paddingBottom="@dimen/basic_view_margin_vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/header_text"
             style="@style/BasicHeaderTextDpTinyBig"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

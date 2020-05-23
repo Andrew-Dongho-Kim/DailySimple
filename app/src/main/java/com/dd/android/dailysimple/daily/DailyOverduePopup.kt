@@ -44,7 +44,7 @@ class DailyOverduePopup(
     }
 
     private fun onDeleteClick(view: View) {
-        toVm.delete(todoId)
+        toVm.deleteTodo(todoId)
         dismiss()
     }
 }

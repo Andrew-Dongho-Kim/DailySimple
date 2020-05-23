@@ -3,7 +3,7 @@ package com.dd.android.dailysimple.daily
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.dd.android.dailysimple.common.recycler.ItemModel
+import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 
 abstract class DailyExpandableItem(
     val children: List<ItemModel>,

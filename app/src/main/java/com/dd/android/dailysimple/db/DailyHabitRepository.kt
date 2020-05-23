@@ -15,8 +15,7 @@ class DailyHabitRepository(
     private val checkStatusDao: CheckStatusDao
 ) {
 
-    val allHabits =
-        dailyHabitDao.getHabitsWithCheckStatus()
+    fun getHabits(time:Long) = dailyHabitDao.getHabitsWithCheckStatus(time)
 
     fun getHabit(habitId: Long) =
         dailyHabitDao.getHabit(habitId)

@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.liveData
 import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.common.recycler.ViewHolder2
+import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2
 import com.dd.android.dailysimple.daily.DailyExpandableItem
 import com.dd.android.dailysimple.daily.viewholders.DailyTodoGroup.Companion.iconDegree
 import com.dd.android.dailysimple.databinding.DailyTodoGroupItemBinding

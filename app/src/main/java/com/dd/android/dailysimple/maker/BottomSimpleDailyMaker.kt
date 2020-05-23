@@ -11,7 +11,7 @@ import com.dd.android.dailysimple.daily.DailyConst.NO_ID
 import com.dd.android.dailysimple.daily.edit.EditType
 import com.dd.android.dailysimple.databinding.FabLayoutCommonBinding
 
-class MakeAndEditBottom(
+class BottomSimpleDailyMaker(
     private val context: Context,
     private val fabBind: FabLayoutCommonBinding,
     private val fabVm: FabViewModel,
@@ -25,9 +25,6 @@ class MakeAndEditBottom(
     }
 
     private fun FabViewModel.setUpEdit() {
-        isKeyboardOpened.observe(viewLifecycleOwner, Observer { opened ->
-
-        })
         fabBind.simpleMaker.setOnFocusChangeListener { _, hasFocus ->
             isKeyboardOpened.postValue(hasFocus)
         }

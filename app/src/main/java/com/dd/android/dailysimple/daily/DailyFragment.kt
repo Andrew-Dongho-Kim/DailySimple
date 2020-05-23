@@ -1,7 +1,6 @@
 package com.dd.android.dailysimple.daily
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -17,25 +16,35 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dd.android.dailysimple.HomeFragmentDirections
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.BaseFragment
-import com.dd.android.dailysimple.common.CenterScrollLinearLayoutManager
+import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.OnDateChangedListener
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
+import com.dd.android.dailysimple.common.widget.CenterScrollLinearLayoutManager
+import com.dd.android.dailysimple.common.widget.recycler.StickyHeaderItemDecoration
 import com.dd.android.dailysimple.daily.viewmodel.DailyCalendarModel
 import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
+import com.dd.android.dailysimple.daily.viewmodel.ScheduleViewModel
 import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
 import com.dd.android.dailysimple.databinding.FragmentDailyBinding
 import com.dd.android.dailysimple.google.GoogleAccountViewModel
-import com.dd.android.dailysimple.maker.MakeAndEditBottom
+import com.dd.android.dailysimple.maker.BottomSimpleDailyMaker
 import com.dd.android.dailysimple.maker.FabViewModel
 import com.dd.android.dailysimple.plan.ScheduleCardItemDecoration
+import java.util.*
 
+private const val TAG = "DailyFragment"
+
+private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
 
 class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListener {
 
     private lateinit var fabVm: FabViewModel
     private lateinit var todoVm: TodoViewModel
     private lateinit var habitVm: HabitViewModel
+    private lateinit var scheduleVm: ScheduleViewModel
     private lateinit var calendarModel: DailyCalendarModel
+
+    private val viewModelStoreOwner by lazy { this }
 
     override val layout: Int = R.layout.fragment_daily
 
@@ -43,40 +52,30 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
         setStatusBarColor(R.color.basic_common_background)
         setUpViewModel()
         setUpObserver()
-        setUpHeader()
+        setUpSimpleCalendar()
         setUpContent()
-        MakeAndEditBottom(
+        BottomSimpleDailyMaker(
             requireContext(),
             bind.fabLayout,
             fabVm,
             viewLifecycleOwner,
             navController
         )
-
         setHasOptionsMenu(true)
     }
 
-    override fun onDateChanged() {
-        val date = msDateOnlyFrom()
-        todoVm.selectedDate.postValue(date)
-        habitVm.selectedDate.postValue(date)
-    }
-
     private fun setUpViewModel() {
-        fabVm = ViewModelProvider(activity).get(FabViewModel::class.java)
-        todoVm = ViewModelProvider(activity).get(TodoViewModel::class.java)
-        habitVm = ViewModelProvider(activity).get(HabitViewModel::class.java)
+        fabVm = ViewModelProvider(viewModelStoreOwner).get(FabViewModel::class.java)
+        todoVm = ViewModelProvider(viewModelStoreOwner).get(TodoViewModel::class.java)
+        habitVm = ViewModelProvider(viewModelStoreOwner).get(HabitViewModel::class.java)
+        scheduleVm = ViewModelProvider(viewModelStoreOwner).get(ScheduleViewModel::class.java)
         calendarModel = DailyCalendarModel(activity.application)
 
         bind.accountViewModel = activity.viewModels<GoogleAccountViewModel>().value
         bind.fabModel = fabVm
     }
 
-    private fun setUpObserver() {
-        dateChangedObserver.addOnDateChangedListener(this)
-    }
-
-    private fun setUpHeader() {
+    private fun setUpSimpleCalendar() {
         bind.customToolbar.ymText.setOnClickListener {
             navController.navigate(
                 HomeFragmentDirections.homeToDailyCalendar()
@@ -84,7 +83,9 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
         }
         val recycler = bind.customToolbar.calendar
 
-        val layoutManager = CenterScrollLinearLayoutManager(requireContext())
+        val layoutManager = CenterScrollLinearLayoutManager(
+            requireContext()
+        )
             .apply {
                 orientation = RecyclerView.HORIZONTAL
                 reverseLayout = true
@@ -92,15 +93,17 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
 
         val adapter = DayDateAdapter2(
             viewLifecycleOwner,
-            activity,
+            viewModelStoreOwner,
             { pos ->
                 recycler.smoothScrollToPosition(pos)
-                Log.d("TEST-DH", "Scroll to :$pos")
-            })
+            }).apply {
+            setHasStableIds(true)
+        }
         val observer = Observer<PagedList<DayDateItemModel>> { adapter.submitList(it) }
 
         recycler.adapter = adapter
         recycler.layoutManager = layoutManager
+
 
         PagerSnapHelper().attachToRecyclerView(recycler)
 
@@ -108,17 +111,27 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
     }
 
     private fun setUpContent() {
-        val recycler = bind.recycler
+        val adapter = DailyAdapter(viewLifecycleOwner, viewModelStoreOwner, navController)
+            .apply {
+                setHasStableIds(true)
+            }
 
-        val layoutManager = LinearLayoutManager(activity)
-        val adapter = DailyAdapter(viewLifecycleOwner, this, navController)
-        adapter.setHasStableIds(true)
+        with(bind.recycler) {
+            layoutManager = LinearLayoutManager(activity)
+            itemAnimator = DefaultItemAnimator()
+            this.adapter = adapter
 
-        recycler.adapter = adapter
-        recycler.layoutManager = layoutManager
-        recycler.itemAnimator = DefaultItemAnimator()
+            //addOnScrollListener(BottomBarScroll(requireActivity().findViewById(R.id.bottom_navigation_bar)))
+            addItemDecoration(ScheduleCardItemDecoration(activity))
+            addItemDecoration(
+                StickyHeaderItemDecoration(
+                    this
+                ) { pos -> adapter.getItemViewType(pos) < 0 }
+            )
+            setUpCache()
+        }
 
-        DailyItemModels(requireActivity()).data.observe(
+        DailyItemModels(viewModelStoreOwner).data.observe(
             viewLifecycleOwner,
             Observer { list ->
                 adapter.items.clear()
@@ -126,17 +139,22 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
                 adapter.notifyDataSetChanged()
             })
 
-        recycler.addItemDecoration(
-            ScheduleCardItemDecoration(activity)
-        )
-
 //        ItemTouchHelper(
 //            DailyItemTouchAction(activity, adapter, navController)
 //        ).attachToRecyclerView(recycler)
-
-        recycler.setUpCache()
     }
 
+    override fun onDateChanged() {
+        val time = msDateOnlyFrom()
+        logD { "onDateChanged : ${Date(time)}" }
+        todoVm.selectedDate.postValue(time)
+        habitVm.selectedDate.postValue(time)
+        scheduleVm.selectedDate.postValue(time)
+    }
+
+    private fun setUpObserver() {
+        dateChangedObserver.addOnDateChangedListener(this)
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.daily_menu, menu)

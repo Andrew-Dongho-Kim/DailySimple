@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/basic_view_margin_horizontal_tiny_small"
             android:gravity="center_vertical"
-            android:text="@{itemModel.message}"
+            app:spannableText="@{itemModel.message}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/expand_icon"

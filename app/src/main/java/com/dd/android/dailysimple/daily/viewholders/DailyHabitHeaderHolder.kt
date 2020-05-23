@@ -8,8 +8,8 @@ import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.common.recycler.ItemModel
-import com.dd.android.dailysimple.common.recycler.ViewHolder2
+import com.dd.android.dailysimple.common.widget.recycler.ItemModel
+import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2
 import com.dd.android.dailysimple.daily.DayDateAdapter
 import com.dd.android.dailysimple.daily.DayDateItemModel
 import com.dd.android.dailysimple.daily.viewmodel.DailyCalendarModel

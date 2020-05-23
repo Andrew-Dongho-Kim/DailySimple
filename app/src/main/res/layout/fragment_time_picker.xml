@@ -6,7 +6,7 @@
 
         <variable
             name="ui"
-            type="com.dd.android.dailysimple.common.TimePickerDialogFragment" />
+            type="com.dd.android.dailysimple.common.widget.TimePickerDialogFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

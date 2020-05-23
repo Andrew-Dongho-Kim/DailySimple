@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dd.android.dailysimple.HomeFragmentDirections
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.Logger
-import com.dd.android.dailysimple.common.recycler.ViewHolder2
-import com.dd.android.dailysimple.common.recycler.ViewHolder2.Companion.findViewById
-import com.dd.android.dailysimple.common.recycler.ViewHolder2.Companion.isHeader
+import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2
+import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2.Companion.findViewById
+import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2.Companion.isHeader
 import com.dd.android.dailysimple.daily.edit.EditType
 import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
 import kotlin.math.abs

@@ -8,9 +8,9 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.BaseFragment
-import com.dd.android.dailysimple.common.TimePickerDialogFragment
+import com.dd.android.dailysimple.common.widget.TimePickerDialogFragment
 import com.dd.android.dailysimple.common.di.systemLocale
-import com.dd.android.dailysimple.common.setUnderlineText
+import com.dd.android.dailysimple.common.utils.setUnderlineText
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
 import com.dd.android.dailysimple.common.utils.DateUtils.strYmdToLong
 import com.dd.android.dailysimple.common.utils.DateUtils.toTime

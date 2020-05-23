@@ -8,7 +8,7 @@ import androidx.paging.PagedList
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.appDb
 import com.dd.android.dailysimple.common.di.getString
-import com.dd.android.dailysimple.common.recycler.ItemModel
+import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.common.utils.DateUtils
 import com.dd.android.dailysimple.daily.DailyConst.EMPTY_ITEM_ID_HABIT
 import com.dd.android.dailysimple.daily.DailyConst.SIMPLE_HEADER_ID_HABIT
@@ -46,8 +46,8 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
         emit(DateUtils.msDateOnlyFrom())
     } as MutableLiveData<Long>
 
-    val allHabits = Transformations.switchMap(selectedDate) {
-        Transformations.map(repository.allHabits) { habits ->
+    val allHabits = Transformations.switchMap(selectedDate) { time ->
+        Transformations.map(repository.getHabits(time)) { habits ->
             if (habits.isEmpty()) {
                 listOf(
                     DailyEmptyItemModel(

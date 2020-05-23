@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import com.dd.android.dailysimple.BR
-import com.dd.android.dailysimple.HomeFragmentDirections
 import com.dd.android.dailysimple.HomeFragmentDirections.Companion.homeToMakeAndEdit
 import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.common.recycler.ViewHolder2
+import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2
+import com.dd.android.dailysimple.daily.SelectedDateInfo
 import com.dd.android.dailysimple.daily.edit.EditType
 import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
 import com.dd.android.dailysimple.databinding.DailyHabitItem2Binding
@@ -33,6 +33,7 @@ class DailyHabitItemHolder2(
     init {
         itemClickListener = ::onItemClick
         bind.checked.setOnClickListener(::onCheckClick)
+        bind.dateInfo = SelectedDateInfo(habitVm.selectedDate)
     }
 
     private fun onItemClick(view: View) {

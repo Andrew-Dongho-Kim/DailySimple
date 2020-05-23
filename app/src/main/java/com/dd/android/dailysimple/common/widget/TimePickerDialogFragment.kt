@@ -1,4 +1,4 @@
-package com.dd.android.dailysimple.common
+package com.dd.android.dailysimple.common.widget
 
 import android.os.Bundle
 import android.view.View
@@ -9,6 +9,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.dd.android.dailysimple.R
+import com.dd.android.dailysimple.common.BaseDialogFragment
+import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.databinding.FragmentTimePickerBinding
 import java.util.*
 
@@ -23,7 +25,11 @@ private const val ARGS_USE_DATE = "args_use_date"
 
 private const val UNUSED_LONG = -1L
 
-private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
+private inline fun logD(crossinline message: () -> String) =
+    Logger.d(
+        TAG,
+        message
+    )
 
 class TimePickerDialogFragment : BaseDialogFragment<FragmentTimePickerBinding>() {
 
@@ -57,7 +63,9 @@ class TimePickerDialogFragment : BaseDialogFragment<FragmentTimePickerBinding>()
     }
 
     private fun Bundle.letLongIfNotDefault(key: String, block: (Long) -> Unit) {
-        val value = getLong(key, UNUSED_LONG)
+        val value = getLong(key,
+            UNUSED_LONG
+        )
         if (value != UNUSED_LONG) {
             block(value)
         }

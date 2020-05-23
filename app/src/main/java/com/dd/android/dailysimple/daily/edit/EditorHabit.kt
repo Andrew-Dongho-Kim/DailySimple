@@ -47,6 +47,8 @@ class EditorHabit(
             logD { "habitId : $id, model:${this.model}" }
         })
         bind.alarmModel = alarmObservable
+        bind.featuers =
+            EditFeatures(supportRepeat = true, supportAttachments = false, supportSubTasks = false)
     }
 
     private fun ensureAlarm(habitId: Long, alarm: Alarm?) = alarm?.also { it ->

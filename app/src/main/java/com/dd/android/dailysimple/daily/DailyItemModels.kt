@@ -1,11 +1,11 @@
 package com.dd.android.dailysimple.daily
 
-import androidx.activity.viewModels
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import com.dd.android.dailysimple.common.Logger
-import com.dd.android.dailysimple.common.recycler.ItemModel
+import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
 import com.dd.android.dailysimple.daily.viewmodel.ScheduleViewModel
 import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
@@ -13,11 +13,17 @@ import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
 private const val TAG = "DailyItemModels"
 private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
 
-class DailyItemModels(activity: FragmentActivity) : ViewModel() {
+class DailyItemModels(viewModelStoreOwner: ViewModelStoreOwner) : ViewModel() {
 
-    private val scheduleVm by activity.viewModels<ScheduleViewModel>()
-    private val todoVm by activity.viewModels<TodoViewModel>()
-    private val habitsVm by activity.viewModels<HabitViewModel>()
+    private val scheduleVm by lazy {
+        ViewModelProvider(viewModelStoreOwner).get(ScheduleViewModel::class.java)
+    }
+    private val todoVm by lazy {
+        ViewModelProvider(viewModelStoreOwner).get(TodoViewModel::class.java)
+    }
+    private val habitsVm by lazy {
+        ViewModelProvider(viewModelStoreOwner).get(HabitViewModel::class.java)
+    }
 
     private val models = arrayOf(
         scheduleVm.header,

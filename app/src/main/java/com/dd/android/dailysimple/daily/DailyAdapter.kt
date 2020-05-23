@@ -3,16 +3,14 @@ package com.dd.android.dailysimple.daily
 import android.view.ViewGroup
 import androidx.annotation.IntDef
 import androidx.databinding.ViewDataBinding
-import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
-import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.Logger
-import com.dd.android.dailysimple.common.recycler.ItemModel
-import com.dd.android.dailysimple.common.recycler.RecyclerViewAdapter2
-import com.dd.android.dailysimple.common.recycler.ViewHolder2
+import com.dd.android.dailysimple.common.widget.recycler.ItemModel
+import com.dd.android.dailysimple.common.widget.recycler.RecyclerViewAdapter2
+import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.EMPTY_ITEM
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.HABIT_HEADER
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.HABIT_ITEM
@@ -23,8 +21,8 @@ import com.dd.android.dailysimple.daily.DailyViewType.Companion.TODO_ITEM
 import com.dd.android.dailysimple.daily.viewholders.*
 import com.dd.android.dailysimple.daily.viewmodel.DailyCalendarModel
 import com.dd.android.dailysimple.db.data.DailyHabitWithCheckStatus
-import com.dd.android.dailysimple.db.data.DailyTodo
 import com.dd.android.dailysimple.db.data.DailySchedule
+import com.dd.android.dailysimple.db.data.DailyTodo
 import java.util.*
 
 private const val TAG = "DailyAdapter"
@@ -84,12 +82,6 @@ fun RecyclerView.setUpCache() {
     }
 }
 
-class DailyScheduleItemHolder(parent: ViewGroup) :
-    ViewHolder2<ViewDataBinding, DailySchedule>(
-        parent,
-        R.layout.daily_schedule_item,
-        BR.viewModel
-    )
 
 class DailyAdapter(
     private val lifecycleOwner: LifecycleOwner,
@@ -135,7 +127,7 @@ class DailyAdapter(
                 it.recyclerView.addOnScrollListener(slaveScroll)
             }
             EMPTY_ITEM -> DailyEmptyItemHolder(parent, navController)
-            SCHEDULE_ITEM -> DailyScheduleItemHolder(parent)
+            SCHEDULE_ITEM -> DailyScheduleItemHolder(parent, navController)
             TODO_ITEM -> DailyTodoItemHolder(parent, viewModelStoreOwner, navController)
             OVERDUE_TODO_GROUP -> DailyTodoGroupHolder(parent)
             HABIT_ITEM -> DailyHabitItemHolder2(

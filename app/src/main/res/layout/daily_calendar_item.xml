@@ -14,9 +14,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/basic_view_margin_horizontal"
-        android:paddingTop="@dimen/basic_view_margin_vertical_small"
-        android:paddingEnd="@dimen/basic_view_margin_horizontal">
+        android:paddingTop="@dimen/basic_view_margin_vertical_small">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/today"
@@ -28,8 +26,8 @@
             android:text="@string/today"
             android:textColor="@color/appPrimary"
             android:visibility="@{itemModel.isToday ? View.VISIBLE : View.INVISIBLE}"
-            app:layout_constraintEnd_toEndOf="@id/day"
-            app:layout_constraintStart_toStartOf="@id/day"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -37,6 +35,8 @@
             style="@style/BasicHeaderTextDpTinySmall"
             android:layout_width="@dimen/daily_calendar_item_width"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal"
+            android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
             android:singleLine="true"
@@ -51,7 +51,9 @@
             style="@style/BasicHeaderTextDpTinyBig"
             android:layout_width="@dimen/daily_calendar_item_width"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal"
             android:layout_marginTop="@dimen/basic_view_margin_vertical_small"
+            android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:duplicateParentState="true"
             android:gravity="center"
@@ -64,7 +66,9 @@
         <View
             android:layout_width="0dp"
             android:layout_height="@dimen/daily_calendar_item_selector_height"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal"
             android:layout_marginTop="@dimen/basic_view_margin_vertical_small"
+            android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
             android:background="@color/appPrimary"
             android:visibility="@{itemModel.isSelected ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"

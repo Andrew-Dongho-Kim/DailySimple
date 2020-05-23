@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dd.android.dailysimple.HomeFragmentDirections
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.Logger
-import com.dd.android.dailysimple.common.recycler.ItemModel
+import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.daily.CheckStatusAdapter
 import com.dd.android.dailysimple.daily.viewmodel.HabitCheckStatusViewModel
 import com.dd.android.dailysimple.databinding.DailyHabitItemBinding

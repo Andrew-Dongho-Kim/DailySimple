@@ -97,4 +97,9 @@
     <dimen name="make_and_edit_header_text_left_movement">-150dp</dimen>
     <dimen name="make_and_edit_header_text_right_movement">500dp</dimen>
 
+    <!-- Calendar Grid Item -->
+    <dimen name="calendar_grid_item_date_radius">5dp</dimen>
+    <dimen name="calendar_grid_item_date_padding_horizontal">2dp</dimen>
+    <dimen name="calendar_grid_item_date_margin">5dp</dimen>
+
 </resources>

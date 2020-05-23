@@ -1,19 +1,15 @@
 package com.dd.android.dailysimple.provider.calendar
 
-import android.app.Activity
-import android.content.ContentUris
-import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
 import android.database.Cursor
 import android.provider.CalendarContract.*
-import android.util.Log
 import androidx.annotation.IntDef
 import androidx.core.content.ContentResolverCompat
 import androidx.core.os.CancellationSignal
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import com.dd.android.dailysimple.common.utils.DateUtils
+import com.dd.android.dailysimple.common.Logger
+import com.dd.android.dailysimple.common.livedata.ContentProviderLiveData
 import com.dd.android.dailysimple.db.data.DailySchedule
 import com.dd.android.dailysimple.provider.calendar.EventReminderMethod.Companion.ALERT
 import com.dd.android.dailysimple.provider.calendar.EventReminderMethod.Companion.DEFAULT
@@ -23,13 +19,7 @@ import java.util.*
 
 private const val LOG_TAG = "CalendarProviderHelper"
 
-data class CalendarEvent(
-    val begin: Calendar,
-    val end: Calendar,
-    val title: String,
-    val description: String? = null,
-    val location: String? = null
-)
+private inline fun logD(crossinline message: () -> String) = Logger.d(LOG_TAG, message)
 
 @IntDef(ALERT, DEFAULT, EMAIL, SMS)
 annotation class EventReminderMethod {
@@ -51,108 +41,90 @@ class CalendarProviderHelper(
 ) {
     private val cancelSignal by lazy { CancellationSignal() }
 
-    private val utcTimeZone by lazy { TimeZone.getTimeZone("UTC") }
-
-    fun addEvents(activity: Activity, event: CalendarEvent) =
-        activity.startActivity(
-            Intent(Intent.ACTION_INSERT).apply {
-                data = Events.CONTENT_URI
-                putExtra(EXTRA_EVENT_BEGIN_TIME, event.begin.timeInMillis)
-                putExtra(EXTRA_EVENT_END_TIME, event.end.timeInMillis)
-                putExtra(Events.TITLE, event.title)
-                putExtra(Events.DESCRIPTION, event.description)
-                putExtra(Events.EVENT_LOCATION, event.location)
-                putExtra(Events.AVAILABILITY, Events.AVAILABILITY_BUSY) // TODO WHAT IS IT?
-            }
-        )
-
-    fun addReminder(eventId: Long, reminder: EventReminder) =
-        context.contentResolver.insert(
-            Reminders.CONTENT_URI,
-            ContentValues().apply {
-                put(Reminders.EVENT_ID, eventId)
-                put(Reminders.METHOD, reminder.method)
-                put(Reminders.MINUTES, reminder.minutes)
-            }
-        )
-
-    fun removeEvents(eventId: Long) =
-        context.contentResolver.delete(
-            ContentUris.withAppendedId(Events.CONTENT_URI, eventId), null, null
-        )
-
-    fun dumpEvents() {
-        val cursor = getEvents(
-            Calendar.getInstance().run {
-                set(2020, 1, 1)
-                timeInMillis
-            },
-            Calendar.getInstance().run {
-                set(2020, 12, 31)
-                timeInMillis
-            }
-        )
-
-//        if (cursor.moveToFirst()) {
-//            do {
-//                Log.d(LOG_TAG, "  Title:${cursor.getString(1)}")
-//                Log.d(LOG_TAG, "  Begin:${cursor.getLong(2)}")
-//                Log.d(LOG_TAG, "  End:${cursor.getLong(3)}")
-//                Log.d(LOG_TAG, "  Location:${cursor.getString(4)}")
-//                Log.d(LOG_TAG, "  Description:${cursor.getString(5)}")
-//            } while (cursor.moveToNext())
-//        }
-    }
-
-    fun getTodayEvents() =
-        getEvents(
-            DateUtils.msDateOnlyFrom(timezone = utcTimeZone) + 1,
-            DateUtils.msDateOnlyFrom(date = 1, timezone = utcTimeZone) - 1
-        )
 
     fun getEvents(beginTime: Long, endTime: Long): LiveData<List<DailySchedule>> {
-        val uriBuilder = Instances.CONTENT_URI.buildUpon()
-        ContentUris.appendId(uriBuilder, beginTime)
-        ContentUris.appendId(uriBuilder, endTime)
-
-        val cursor = ContentResolverCompat.query(
-            context.contentResolver,
-            uriBuilder.build(), INSTANCE_PROJECTION,
-            null, null, null, cancelSignal
-        )
-
         return liveData {
-            val list = mutableListOf<DailySchedule>()
-            if (cursor.moveToFirst()) {
-                do {
-                    list.add(
-                        DailySchedule(
-                            id = cursor.getLong(Instances.EVENT_ID),
-                            title = cursor.getString(Instances.TITLE),
-                            start = cursor.getLong(Instances.BEGIN),
-                            end = cursor.getLong(Instances.END),
-                            memo = cursor.getString(Instances.DESCRIPTION),
-                            color = cursor.getInt(Instances.DISPLAY_COLOR)
-                        )
-                    )
-
-                } while (cursor.moveToNext())
-            }
-            emit(list as List<DailySchedule>)
+            emit(queryInstances(beginTime, endTime))
+            emitSource(
+                ContentProviderLiveData(
+                    context,
+                    Instances.CONTENT_URI
+                ) {
+                    queryInstances(beginTime, endTime)
+                }
+            )
         }
     }
 
-    fun dumpCalendar(accountName: String, accountType: String) {
-        val cursor = getCalendar(accountName, accountType)
+    private fun queryEvents(beginTime: Long, endTime: Long): List<DailySchedule> {
+        val utcBegin = beginTime + 1
+        val utcEnd = endTime - 1
 
-        if (cursor.moveToFirst()) {
-            Log.d(LOG_TAG, "Calendar")
-            do {
-                Log.d(LOG_TAG, "-----------------------------------")
-                Log.d(LOG_TAG, "  Account:${cursor.getString(1)}")
-                Log.d(LOG_TAG, "  Display name:${cursor.getString(2)}")
-                Log.d(LOG_TAG, "  Calendar color:${cursor.getInt(3)}")
-            } while (cursor.moveToNext())
+        val list = mutableListOf<DailySchedule>()
+        val selection = "? <= ${Events.DTSTART} AND ? <= ${Events.DTEND}"
+        val selectionArgs = arrayOf(utcBegin.toString(), utcEnd.toString())
+        ContentResolverCompat.query(
+            context.contentResolver,
+            Events.CONTENT_URI,
+            EVENT_PROJECTION,
+            selection,
+            selectionArgs,
+            null,
+            cancelSignal
+        ).use {
+            if (it.moveToFirst()) {
+                do {
+                    list.add(createFromEvents(it))
+                } while (it.moveToNext())
+            }
+        }
+        return list
+    }
+
+    private fun createFromEvents(cursor: Cursor) =
+        DailySchedule(
+            id = cursor.getLong(Events._ID),
+            title = cursor.getString(Events.TITLE),
+            start = cursor.getLong(Events.DTSTART),
+            end = cursor.getLong(Events.DTEND),
+            memo = cursor.getString(Events.DESCRIPTION),
+            color = cursor.getInt(Events.DISPLAY_COLOR)
+        ).also {
+            logD {
+                "Schedule title:${it.title}, start:${Date(it.start)}, end:${Date(
+                    it.end
+                )}"
+            }
+        }
+
+    private fun queryInstances(beginTime: Long, endTime: Long): List<DailySchedule> {
+        val utcBegin = beginTime + 1
+        val utcEnd = endTime - 1
+
+        logD { "queryInstances begin:${Date(utcBegin)}, end:${Date(utcEnd)}" }
+        val list = mutableListOf<DailySchedule>()
+        Instances.query(context.contentResolver, INSTANCE_PROJECTION, utcBegin, utcEnd).use {
+            if (it.moveToFirst()) {
+                do {
+                    list.add(createFromInstances(it))
+                } while (it.moveToNext())
+            }
+        }
+        return list
+    }
+
+    private fun createFromInstances(cursor: Cursor) = DailySchedule(
+        id = cursor.getLong(Instances.EVENT_ID),
+        title = cursor.getString(Instances.TITLE),
+        start = cursor.getLong(Instances.BEGIN),
+        end = cursor.getLong(Instances.END),
+        memo = cursor.getString(Instances.DESCRIPTION),
+        color = cursor.getInt(Instances.DISPLAY_COLOR)
+    ).also {
+        logD {
+            "Schedule title:${it.title}, start:${Date(it.start)}, end:${Date(
+                it.end
+            )}"
         }
     }
 
@@ -190,6 +162,17 @@ class CalendarProviderHelper(
             Instances.EVENT_LOCATION,
             Instances.DESCRIPTION,
             Instances.DISPLAY_COLOR
+        )
+
+        private val EVENT_PROJECTION = arrayOf(
+            Events._ID,
+            Events.TITLE,
+            Events.DTSTART,
+            Events.DTEND,
+            Events.EVENT_LOCATION,
+            Events.DESCRIPTION,
+            Events.DISPLAY_COLOR,
+            Events.ALL_DAY
         )
 
         private val CALENDAR_PROJECTION = arrayOf(

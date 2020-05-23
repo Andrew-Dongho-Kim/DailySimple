@@ -9,8 +9,8 @@
             type="com.dd.android.dailysimple.google.GoogleAccountViewModel" />
 
         <variable
-            name="itemModel"
-            type="com.dd.android.dailysimple.daily.viewmodel.DailyCalendarModel" />
+            name="dateInfo"
+            type="com.dd.android.dailysimple.daily.SelectedDateInfo" />
     </data>
 
     <com.dd.android.dailysimple.common.widget.CollapsibleToolbar

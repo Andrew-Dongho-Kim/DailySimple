@@ -23,6 +23,10 @@
         <variable
             name="content"
             type="com.dd.android.dailysimple.daily.edit.EditContent" />
+
+        <variable
+            name="featuers"
+            type="com.dd.android.dailysimple.daily.edit.EditFeatures" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -75,6 +79,7 @@
                         android:ellipsize="end"
                         android:gravity="top|start"
                         android:hint="@string/title"
+                        android:lineSpacingMultiplier="1.2"
                         android:minHeight="@dimen/make_and_edit_habit_title_height"
                         android:text="@{content.title}"
                         android:textColor="@color/basic_header_text_color"
@@ -148,6 +153,7 @@
                         android:layout_marginTop="@dimen/basic_view_margin_vertical"
                         android:text="@string/repeat"
                         android:textColor="@color/basic_header_text_color"
+                        android:visibility="@{featuers.supportRepeat ? View.VISIBLE : View.GONE}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/end" />
 
@@ -313,6 +319,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/basic_view_margin_vertical"
                         android:background="@drawable/rounded_view_background_big"
+                        android:minHeight="@dimen/make_and_edit_habit_memo_min_height"
                         android:paddingStart="@dimen/basic_view_margin_horizontal_tiny_big"
                         android:paddingTop="@dimen/basic_view_margin_vertical"
                         android:paddingEnd="@dimen/basic_view_margin_horizontal_tiny_big"
@@ -323,40 +330,49 @@
                             style="@style/BasicTextDpBig"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="@dimen/basic_view_margin_vertical_tiny_small"
                             android:background="@android:color/transparent"
                             android:gravity="top"
                             android:hint="@string/memo"
                             android:lineSpacingMultiplier="1.5"
-                            android:minHeight="@dimen/make_and_edit_habit_memo_min_height"
                             android:text="@{content.memo}"
                             android:textColor="@color/basic_header_text_color"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/sub_tasks"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/basic_view_margin_vertical_small"
+                            android:paddingTop="@dimen/basic_view_margin_vertical"
+                            app:layout_constraintBottom_toTopOf="@id/gallery"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/memo_editor" />
+
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/gallery"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/make_and_edit_habit_color_picker_icon_margin_top"
                             android:background="?android:attr/selectableItemBackgroundBorderless"
                             android:src="@drawable/ic_gallery"
                             android:tint="@color/basic_icon_background"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/memo_editor" />
+                            android:visibility="@{featuers.supportAttachments ? View.VISIBLE : View.GONE}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/sub_task"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/make_and_edit_habit_color_picker_icon_margin_top"
                             android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
                             android:background="?android:attr/selectableItemBackgroundBorderless"
                             android:src="@drawable/ic_check_box"
                             android:tint="@color/basic_icon_background"
-                            app:layout_constraintEnd_toStartOf="@id/gallery"
-                            app:layout_constraintTop_toBottomOf="@id/memo_editor" />
+                            android:visibility="@{featuers.supportSubTasks ? View.VISIBLE : View.GONE}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/gallery" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:calendar="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="rows"
+            type="int" />
+
+        <variable
+            name="itemModel"
+            type="com.dd.android.dailysimple.daily.calendar.DailyCalendarItem" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="@{itemModel.alpha}"
+        calendar:fillRows="@{rows}">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/date"
+            style="@style/BasicTextDpNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/calendar_grid_item_date_margin"
+            android:background="@drawable/daily_calendar_grid_item_date_background"
+            android:backgroundTint="@{itemModel.textBackgroundColor}"
+            android:paddingStart="@dimen/calendar_grid_item_date_padding_horizontal"
+            android:paddingEnd="@dimen/calendar_grid_item_date_padding_horizontal"
+            android:text="@{itemModel.date}"
+            android:textColor="@{itemModel.textColor}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/schedule_1"
+            style="@style/BasicTextDpTinySmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/basic_view_margin_vertical_small"
+            android:background="@color/appGray"
+            android:text="우신의날"
+            android:textColor="@color/appWhite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/date" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

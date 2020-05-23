@@ -1,13 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.dd.android.dailysimple.daily.calendar.DailyCalendarViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <CalendarView
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/month"
+            style="@style/BasicTextDpBig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical_small"
+            android:text="@{model.month}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/BasicTextDpTinyBig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal"
+            android:text="@{model.year}"
+            app:layout_constraintBottom_toBottomOf="@id/month"
+            app:layout_constraintStart_toEndOf="@id/month"
+            app:layout_constraintTop_toTopOf="@id/month" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@id/calendar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical"
+            android:background="@drawable/rounded_view_background"
+            android:paddingStart="@dimen/basic_view_margin_horizontal"
+            android:paddingEnd="@dimen/basic_view_margin_horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/month" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

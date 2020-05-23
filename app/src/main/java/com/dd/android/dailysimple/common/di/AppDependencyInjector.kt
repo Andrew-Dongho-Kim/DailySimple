@@ -3,7 +3,9 @@ package com.dd.android.dailysimple.common.di
 import android.app.Application
 import android.content.Context
 import android.content.res.Resources
+import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.db.AppDatabase
 import java.util.*
@@ -40,6 +42,8 @@ val appContext: Context = DependencyInjector.appContext
 val appResources: Resources = appContext.resources
 
 fun getString(@StringRes strResId: Int) = appContext.getString(strResId)
+
+fun getColor(@ColorRes colorResId: Int) = ContextCompat.getColor(appContext, colorResId)
 
 fun systemLocale(): Locale = DependencyInjector.provideLocale()
 

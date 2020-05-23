@@ -4,9 +4,17 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <import type="com.dd.android.dailysimple.daily.SelectedDateInfo" />
+
         <variable
             name="itemModel"
             type="com.dd.android.dailysimple.db.data.DailyHabit" />
+
+        <variable
+            name="dateInfo"
+            type="com.dd.android.dailysimple.daily.SelectedDateInfo" />
     </data>
 
     <FrameLayout

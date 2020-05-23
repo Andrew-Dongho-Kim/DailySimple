@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.dd.android.dailysimple.daily.DailyConst" />
+
+        <import type="com.dd.android.dailysimple.db.data.TodoSubTask" />
+
+        <variable
+            name="itemModel"
+            type="com.dd.android.dailysimple.daily.edit.subtask.EditableTodoSubTask" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/basic_view_margin_vertical_small"
+        android:paddingBottom="@dimen/basic_view_margin_vertical_small">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="@{(itemModel.task.state == TodoSubTask.DONE) ? DailyConst.DIM_ALPHA : DailyConst.NORMAL_ALPHA}"
+            android:checked="@{itemModel.task.state == TodoSubTask.DONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:onCheckChanged="@{(view,checked)-> itemModel.postState(checked ? TodoSubTask.DONE : TodoSubTask.ONGOING )}" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/sub_task_title"
+            style="@style/BasicTextDpTinyBig"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal_small"
+            android:alpha="@{(itemModel.task.state == TodoSubTask.DONE) ? DailyConst.DIM_ALPHA : DailyConst.NORMAL_ALPHA}"
+            android:background="@android:color/transparent"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="@{itemModel.task.title}"
+            android:textColor="@color/basic_header_text_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/check"
+            app:layout_constraintTop_toTopOf="parent"
+            app:onTextChanged="@{text-> itemModel.postTitle(text)}" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

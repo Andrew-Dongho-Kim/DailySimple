@@ -17,8 +17,8 @@ import com.dd.android.dailysimple.daily.viewholders.DailySimpleHeaderItem
 import com.dd.android.dailysimple.daily.viewholders.DailyTodoGroup
 import com.dd.android.dailysimple.db.DailyTodoRepository
 import com.dd.android.dailysimple.db.data.DailyTodo
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.dd.android.dailysimple.db.data.TodoSubTask
+import kotlinx.coroutines.*
 
 /**
  * As your data grows more complex, you might choose to have a separate
@@ -26,6 +26,8 @@ import kotlinx.coroutines.launch
  * the data for a UI controller to let the data survive configuration changes.
  */
 class TodoViewModel(private val app: Application) : AndroidViewModel(app) {
+
+    private val viewModelThreadScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     private val repository by lazy {
         val db = appDb()
@@ -123,6 +125,8 @@ class TodoViewModel(private val app: Application) : AndroidViewModel(app) {
         }
     }
 
+    fun getSubTasks(todoId: Long) = repository.getSubTasksById(todoId)
+
 
     /**
      * A ViewModelScope id defined for each ViewModel in your app
@@ -131,15 +135,32 @@ class TodoViewModel(private val app: Application) : AndroidViewModel(app) {
      * Coroutines are useful here for when you have work that needs to
      * be done only if the ViewModel is active.
      */
-    fun insert(vararg todo: DailyTodo) = viewModelScope.launch {
-        repository.insert(*todo)
+    fun insertTodo(vararg todo: DailyTodo): LiveData<List<Long>> {
+        val ids = MutableLiveData<List<Long>>()
+        viewModelThreadScope.launch {
+            ids.postValue(repository.insertTodo(*todo))
+        }
+        return ids
     }
 
-    fun update(vararg todo: DailyTodo) = viewModelScope.launch {
+    fun insertSubTask(vararg subtasks: TodoSubTask) = viewModelThreadScope.launch {
+        repository.insertSubTask(*subtasks)
+    }
+
+    fun deleteSubTask(subTaskId: Long) = viewModelThreadScope.launch {
+        repository.deleteSubTask(subTaskId)
+    }
+
+    fun updateTodo(vararg todo: DailyTodo) = viewModelThreadScope.launch {
         repository.update(*todo)
     }
 
-    fun delete(todoId: Long) = viewModelScope.launch {
-        repository.delete(todoId)
+    fun deleteTodo(todoId: Long) = viewModelThreadScope.launch {
+        repository.deleteTodo(todoId)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelThreadScope.cancel()
     }
 }

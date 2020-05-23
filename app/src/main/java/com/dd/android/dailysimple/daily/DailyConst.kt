@@ -17,4 +17,7 @@ object DailyConst {
     const val OVERDUE_TODO_GROUP = 0L
     const val UPCOMING_TODO_GROUP = 1L
 
+
+    const val DIM_ALPHA = 0.5f
+    const val NORMAL_ALPHA = 1.0f
 }

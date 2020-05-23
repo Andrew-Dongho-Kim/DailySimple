@@ -18,6 +18,8 @@
     <string name="todo">할 일</string>
     <string name="habit">습관</string>
 
+    <string name="new_item">New</string>
+
     <string name="title">제목</string>
     <string name="memo">메모</string>
     <string name="start">시작</string>
@@ -48,6 +50,7 @@
     <string name="october">10월</string>
     <string name="november">11월</string>
     <string name="december">12월</string>
+    <string name="year">%d년</string>
 
     <string name="today">오늘</string>
     <string name="sunday">일</string>
@@ -71,11 +74,11 @@
     <string name="left">남음</string>
     <string name="past">지남</string>
 
-    <string name="overdue_tasks_message">밀린 할 일이 <b><u>%d개</u></b> 있습니다</string>
-    <string name="overdue_task_message">밀린 할 일이 <b><u>%d개</u></b> 있습니다</string>
+    <string name="overdue_tasks_message">밀린 할 일이 &lt;u>%d개&lt;/u> 있습니다</string>
+    <string name="overdue_task_message">밀린 할 일이 &lt;u>%d개&lt;/u> 있습니다</string>
 
-    <string name="upcoming_task_message">곧 해야할 일이 <b>%d개</b> 있습니다</string>
-    <string name="upcoming_tasks_message">곧 해야할 일이 <b>%d개</b> 있습니다</string>
+    <string name="upcoming_task_message">곧 해야할 일이 &lt;u>%d개&lt;/u> 있습니다</string>
+    <string name="upcoming_tasks_message">곧 해야할 일이 &lt;u>%d개&lt;/u> 있습니다</string>
 
     <string name="make_a_habit">습관 만들기</string>
     <string name="make_a_todo">할 일 만들기</string>

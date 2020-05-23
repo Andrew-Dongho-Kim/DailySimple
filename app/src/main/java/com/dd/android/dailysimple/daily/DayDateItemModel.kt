@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.getString
-import com.dd.android.dailysimple.common.recycler.ItemModel
+import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.common.utils.DateUtils.calendarFrom
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
 import java.util.Calendar.*

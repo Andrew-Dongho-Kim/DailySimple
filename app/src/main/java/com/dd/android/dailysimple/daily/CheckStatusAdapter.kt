@@ -13,7 +13,7 @@ import com.dd.android.dailysimple.BR
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.di.appDb
-import com.dd.android.dailysimple.common.recycler.ViewHolder2
+import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2
 import com.dd.android.dailysimple.common.utils.DateUtils
 import com.dd.android.dailysimple.db.data.CheckStatus
 import kotlinx.coroutines.Dispatchers

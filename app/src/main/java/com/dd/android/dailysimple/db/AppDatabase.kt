@@ -20,9 +20,9 @@ private const val DATABASE_NAME = "schedule-db"
     entities = [
         Plan::class,
         DailyHabit::class, CheckStatus::class,
-        DailyTodo::class, DailyTodoSubJob::class
+        DailyTodo::class, TodoSubTask::class
     ],
-    version = 3,
+    version = 5,
     exportSchema = false
 )
 @TypeConverters(*[DailyHabitTypeConverters::class])
@@ -49,7 +49,7 @@ abstract class AppDatabase : RoomDatabase() {
                 AppDatabase::class.java,
                 DATABASE_NAME
             )
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
                 .build()
     }
 }
@@ -96,16 +96,15 @@ val MIGRATION_3_4 = object : Migration(3, 4) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL(
             """
-                DROP TABLE check_status
+                DROP TABLE daily_todo_sub_job
             """
         )
         database.execSQL(
             """
-                CREATE TABLE check_status(
-                date INTEGER NOT NULL, 
-                checked_count INTEGER NOT NULL,
-                habit_id INTEGER NOT NULL,
-                PRIMARY KEY (date, habit_id)
+                CREATE TABLE todo_sub_task(
+                'id' INTEGER NOT NULL PRIMARY KEY,
+                'todo_id' INTEGER NOT NULL,
+                'title' TEXT NOT NULL
             );
             """
         )
@@ -113,6 +112,12 @@ val MIGRATION_3_4 = object : Migration(3, 4) {
 }
 
 val MIGRATION_4_5 = object : Migration(4, 5) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE todo_sub_task ADD COLUMN state INTEGER NOT NULL DEFAULT 0")
+    }
+}
+
+val MIGRATION_5_6 = object : Migration(5, 6) {
     override fun migrate(database: SupportSQLiteDatabase) {
 //        val table = "daily_habit"
 //        executeSQLMakeTableToLegacy(database, table)

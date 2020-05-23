@@ -3,7 +3,7 @@ package com.dd.android.dailysimple.daily
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.dd.android.dailysimple.common.Logger
-import com.dd.android.dailysimple.common.recycler.ItemModel
+import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 
 
 private const val TAG = "DailyMergeItem"

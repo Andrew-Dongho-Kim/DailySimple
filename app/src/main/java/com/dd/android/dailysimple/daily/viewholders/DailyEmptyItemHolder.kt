@@ -6,8 +6,8 @@ import androidx.databinding.library.baseAdapters.BR
 import androidx.navigation.NavController
 import com.dd.android.dailysimple.HomeFragmentDirections.Companion.homeToMakeAndEdit
 import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.common.recycler.ItemModel
-import com.dd.android.dailysimple.common.recycler.ViewHolder2
+import com.dd.android.dailysimple.common.widget.recycler.ItemModel
+import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2
 import com.dd.android.dailysimple.daily.DailyConst.NO_ID
 import com.dd.android.dailysimple.daily.DailyViewType
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.HABIT_ITEM

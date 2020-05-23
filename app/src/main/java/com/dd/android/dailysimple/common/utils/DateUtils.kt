@@ -1,6 +1,8 @@
 package com.dd.android.dailysimple.common.utils
 
 import android.content.Context
+import android.text.format.Time
+import android.util.Log
 import com.dd.android.dailysimple.R
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
@@ -16,7 +18,39 @@ object DateUtils {
 
     const val MS_DAY = MS_HOUR * 24
 
-    fun calendarFrom(time:Long) = Calendar.getInstance().apply {
+    val TIME_ZONE_UTC: TimeZone by lazy { TimeZone.getTimeZone("UTC") }
+
+
+    fun localToUTC(time: Long): Long {
+        try {
+            val dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm:ss").apply {
+                timeZone = TIME_ZONE_UTC
+            }
+
+            val strDate = dateFormat.format(Date(time))
+            val dateFormatLocal = SimpleDateFormat("yyyy.MM.dd HH:mm:ss")
+            val utcDate = dateFormatLocal.parse(strDate)
+
+            Log.d("TEST-DH", "$utcDate")
+            return utcDate?.time ?: time
+        } catch (e: Exception) {
+        }
+        return time
+    }
+
+    fun utcToLocal(utcTime: Long): Long {
+        try {
+            val timeFormat = Time()
+            timeFormat.set(utcTime + TimeZone.getDefault().getOffset(utcTime))
+            return timeFormat.toMillis(true)
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return utcTime
+    }
+
+
+    fun calendarFrom(time: Long) = Calendar.getInstance().apply {
         timeInMillis = time
     }
 
@@ -61,6 +95,7 @@ object DateUtils {
             add(Calendar.HOUR_OF_DAY, hours)
             add(Calendar.MINUTE, minutes)
             add(Calendar.SECOND, seconds)
+            set(Calendar.MILLISECOND, 0)
             timeInMillis
         }
 
@@ -94,6 +129,21 @@ object DateUtils {
             timeInMillis
         }
 
+    fun firstDayOfWeek(msTime: Long) =
+        Calendar.getInstance().run {
+            timeInMillis = msTime
+            set(Calendar.DAY_OF_WEEK, 0)
+            timeInMillis
+        }
+
+    fun firstDayOfMonth(msTime: Long) =
+        Calendar.getInstance().run {
+            timeInMillis = msTime
+            set(Calendar.DAY_OF_MONTH, 0)
+            timeInMillis
+        }
+
+
     fun getDate(date: Date) = Calendar.getInstance().run {
         time = date
         get(Calendar.DATE)
@@ -107,14 +157,6 @@ object DateUtils {
             set(Calendar.DATE, 0)
         }
 
-    @JvmOverloads
-    fun msTimeOnlyFrom(hour: Int = 0, minute: Int = 0, second: Int = 0): Long =
-        calendarTimeOnly().run {
-            add(Calendar.HOUR_OF_DAY, hour)
-            add(Calendar.MINUTE, minute)
-            add(Calendar.SECOND, second)
-            timeInMillis
-        }
 
     fun msTimeNow() = System.currentTimeMillis()
 
