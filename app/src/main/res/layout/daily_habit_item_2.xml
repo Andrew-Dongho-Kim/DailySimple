@@ -6,7 +6,7 @@
 
         <import type="android.view.View" />
 
-        <import type="com.dd.android.dailysimple.daily.SelectedDateInfo" />
+        <import type="com.dd.android.dailysimple.daily.simplecalendar.SelectedDateInfo" />
 
         <import type="com.dd.android.dailysimple.daily.DailyConst" />
 
@@ -16,7 +16,7 @@
 
         <variable
             name="dateInfo"
-            type="com.dd.android.dailysimple.daily.SelectedDateInfo" />
+            type="com.dd.android.dailysimple.daily.simplecalendar.SelectedDateInfo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -82,15 +82,18 @@
             android:maxLines="1"
             android:singleLine="true"
             android:text="@{itemModel.habit.title}"
+            app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/new_tag"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@id/color"
             app:layout_constraintTop_toTopOf="parent" />
-
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/new_tag"
             style="@style/BasicTextDpTinySmall"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/basic_view_margin_horizontal_tiny_small"
             android:alpha="@{itemModel.done ? DailyConst.DIM_ALPHA : DailyConst.NORMAL_ALPHA}"
@@ -99,8 +102,9 @@
             android:singleLine="true"
             android:text="@string/new_item"
             android:textColor="@color/apple"
-            android:visibility="@{itemModel.habit.start == itemModel.selectedTime ? View.VISIBLE : View.GONE}"
+            android:visibility="@{itemModel.habit.start == itemModel.selectedTime ? View.VISIBLE : View.GONE, default=gone}"
             app:layout_constraintBottom_toBottomOf="@id/habit_title"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/habit_title"
             app:layout_constraintTop_toTopOf="@id/habit_title" />
 

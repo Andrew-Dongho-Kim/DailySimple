@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="@color/basic_common_background" />
+            <corners
+                android:topRightRadius="@dimen/basic_view_background_round"
+                android:bottomRightRadius="@dimen/basic_view_background_round" />
+        </shape>
+    </item>
+</layer-list>

@@ -14,7 +14,7 @@ class PlanFragment : BaseFragment<FragmentDailyBinding>() {
     override val layout = R.layout.fragment_daily
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        bind.accountViewModel = activity.viewModels<GoogleAccountViewModel>().value
+        bind.accountVm = activity.viewModels<GoogleAccountViewModel>().value
         with(bind.recycler) {
             layoutManager = LinearLayoutManager(activity)
             adapter =

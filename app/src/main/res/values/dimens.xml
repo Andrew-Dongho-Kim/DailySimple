@@ -41,13 +41,16 @@
     <dimen name="basic_view_margin_vertical_tiny_big">20dp</dimen>
     <dimen name="basic_view_margin_vertical_big">25dp</dimen>
 
-    <dimen name="basic_small_icon_size">24dp</dimen>
+    <dimen name="basic_icon_size">24dp</dimen>
+    <dimen name="basic_icon_size_small">18dp</dimen>
 
     <!-- Daily Fragment -->
     <dimen name="daily_calendar_toolbar_down_movement">80dp</dimen>
     <dimen name="daily_calendar_toolbar_height_min">120dp</dimen>
 
     <!-- Daily Todo -->
+    <dimen name="daily_todo_check_box_padding">10dp</dimen>
+    <dimen name="daily_todo_check_box_size">32dp</dimen>
     <dimen name="daily_overdue_popup_width">198dp</dimen>
     <dimen name="daily_overdue_popup_height">70dp</dimen>
     <dimen name="daily_overdue_popup_box_width">36dp</dimen>
@@ -62,7 +65,8 @@
     <dimen name="daily_calendar_item_width">24dp</dimen>
     <dimen name="daily_calendar_item_selector_height">3dp</dimen>
 
-    <!-- Day Date Stroke -->
+    <!-- Simple Header Item -->
+    <dimen name="daily_simple_header_item_text_width">80dp</dimen>
 
     <!-- Schedule Item-->
     <dimen name="schedule_item_title_width">60dp</dimen>

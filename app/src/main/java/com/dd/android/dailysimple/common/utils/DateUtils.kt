@@ -49,10 +49,15 @@ object DateUtils {
         return utcTime
     }
 
-
-    fun calendarFrom(time: Long) = Calendar.getInstance().apply {
+    fun calendar(time: Long): Calendar = Calendar.getInstance().apply {
         timeInMillis = time
     }
+
+    fun year(time: Long) = calendar(time).get(Calendar.YEAR)
+
+    fun month(time: Long) = calendar(time).get(Calendar.MONTH)
+
+
 
     fun calendarDateOnly(timezone: TimeZone? = null): Calendar =
         Calendar.getInstance(timezone ?: TimeZone.getDefault()).apply {

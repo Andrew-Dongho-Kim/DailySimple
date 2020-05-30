@@ -7,11 +7,12 @@ import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.appContext
 import com.dd.android.dailysimple.common.di.getString
 import com.dd.android.dailysimple.common.di.systemLocale
-import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.common.utils.DateUtils.delayRemain
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
 import com.dd.android.dailysimple.common.utils.DateUtils.toRemain
 import com.dd.android.dailysimple.common.utils.DateUtils.toYMD
+import com.dd.android.dailysimple.common.widget.recycler.ItemModel
+import com.dd.android.dailysimple.daily.ChildItemModel
 
 
 @Entity(tableName = "daily_todo")
@@ -23,7 +24,10 @@ data class DailyTodo(
     var until: Long,
     var done: Int,
     @Embedded var alarm: Alarm? = null
-) : ItemModel {
+) : ChildItemModel {
+
+    @Ignore
+    override var hasParent = false
 
     @Ignore
     val isOverdue = System.currentTimeMillis() > until

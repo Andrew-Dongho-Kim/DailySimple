@@ -6,24 +6,29 @@
     <data>
 
         <variable
+            name="isOverDraw"
+            type="Boolean" />
+
+        <variable
             name="model"
             type="com.dd.android.dailysimple.daily.viewholders.DailySimpleHeaderItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_bottom_common_background"
-        android:paddingStart="@dimen/basic_view_margin_horizontal"
-        android:paddingTop="@dimen/basic_view_margin_vertical"
-        android:paddingEnd="@dimen/basic_view_margin_horizontal"
-        android:paddingBottom="@dimen/basic_view_margin_vertical">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/header_text"
             style="@style/BasicHeaderTextDpTinyBig"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/daily_simple_header_item_text_width"
             android:layout_height="wrap_content"
+            android:background="@{isOverDraw? @drawable/simple_header_text_overdraw_background : @drawable/simple_header_text_background}"
+            android:gravity="start|center_vertical"
+            android:paddingStart="@dimen/basic_view_margin_horizontal"
+            android:paddingTop="@dimen/basic_view_margin_vertical_tiny_small"
+            android:paddingEnd="@dimen/basic_view_margin_horizontal"
+            android:paddingBottom="@dimen/basic_view_margin_vertical_tiny_small"
             android:text="@{model.headerTitle}"
             android:textColor="@color/appPrimary"
             app:layout_constraintBottom_toBottomOf="parent"

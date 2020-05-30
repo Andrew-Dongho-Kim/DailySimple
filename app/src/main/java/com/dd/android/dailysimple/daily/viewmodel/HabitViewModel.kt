@@ -84,36 +84,6 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
     }
 }
 
-data class DailyCalendarModel(private val app: Application) : ItemModel {
-    override val id: Long = -1L
 
-    private val _year = MutableLiveData<String>()
-    val year: LiveData<String> = _year
-
-    private val _month = MutableLiveData<String>()
-    val month: LiveData<String> = _month
-
-    val dayDatePagedList =
-        LivePagedListBuilder(
-            object : DataSource.Factory<Long, DayDateItemModel>() {
-                override fun create() = DayDateDataSource(app)
-            }, PagedList.Config.Builder()
-                .setEnablePlaceholders(false)
-                .setPageSize(14)
-                .setInitialLoadSizeHint(5)
-                .build()
-        ).build()
-
-
-    fun refresh(firstVisiblePosition: Int) {
-        dayDatePagedList.value?.let { models ->
-            if (firstVisiblePosition < 0) return
-            models[firstVisiblePosition]?.let { model ->
-                _year.postValue(model.year)
-                _month.postValue(model.month)
-            }
-        }
-    }
-}
 
 

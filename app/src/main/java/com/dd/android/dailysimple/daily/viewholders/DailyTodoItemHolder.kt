@@ -11,7 +11,7 @@ import com.dd.android.dailysimple.HomeFragmentDirections.Companion.homeToMakeAnd
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2
 import com.dd.android.dailysimple.daily.DailyOverduePopup
-import com.dd.android.dailysimple.daily.SelectedDateInfo
+import com.dd.android.dailysimple.daily.simplecalendar.SelectedDateInfo
 import com.dd.android.dailysimple.daily.edit.EditType
 import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
 import com.dd.android.dailysimple.databinding.DailyTodoItemBinding
@@ -34,7 +34,10 @@ class DailyTodoItemHolder(
     init {
         itemClickListener = ::onItemClick
         bind.check.setOnClickListener(::onToggleDone)
-        bind.dateInfo = SelectedDateInfo(todoVm.selectedDate)
+        bind.dateInfo =
+            SelectedDateInfo(
+                todoVm.selectedDate
+            )
     }
 
     private fun onItemClick(view: View) {

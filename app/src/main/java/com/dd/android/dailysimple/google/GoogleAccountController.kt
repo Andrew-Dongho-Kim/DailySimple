@@ -39,6 +39,7 @@ class GoogleAccountController(
 
     private val signInOptions by lazy {
         GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestId()
             .requestProfile()
             .requestEmail()
             .build()
@@ -90,7 +91,7 @@ class GoogleAccountController(
         }
     }
 
-    fun signInToGoogle() =
+    private fun signInToGoogle() =
         activity.startActivityForResult(signInClient.signInIntent, RC_SIGN_IN)
 
     fun signOutToGoogle() =

@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat
 
 data class DailySchedule(
     override val id: Long,
-    val title: String,
+    var title: String,
     val start: Long,
     val end: Long,
     val memo: String? = null,

@@ -19,7 +19,7 @@ fun thumbnailUrl(view: AppCompatImageView, url: String?) {
     if (url.isNullOrEmpty()) return
     Glide.with(view.context).load(url)
         .thumbnail(0.5f)
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
         .into(view)
 }
 
@@ -32,7 +32,7 @@ fun circleThumbnailUrl(view: AppCompatImageView, url: String?) {
     Glide.with(view.context).load(url)
         .thumbnail(0.5f)
         .apply(RequestOptions.circleCropTransform())
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
         .into(view)
 }
 

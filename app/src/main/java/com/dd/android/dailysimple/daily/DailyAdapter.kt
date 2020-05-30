@@ -12,14 +12,12 @@ import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.common.widget.recycler.RecyclerViewAdapter2
 import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.EMPTY_ITEM
-import com.dd.android.dailysimple.daily.DailyViewType.Companion.HABIT_HEADER
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.HABIT_ITEM
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.OVERDUE_TODO_GROUP
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.SCHEDULE_ITEM
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.SIMPLE_HEADER
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.TODO_ITEM
 import com.dd.android.dailysimple.daily.viewholders.*
-import com.dd.android.dailysimple.daily.viewmodel.DailyCalendarModel
 import com.dd.android.dailysimple.db.data.DailyHabitWithCheckStatus
 import com.dd.android.dailysimple.db.data.DailySchedule
 import com.dd.android.dailysimple.db.data.DailyTodo
@@ -32,7 +30,6 @@ private const val RECYCLER_VIEW_CACHE_SIZE = 10
 
 @IntDef(
     SIMPLE_HEADER,
-    HABIT_HEADER,
     EMPTY_ITEM,
     SCHEDULE_ITEM,
     TODO_ITEM,
@@ -42,7 +39,6 @@ private const val RECYCLER_VIEW_CACHE_SIZE = 10
 annotation class DailyViewType {
     companion object {
         const val SIMPLE_HEADER = -1
-        const val HABIT_HEADER = -2
         const val EMPTY_ITEM = 0
         const val SCHEDULE_ITEM = 1
         const val TODO_ITEM = 2
@@ -53,7 +49,6 @@ annotation class DailyViewType {
 
 enum class IdBase(val viewType: Int, val idBase: Long) {
     SIMPLE_HEADER(-1, -10L),
-    HABIT_HEADER(-2, -50L),
     EMPTY_ITEM(0, 10L),
     SCHEDULE_ITEM(1, 50L),
     TODO_ITEM(2, 1000000L),
@@ -64,7 +59,6 @@ enum class IdBase(val viewType: Int, val idBase: Long) {
 
 private val ViewTypeIdBaseMap = mapOf(
     Pair(DailySimpleHeaderItem::class.java, IdBase.SIMPLE_HEADER),
-    Pair(DailyCalendarModel::class.java, IdBase.HABIT_HEADER),
     Pair(DailyEmptyItemModel::class.java, IdBase.EMPTY_ITEM),
     Pair(DailySchedule::class.java, IdBase.SCHEDULE_ITEM),
     Pair(DailyTodo::class.java, IdBase.TODO_ITEM),
@@ -76,7 +70,6 @@ fun RecyclerView.setUpCache() {
     setItemViewCacheSize(RECYCLER_VIEW_CACHE_SIZE)
 
     with(recycledViewPool) {
-        setMaxRecycledViews(HABIT_HEADER, 1)
         setMaxRecycledViews(SIMPLE_HEADER, 2)
         setMaxRecycledViews(HABIT_ITEM, 20)
     }
@@ -84,7 +77,7 @@ fun RecyclerView.setUpCache() {
 
 
 class DailyAdapter(
-    private val lifecycleOwner: LifecycleOwner,
+    lifecycleOwner: LifecycleOwner,
     private val viewModelStoreOwner: ViewModelStoreOwner,
     private val navController: NavController
 ) :
@@ -92,28 +85,6 @@ class DailyAdapter(
 
     private val slaveScrollHolders =
         LinkedList<SlaveScrollViewHolder<out ViewDataBinding, out ItemModel>>()
-
-    private val sharedScrollStatus = SharedScrollStatus()
-
-    private val slaveScroll = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            with(sharedScrollStatus) {
-                absoluteScrollDx += dx
-                absoluteScrollDy += dy
-            }
-
-
-            slaveScrollHolders.forEach { holder ->
-                holder.recycler.scrollBy(dx, dy)
-            }
-        }
-
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            slaveScrollHolders.forEach {
-                it.isMasterScrolling = newState != RecyclerView.SCROLL_STATE_IDLE
-            }
-        }
-    }
 
     override fun onCreateViewHolder2(
         parent: ViewGroup,
@@ -123,9 +94,6 @@ class DailyAdapter(
         logD { "+onCreateViewHolder(#$viewType)" }
         return when (viewType) {
             SIMPLE_HEADER -> DailySimpleHeaderHolder(parent)
-            HABIT_HEADER -> DailyHabitHeaderHolder(parent, lifecycleOwner).also {
-                it.recyclerView.addOnScrollListener(slaveScroll)
-            }
             EMPTY_ITEM -> DailyEmptyItemHolder(parent, navController)
             SCHEDULE_ITEM -> DailyScheduleItemHolder(parent, navController)
             TODO_ITEM -> DailyTodoItemHolder(parent, viewModelStoreOwner, navController)

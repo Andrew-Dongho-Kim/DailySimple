@@ -25,6 +25,11 @@ import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.utils.DateUtils
 import java.util.*
 
+private const val TAG = "BaseFragment"
+
+private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
+
+
 abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
 
     val dateChangedObserver: OnDateChangedObserver by lazy { DateChangeReceiver(this) }
@@ -47,10 +52,50 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     @get:LayoutRes
     abstract val layout: Int
 
+    private inline fun logLifecycle(crossinline message: () -> String) =
+        Logger.d("Lifecycle") {
+            "${this::class.simpleName}(@${Integer.toHexString(this.hashCode())}) ${message()}"
+        }
+
     @CallSuper
     override fun onAttach(activity: Activity) {
         super.onAttach(activity)
         _activity = activity as AppCompatActivity
+        logLifecycle { "onAttach()" }
+    }
+
+    @CallSuper
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        logLifecycle { "onCreate($savedInstanceState)" }
+    }
+
+    @CallSuper
+    override fun onStart() {
+        super.onStart()
+        logLifecycle { "onStart()" }
+    }
+
+    @CallSuper
+    override fun onResume() {
+        super.onResume()
+        logLifecycle { "onResume()" }
+    }
+
+    @CallSuper
+    override fun onPause() {
+        super.onPause()
+        logLifecycle { "onPause()" }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        logLifecycle { "onStop()" }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        logLifecycle { "onDestroy()" }
     }
 
     @CallSuper
@@ -61,6 +106,8 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     ): View? {
         _bind = DataBindingUtil.inflate(inflater, layout, container, false)
         _bind.lifecycleOwner = viewLifecycleOwner
+
+        logLifecycle { "onCreateView" }
         return bind.root
     }
 

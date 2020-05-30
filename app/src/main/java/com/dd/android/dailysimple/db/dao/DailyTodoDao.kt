@@ -20,7 +20,7 @@ interface DailyTodoDao {
     @Query("SELECT * FROM daily_todo WHERE :todoId = id")
     fun getTodoById(todoId: Long): LiveData<DailyTodo>
 
-    @Query("SELECT * FROM daily_todo WHERE start<=:start AND :end <= until")
+    @Query("SELECT * FROM daily_todo WHERE start<=:start AND :end <= until ORDER BY done ASC")
     fun getTodoRange(start: Long, end: Long): LiveData<List<DailyTodo>>
 
     @Query("SELECT * FROM daily_todo WHERE until <= :time AND done = ${DailyTodo.ONGOING}")

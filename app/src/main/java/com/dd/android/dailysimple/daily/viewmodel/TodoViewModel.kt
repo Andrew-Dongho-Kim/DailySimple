@@ -58,7 +58,9 @@ class TodoViewModel(private val app: Application) : AndroidViewModel(app) {
         emit(false)
     } as MutableLiveData<Boolean>
 
-    private val overdueTodo = repository.overdueTodo()
+    private val overdueTodo = Transformations.switchMap(selectedDate) {
+        repository.overdueTodo()
+    }
 
     private val overdueGroup = Transformations.map(overdueTodo) {
         DailyTodoGroup(
@@ -81,7 +83,9 @@ class TodoViewModel(private val app: Application) : AndroidViewModel(app) {
         emit(false)
     } as MutableLiveData<Boolean>
 
-    private val upcomingTodo = repository.upcomingTodo()
+    private val upcomingTodo = Transformations.switchMap(selectedDate) {
+        repository.upcomingTodo()
+    }
 
     private val upcomingGroup = Transformations.map(upcomingTodo) {
         DailyTodoGroup(
@@ -164,3 +168,4 @@ class TodoViewModel(private val app: Application) : AndroidViewModel(app) {
         viewModelThreadScope.cancel()
     }
 }
+

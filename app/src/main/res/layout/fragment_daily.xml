@@ -6,12 +6,17 @@
     <data>
 
         <variable
-            name="fabModel"
+            name="fabVm"
             type="com.dd.android.dailysimple.maker.FabViewModel" />
 
         <variable
-            name="accountViewModel"
+            name="accountVm"
             type="com.dd.android.dailysimple.google.GoogleAccountViewModel" />
+
+        <variable
+            name="selectedDateInfo"
+            type="com.dd.android.dailysimple.daily.simplecalendar.SelectedDateInfo" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,7 +48,8 @@
                 <include
                     android:id="@+id/custom_toolbar"
                     layout="@layout/daily_calendar_toolbar"
-                    bind:accountViewModel="@{accountViewModel}" />
+                    bind:accountVm="@{accountVm}"
+                    bind:selectedDateInfo="@{selectedDateInfo}" />
 
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -54,7 +60,7 @@
             layout="@layout/fab_layout_common"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            bind:fabModel="@{fabModel}" />
+            bind:fabModel="@{fabVm}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

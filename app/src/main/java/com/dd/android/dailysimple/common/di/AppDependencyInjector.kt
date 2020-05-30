@@ -43,6 +43,8 @@ val appResources: Resources = appContext.resources
 
 fun getString(@StringRes strResId: Int) = appContext.getString(strResId)
 
+fun getString(@StringRes strResId: Int, vararg args: Any) = appContext.getString(strResId, *args)
+
 fun getColor(@ColorRes colorResId: Int) = ContextCompat.getColor(appContext, colorResId)
 
 fun systemLocale(): Locale = DependencyInjector.provideLocale()

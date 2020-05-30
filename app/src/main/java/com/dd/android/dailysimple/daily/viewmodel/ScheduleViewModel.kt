@@ -14,6 +14,7 @@ import com.dd.android.dailysimple.daily.DailyConst.SIMPLE_HEADER_ID_SCHEDULE
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.SCHEDULE_ITEM
 import com.dd.android.dailysimple.daily.viewholders.DailyEmptyItemModel
 import com.dd.android.dailysimple.daily.viewholders.DailySimpleHeaderItem
+import com.dd.android.dailysimple.db.data.DailySchedule
 import com.dd.android.dailysimple.provider.calendar.CalendarProviderHelper
 
 class ScheduleViewModel(app: Application) : AndroidViewModel(app) {
@@ -44,6 +45,8 @@ class ScheduleViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-//    fun getSchedule(id:Long) = calendarProvider.getEvents()
+    fun insertSchedule(vararg schedule: DailySchedule) {
+
+    }
 
 }

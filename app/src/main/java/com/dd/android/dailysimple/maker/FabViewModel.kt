@@ -23,40 +23,59 @@ class FabViewModel : ViewModel() {
     val text2 = MutableLiveData<String>()
     val text3 = MutableLiveData<String>()
 
+    val selected = liveData {
+        emit(0)
+    } as MutableLiveData<Int>
+
     var onFab1Click: onClick? = null
         set(onClick) {
             field = { view ->
-                onClick?.invoke(view)
-                toggle()
+                if (isKeyboardOpened.value == true) {
+                    selected.postValue(0)
+                } else {
+                    onClick?.invoke(view)
+                    toggle(view)
+                }
             }
         }
     var onFab2Click: onClick? = null
         set(onClick) {
             field = { view ->
-                onClick?.invoke(view)
-                toggle()
+                if (isKeyboardOpened.value == true) {
+                    selected.postValue(1)
+                } else {
+                    onClick?.invoke(view)
+                    toggle(view)
+                }
             }
         }
     var onFab3Click: onClick? = null
         set(onClick) {
             field = { view ->
-                onClick?.invoke(view)
-                toggle()
+                if (isKeyboardOpened.value == true) {
+                    selected.postValue(2)
+                } else {
+                    onClick?.invoke(view)
+                    toggle(view)
+                }
             }
         }
 
-    fun onFabAddClick(view: View) {
-        if (isKeyboardOpened.value == true) {
 
-        } else {
-            toggle(view)
+    var onFabAddClick: onClick? = null
+        set(onClick) {
+            field = { view ->
+                if (isKeyboardOpened.value == true) {
+                    onClick?.invoke(view)
+                } else {
+                    toggle(view)
+                }
+            }
         }
-    }
+
 
     @JvmOverloads
     fun toggle(view: View? = null) {
-        viewModelScope.launch {
-            isOpen.postValue(isOpen.value?.let { !it } ?: true)
-        }
+        viewModelScope.launch { isOpen.postValue(isOpen.value?.let { !it } ?: true) }
     }
 }

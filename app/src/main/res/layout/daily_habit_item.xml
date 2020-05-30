@@ -6,7 +6,7 @@
 
         <import type="android.view.View" />
 
-        <import type="com.dd.android.dailysimple.daily.SelectedDateInfo" />
+        <import type="com.dd.android.dailysimple.daily.simplecalendar.SelectedDateInfo" />
 
         <variable
             name="itemModel"
@@ -14,7 +14,7 @@
 
         <variable
             name="dateInfo"
-            type="com.dd.android.dailysimple.daily.SelectedDateInfo" />
+            type="com.dd.android.dailysimple.daily.simplecalendar.SelectedDateInfo" />
     </data>
 
     <FrameLayout

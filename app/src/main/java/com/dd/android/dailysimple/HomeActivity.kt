@@ -4,9 +4,14 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.dd.android.dailysimple.common.BaseActivity
-import com.dd.android.dailysimple.maker.FabViewModel
+import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.google.GoogleAccountController
 import com.dd.android.dailysimple.google.GoogleAccountViewModel
+import com.dd.android.dailysimple.maker.FabViewModel
+
+private const val TAG = "HomeActivity"
+
+private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
 
 class HomeActivity : BaseActivity() {
 
@@ -23,7 +28,10 @@ class HomeActivity : BaseActivity() {
         setContentView(R.layout.activity_home)
         accountController.signInOutResult.observe(this,
             Observer {
-                it.result?.let { account -> accountViewModel.update(account) }
+                it.result?.let { account ->
+                    accountViewModel.update(account)
+                    logD { "Account profile: ${account.photoUrl}" }
+                }
             })
 
         fabViewModel.isOpen.observe(this, Observer { opened ->

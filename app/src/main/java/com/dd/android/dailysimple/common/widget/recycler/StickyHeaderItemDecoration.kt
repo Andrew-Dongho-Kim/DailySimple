@@ -9,6 +9,7 @@ import android.view.View.MeasureSpec
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.*
+import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.Logger
 
 
@@ -22,8 +23,6 @@ internal class StickyHeaderItemDecoration(
 ) : ItemDecoration() {
 
     private var currentHeader: Pair<Int, ViewHolder>? = null
-
-    private var prevPosition = NO_POSITION
 
     init {
         parent.adapter?.registerAdapterDataObserver(object : AdapterDataObserver() {
@@ -59,22 +58,16 @@ internal class StickyHeaderItemDecoration(
     ) {
         super.onDrawOver(c, parent, state)
 
-        val topChild = parent.findChildViewUnder(
+        val topChild = parent.findChildViewUnder2(
             parent.paddingLeft.toFloat(),
             parent.paddingTop.toFloat()
-        )
+        ) ?: return
 
-        val topChildPosition = if (topChild == null) {
-            prevPosition
-        } else {
-            parent.getChildAdapterPosition(topChild)
-        }
-
+        val topChildPosition = parent.getChildAdapterPosition(topChild)
         if (topChildPosition == NO_POSITION) {
             logD { "Top child position : no-position" }
             return
         }
-        prevPosition = topChildPosition
 
         val header = getHeaderViewForItem(topChildPosition, parent) ?: return
 
@@ -83,6 +76,7 @@ internal class StickyHeaderItemDecoration(
         val childPosition = parent.getChildAdapterPosition(childInContact)
 
         if (childPosition < 0) return
+        if (topChildPosition == childPosition) return
 
         if (isHeader(childPosition)) {
             moveHeader(c, header, childInContact)
@@ -111,6 +105,7 @@ internal class StickyHeaderItemDecoration(
             }
 
             return createViewHolder(parent, headerType).let { vh ->
+                vh.itemView.setTag(R.id.overDraw, true)
                 onBindViewHolder(vh, headerPos)
                 onMeasureAndLayout(parent, vh.itemView)
                 logD {
@@ -165,12 +160,12 @@ internal class StickyHeaderItemDecoration(
 
     private fun getChildInContact(parent: RecyclerView, contactPoint: Int): View? {
         var childInContact: View? = null
+        val bounds = Rect()
         for (i in 0 until parent.childCount) {
             val child = parent.getChildAt(i)
-            val mBounds = Rect()
-            parent.getDecoratedBoundsWithMargins(child, mBounds)
-            if (mBounds.bottom > contactPoint) {
-                if (mBounds.top <= contactPoint) {
+            parent.getDecoratedBoundsWithMargins(child, bounds)
+            if (bounds.bottom > contactPoint) {
+                if (bounds.top <= contactPoint) {
                     // This child overlaps the contactPoint
                     childInContact = child
                     break
@@ -186,8 +181,10 @@ internal class StickyHeaderItemDecoration(
         nextHeader: View
     ) {
         c.save()
-        logD { "moveHeader : ${(nextHeader.top - currentHeader.height).toFloat()}" }
-        c.translate(0f, (nextHeader.top - currentHeader.height).toFloat() /*+ paddingTop*/)
+        val moveTop = (nextHeader.top - currentHeader.height).toFloat()
+
+        logD { "moveHeader : $moveTop" }
+        c.translate(0f, if (moveTop > 0) 0f else moveTop /*+ paddingTop*/)
         currentHeader.draw(c)
         c.restore()
     }

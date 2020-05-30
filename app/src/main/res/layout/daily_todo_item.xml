@@ -8,7 +8,7 @@
 
         <import type="com.dd.android.dailysimple.db.data.DailyTodo" />
 
-        <import type="com.dd.android.dailysimple.daily.SelectedDateInfo" />
+        <import type="com.dd.android.dailysimple.daily.simplecalendar.SelectedDateInfo" />
 
         <import type="com.dd.android.dailysimple.daily.DailyConst" />
 
@@ -18,48 +18,83 @@
 
         <variable
             name="dateInfo"
-            type="com.dd.android.dailysimple.daily.SelectedDateInfo" />
+            type="com.dd.android.dailysimple.daily.simplecalendar.SelectedDateInfo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_view_background"
-        android:foreground="@drawable/ripple_list_item"
-        android:paddingStart="@dimen/basic_view_margin_horizontal"
-        android:paddingTop="@dimen/basic_view_margin_vertical_small"
-        android:paddingEnd="@dimen/basic_view_margin_horizontal"
-        android:paddingBottom="@dimen/basic_view_margin_vertical_small">
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/rounded_view_background"
+            android:foreground="@drawable/ripple_list_item"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/sub_indicator"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Space
+            android:id="@+id/sub_indicator"
+            android:layout_width="@dimen/basic_icon_size_small"
+            android:layout_height="@dimen/basic_icon_size_small"
+            android:visibility="@{itemModel.hasParent ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/check"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/daily_todo_check_box_size"
+            android:layout_height="@dimen/daily_todo_check_box_size"
             android:layout_gravity="center"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal_small"
             android:alpha="@{(itemModel.done == DailyTodo.DONE) ?  DailyConst.DIM_ALPHA : DailyConst.NORMAL_ALPHA}"
             android:duplicateParentState="true"
-            android:padding="6dp"
+            android:padding="@dimen/daily_todo_check_box_padding"
             android:scaleType="centerInside"
             android:visibility="@{dateInfo.state == SelectedDateInfo.FUTURE ? View.GONE : View.VISIBLE}"
             app:checkStatus="@{itemModel.done}"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/sub_indicator"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"
             style="@style/BasicTextDpNormal"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/basic_view_margin_horizontal_tiny_small"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical_small"
+            android:layout_marginBottom="@dimen/basic_view_margin_vertical_small"
             android:alpha="@{(itemModel.done == DailyTodo.DONE) ?  DailyConst.DIM_ALPHA : DailyConst.NORMAL_ALPHA}"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
             android:singleLine="true"
             android:text="@{itemModel.title}"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/sub_task_icon"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/check"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginStart="@dimen/basic_view_margin_horizontal" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/sub_task_icon"
+            android:layout_width="@dimen/basic_icon_size_small"
+            android:layout_height="@dimen/basic_icon_size_small"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal_small"
+            android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
+            android:src="@drawable/ic_sub_task"
+            android:tint="@color/appPrimary"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/remain"
-            app:layout_constraintStart_toEndOf="@id/check"
+            app:layout_constraintStart_toEndOf="@id/title"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -67,13 +102,13 @@
             style="@style/BasicTextDpTinySmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
             android:alpha="@{(itemModel.done == DailyTodo.DONE) ? DailyConst.DIM_ALPHA : DailyConst.NORMAL_ALPHA}"
             android:text="@{itemModel.timeRemain}"
             android:textColor="@color/basic_text2_color"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/title"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

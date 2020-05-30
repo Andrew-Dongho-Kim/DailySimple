@@ -22,6 +22,7 @@ class DailySimpleHeaderHolder(parent: ViewGroup) :
 
     override fun bindTo(itemModel: ItemModel) {
         super.bindTo(itemModel)
+        bind.isOverDraw = itemView.getTag(R.id.overDraw) as? Boolean
         bind.executePendingBindings()
     }
 }

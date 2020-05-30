@@ -1,28 +1,27 @@
-package com.dd.android.dailysimple.daily
+package com.dd.android.dailysimple.daily.simplecalendar
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import com.dd.android.dailysimple.R
+import com.dd.android.dailysimple.common.CalendarConst
+import com.dd.android.dailysimple.common.di.getString
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
 import java.util.*
 
 data class SelectedDateInfo(
     val date: LiveData<Long>
 ) {
-    val year = Transformations.map(date) {
+    
+    val ymText = Transformations.map(date) {
         Calendar.getInstance().run {
             timeInMillis = it
-            get(Calendar.YEAR)
+            "${getString(R.string.year, get(Calendar.YEAR))} ${getString(
+                CalendarConst.MONTHS[get(
+                    Calendar.MONTH
+                )]
+            )}"
         }
     }
-
-    val month = Transformations.map(date) {
-        Calendar.getInstance().run {
-            timeInMillis = it
-            get(Calendar.MONTH)
-        }
-    }
-
-//    val formattedYearMonth =
 
     val state = Transformations.map(date) {
         val today = msDateOnlyFrom()

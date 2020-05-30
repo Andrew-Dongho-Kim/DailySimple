@@ -6,20 +6,33 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 
 class CenterScrollLinearLayoutManager(private val context: Context) : LinearLayoutManager(context) {
 
+    private var pendingScrollPosition = NO_POSITION
+
     override fun smoothScrollToPosition(
-        recyclerView: RecyclerView?,
-        state: RecyclerView.State?,
+        recyclerView: RecyclerView,
+        state: RecyclerView.State,
         position: Int
     ) {
-        startSmoothScroll(
-            CenterLinearSmoothScroller(
-                context
-            ).apply {
-                targetPosition = position
-            })
+        recyclerView.stopScroll()
+        pendingScrollPosition = position
+        scrollToPosition(pendingScrollPosition)
+    }
+
+    override fun onLayoutCompleted(state: RecyclerView.State) {
+        super.onLayoutCompleted(state)
+        if (pendingScrollPosition != NO_POSITION) {
+            startSmoothScroll(
+                CenterLinearSmoothScroller(
+                    context
+                ).apply {
+                    targetPosition = pendingScrollPosition
+                })
+            pendingScrollPosition = NO_POSITION
+        }
     }
 }
 

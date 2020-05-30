@@ -35,7 +35,6 @@ class ScheduleCardItemDecoration(
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        super.getItemOffsets(outRect, view, parent, state)
         outRect.top = context.resources.getDimensionPixelSize(R.dimen.list_item_margin_vertical)
     }
 }
