@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="background_color">배경 색상</string>
+    <string name="background_alpha">배경 투명도</string>
+    <string name="white">흰색</string>
+    <string name="black">검은색</string>
+
+    <string name="task">작업</string>
     <string name="plan">계획</string>
     <string name="daily">매일</string>
     <string name="setting">설정</string>
@@ -85,5 +91,6 @@
 
     <string name="no_schedule_message">등록된 일정이 없습니다</string>
     <string name="no_todo_message">등록된 할 일이 없습니다</string>
-    <string name="no_habit_message">등록된 습관이 없습니다.</string>
+    <string name="no_habit_message">등록된 습관이 없습니다</string>
+    <string name="no_task_message">등록된 작업이 없습니다</string>
 </resources>

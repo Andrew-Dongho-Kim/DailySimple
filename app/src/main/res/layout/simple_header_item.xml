@@ -21,7 +21,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/header_text"
             style="@style/BasicHeaderTextDpTinyBig"
-            android:layout_width="@dimen/daily_simple_header_item_text_width"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@{isOverDraw? @drawable/simple_header_text_overdraw_background : @drawable/simple_header_text_background}"
             android:gravity="start|center_vertical"

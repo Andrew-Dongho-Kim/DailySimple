@@ -6,6 +6,7 @@ import android.content.res.Resources
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import com.dd.android.dailysimple.SettingManager
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.db.AppDatabase
 import java.util.*
@@ -20,6 +21,8 @@ open class AppDependencyInjector {
     @Inject lateinit var logger: Logger
     @Inject lateinit var appContext:Context
     @Inject lateinit var appDb: AppDatabase
+
+    @Inject lateinit var settingManager:SettingManager
 
     // @formatter:on
 
@@ -50,3 +53,6 @@ fun getColor(@ColorRes colorResId: Int) = ContextCompat.getColor(appContext, col
 fun systemLocale(): Locale = DependencyInjector.provideLocale()
 
 fun appDb(): AppDatabase = DependencyInjector.appDb
+
+fun settingManager() = DependencyInjector.settingManager
+

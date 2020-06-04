@@ -29,8 +29,9 @@
     <dimen name="basic_view_margin_horizontal_tiny_big">20dp</dimen>
     <dimen name="basic_view_margin_horizontal_big">25dp</dimen>
 
+    <dimen name="basic_view_background_round_small">12dp</dimen>
     <dimen name="basic_view_background_round">20dp</dimen>
-    <dimen name="basic_view_background_round_big">30dp</dimen>
+    <dimen name="basic_view_background_round_big">24dp</dimen>
     <dimen name="basic_view_background_round_stroke">1px</dimen>
     <dimen name="basic_view_background_dashed_gap">1dp</dimen>
     <dimen name="basic_view_background_dashed_width">1dp</dimen>
@@ -64,9 +65,6 @@
     <!-- Calendar item -->
     <dimen name="daily_calendar_item_width">24dp</dimen>
     <dimen name="daily_calendar_item_selector_height">3dp</dimen>
-
-    <!-- Simple Header Item -->
-    <dimen name="daily_simple_header_item_text_width">80dp</dimen>
 
     <!-- Schedule Item-->
     <dimen name="schedule_item_title_width">60dp</dimen>

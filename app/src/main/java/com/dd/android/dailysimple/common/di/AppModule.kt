@@ -3,6 +3,7 @@ package com.dd.android.dailysimple.common.di
 import android.app.Application
 import android.content.Context
 import android.os.Build
+import com.dd.android.dailysimple.SettingManager
 import com.dd.android.dailysimple.db.AppDatabase
 import dagger.Module
 import dagger.Provides
@@ -33,5 +34,10 @@ class AppModule(private val app: Application) {
             app.resources.configuration.locale
         }
     }
+
+    @Singleton
+    @Provides
+    @Inject
+    fun provideSettingManager(context: Context) = SettingManager(context)
 
 }

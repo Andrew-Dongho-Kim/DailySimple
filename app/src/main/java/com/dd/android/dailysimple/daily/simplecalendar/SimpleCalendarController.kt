@@ -19,9 +19,7 @@ import java.util.*
 
 
 private const val TAG = "SimpleCalendar"
-
 private const val UNKNOWN_POSITION = -1
-
 private const val LIST_PREPARE_DELAY = 500L
 
 private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
@@ -30,35 +28,34 @@ private inline fun logE(crossinline message: () -> String) = Logger.e(TAG, messa
 class SimpleCalendarController(
     private val recyclerView: RecyclerView,
     private val lifecycleOwner: LifecycleOwner,
-    viewModelStoreOwner: ViewModelStoreOwner,
+    private val viewModelStoreOwner: ViewModelStoreOwner,
     private val scrollWith: ((selectedDate: Long) -> Unit)? = null
 ) : RecyclerView.OnScrollListener() {
 
     private var simpleCalendarVm =
         ViewModelProvider(viewModelStoreOwner).get(SimpleCalendarViewModel::class.java)
 
-    private val calendarAdapter = setUpAdapter()
+    private var calendarPagedList: PagedList<DayDateItemModel>? = null
     private val calendarLayoutManager = setUpLayoutManager()
+    private val calendarAdapter = setUpAdapter()
 
-    private var dayDatesList: PagedList<DayDateItemModel>? = null
-
-    private var prevSelected: DayDateItemModel? = null
-
+    private var prevSelectedModel: DayDateItemModel? = null
     private var prevSelectedPosition = UNKNOWN_POSITION
 
     init {
         logD { "SimpleCalendarController created() :$viewModelStoreOwner" }
         setUpViewModel(calendarAdapter)
 
-        recyclerView.addOnScrollListener(this)
-        LinearSnapHelper().attachToRecyclerView(recyclerView)
-
+        recyclerView.also {
+            it.addOnScrollListener(this)
+            LinearSnapHelper().attachToRecyclerView(it)
+        }
     }
 
     private fun setUpAdapter() =
         SimpleCalendarAdapter(
             lifecycleOwner, { pos ->
-                val list = dayDatesList ?: return@SimpleCalendarAdapter
+                val list = calendarPagedList ?: return@SimpleCalendarAdapter
                 if (pos >= list.size) return@SimpleCalendarAdapter
 
                 simpleCalendarVm.selectedDate.postValue(list[pos]!!.id)
@@ -79,7 +76,7 @@ class SimpleCalendarController(
     private fun setUpViewModel(adapter: SimpleCalendarAdapter) {
         simpleCalendarVm.calendar.observe(lifecycleOwner, Observer {
             adapter.submitList(it)
-            this.dayDatesList = it
+            this.calendarPagedList = it
             lifecycleOwner.lifecycleScope.launch {
                 delay(LIST_PREPARE_DELAY)
                 logD { "Scroll to selected date !" }
@@ -97,7 +94,7 @@ class SimpleCalendarController(
     private fun smoothScrollToPosition(position: Int) {
         if (position < 0) return
 
-        val list = dayDatesList ?: return
+        val list = calendarPagedList ?: return
         if (list.size <= position) return
         if (prevSelectedPosition == position) return
         prevSelectedPosition = position
@@ -106,15 +103,16 @@ class SimpleCalendarController(
         recyclerView.smoothScrollToPosition(position)
         list[position]?.let {
             it.isSelected.postValue(true)
-            prevSelected?.isSelected?.postValue(false)
-            prevSelected = it
+            prevSelectedModel?.isSelected?.postValue(false)
+            prevSelectedModel = it
 
             scrollWith?.invoke(it.id)
         }
     }
 
     private fun smoothScrollToDate(date: Long) =
-        smoothScrollToPosition(dayDatesList?.indexOfFirst { it.id == date } ?: UNKNOWN_POSITION)
+        smoothScrollToPosition(calendarPagedList?.indexOfFirst { it.id == date }
+            ?: UNKNOWN_POSITION)
 
     fun invalidate() = calendarAdapter.notifyDataSetChanged()
 

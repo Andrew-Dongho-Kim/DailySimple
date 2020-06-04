@@ -2,6 +2,12 @@
     <string name="app_name" translatable="false">DailySimple</string>
     <string name="bottom_nav_host" translatable="false">bottom_nav_host</string>
 
+    <string name="background_color">Background color</string>
+    <string name="background_alpha">Background alpha</string>
+    <string name="white">White</string>
+    <string name="black">Black</string>
+
+    <string name="task">Task</string>
     <string name="plan">Plan</string>
     <string name="daily">Daily</string>
     <string name="setting">Settings</string>
@@ -14,7 +20,6 @@
     <string name="schedule">Schedule</string>
     <string name="todo">To do</string>
     <string name="habit">Habit</string>
-    <string name="schedule_overview">Schedule Overview</string>
 
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
@@ -105,4 +110,5 @@
     <string name="no_schedule_message">There are no schedules</string>
     <string name="no_todo_message">There are no todo list</string>
     <string name="no_habit_message">There are no habits</string>
+    <string name="no_task_message">There are no tasks</string>
 </resources>

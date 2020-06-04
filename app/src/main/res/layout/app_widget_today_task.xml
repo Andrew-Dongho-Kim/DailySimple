@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/widget_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/rounded_view_background_small" />
+
+    <TextView
+        android:id="@+id/task"
+        style="@style/BasicTextDpTinyBig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/setting"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/basic_view_margin_horizontal"
+        android:layout_marginTop="@dimen/basic_view_margin_vertical"
+        android:text="@string/task" />
+
+    <ImageView
+        android:id="@+id/setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/basic_view_margin_vertical"
+        android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
+        android:contentDescription="@string/setting"
+        android:src="@drawable/ic_settings"
+        android:tint="@color/basic_icon_background" />
+
+    <ListView
+        android:id="@+id/task_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task"
+        android:layout_marginTop="@dimen/basic_view_margin_vertical" />
+
+    <TextView
+        android:id="@+id/empty_view"
+        style="@style/BasicTextDpTinyBig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/no_task_message"
+        tools:ignore="RelativeOverlap" />
+
+</RelativeLayout>
