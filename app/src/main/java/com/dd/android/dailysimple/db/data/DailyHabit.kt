@@ -10,7 +10,7 @@ import com.dd.android.dailysimple.common.di.getColor
 import com.dd.android.dailysimple.common.di.getString
 import com.dd.android.dailysimple.common.di.systemLocale
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
-import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.utils.DateUtils.toYMD
 import com.dd.android.dailysimple.common.utils.htmlTextColor
 import com.dd.android.dailysimple.db.data.DailyHabit.CheckTerm.*
@@ -68,8 +68,8 @@ data class DailyHabit(
             id = NO_ID,
             title = "",
             color = ContextCompat.getColor(context, R.color.appPrimary),
-            start = msDateOnlyFrom(),
-            until = msDateOnlyFrom(DEFAULT_END)
+            start = msDateFrom(),
+            until = msDateFrom(DEFAULT_END)
         )
     }
 }

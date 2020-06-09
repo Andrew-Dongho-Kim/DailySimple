@@ -5,7 +5,7 @@ import androidx.lifecycle.Transformations
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.CalendarConst
 import com.dd.android.dailysimple.common.di.getString
-import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import java.util.*
 
 data class SelectedDateInfo(
@@ -24,7 +24,7 @@ data class SelectedDateInfo(
     }
 
     val state = Transformations.map(date) {
-        val today = msDateOnlyFrom()
+        val today = msDateFrom()
         when {
             it == today -> TODAY
             it > today -> FUTURE

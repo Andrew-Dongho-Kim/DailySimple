@@ -9,8 +9,8 @@ import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.getString
 import com.dd.android.dailysimple.common.utils.DateUtils
 import com.dd.android.dailysimple.common.utils.DateUtils.msFrom
-import com.dd.android.dailysimple.daily.DailyConst.EMPTY_ITEM_ID_SCHEDULE
-import com.dd.android.dailysimple.daily.DailyConst.SIMPLE_HEADER_ID_SCHEDULE
+import com.dd.android.dailysimple.daily.AppConst.EMPTY_ITEM_ID_SCHEDULE
+import com.dd.android.dailysimple.daily.AppConst.SIMPLE_HEADER_ID_SCHEDULE
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.SCHEDULE_ITEM
 import com.dd.android.dailysimple.daily.viewholders.DailyEmptyItemModel
 import com.dd.android.dailysimple.daily.viewholders.DailySimpleHeaderItem
@@ -21,7 +21,7 @@ class ScheduleViewModel(app: Application) : AndroidViewModel(app) {
     private val calendarProvider by lazy { CalendarProviderHelper(app) }
 
     val selectedDate = liveData {
-        emit(DateUtils.msDateOnlyFrom())
+        emit(DateUtils.msDateFrom())
     } as MutableLiveData<Long>
 
     val header =

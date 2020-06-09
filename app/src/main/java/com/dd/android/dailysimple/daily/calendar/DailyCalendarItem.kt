@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.core.content.ContextCompat
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
-import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import java.util.*
 import java.util.Calendar.*
 
@@ -20,7 +20,7 @@ data class DailyCalendarItem(
         get(DAY_OF_WEEK)
     }
 
-    private val isToday = msTime == msDateOnlyFrom()
+    private val isToday = msTime == msDateFrom()
 
     val date = Calendar.getInstance().run {
         timeInMillis = msTime

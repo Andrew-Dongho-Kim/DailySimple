@@ -71,7 +71,7 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
                 'memo' TEXT NOT NULL,
                 'start' INTEGER NOT NULL,
                 'until' INTEGER NOT NULL,
-                'done' INTEGER NOT NULL DEFAULT ${DailyTodo.ONGOING},
+                'done' INTEGER NOT NULL DEFAULT ${DoneState.ONGOING},
                 'alarm_days' INTEGER NULL,
                 'alarm_time' INTEGER NULL,
                 'alarm_power' INTEGER NULL,

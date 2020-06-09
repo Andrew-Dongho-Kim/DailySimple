@@ -1,6 +1,6 @@
 package com.dd.android.dailysimple.daily
 
-object DailyConst {
+object AppConst {
     const val NO_ID = 0L
 
     // SIMPLE HEADER

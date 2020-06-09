@@ -94,7 +94,7 @@
             android:paddingBottom="@dimen/basic_view_margin_vertical_small"
             android:text="@{fabModel.text1}"
             android:textColor="@{fabModel.selected == 0 ? @color/appWhite : @color/basic_text1_color}"
-            android:visibility="@{fabModel.onFab1Click != null ? View.VISIBLE : View.GONE}"
+            android:visibility="@{fabModel.onFab1Click != null &amp;&amp; fabModel.isKeyboardOpened ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/simple_make_detail_background"
             app:layout_constraintStart_toStartOf="@id/simple_make_detail_background"
             app:layout_constraintTop_toTopOf="@id/simple_make_detail_background" />
@@ -115,7 +115,7 @@
             android:paddingBottom="@dimen/basic_view_margin_vertical_small"
             android:text="@{fabModel.text2}"
             android:textColor="@{fabModel.selected == 1 ? @color/appWhite : @color/basic_text1_color}"
-            android:visibility="@{fabModel.onFab2Click != null ? View.VISIBLE : View.GONE}"
+            android:visibility="@{fabModel.onFab2Click != null &amp;&amp; fabModel.isKeyboardOpened ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/simple_make_detail_background"
             app:layout_constraintStart_toEndOf="@id/simple_make_detail_type1"
             app:layout_constraintTop_toTopOf="@id/simple_make_detail_background" />
@@ -136,7 +136,7 @@
             android:paddingBottom="@dimen/basic_view_margin_vertical_small"
             android:text="@{fabModel.text3}"
             android:textColor="@{fabModel.selected == 2 ? @color/appWhite : @color/basic_text1_color}"
-            android:visibility="@{fabModel.onFab3Click != null ? View.VISIBLE : View.GONE}"
+            android:visibility="@{fabModel.onFab3Click != null &amp;&amp; fabModel.isKeyboardOpened ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/simple_make_detail_background"
             app:layout_constraintStart_toEndOf="@id/simple_make_detail_type2"
             app:layout_constraintTop_toTopOf="@id/simple_make_detail_background" />

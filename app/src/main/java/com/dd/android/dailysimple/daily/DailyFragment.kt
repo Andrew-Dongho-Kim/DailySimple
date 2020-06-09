@@ -13,7 +13,7 @@ import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.BaseFragment
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.OnDateChangedListener
-import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.widget.recycler.StickyHeaderItemDecoration
 import com.dd.android.dailysimple.daily.simplecalendar.SelectedDateInfo
 import com.dd.android.dailysimple.daily.simplecalendar.SimpleCalendarController
@@ -131,7 +131,7 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
     }
 
     override fun onDateChanged() {
-        simpleCalendarVm.selectedDate.postValue(msDateOnlyFrom())
+        simpleCalendarVm.selectedDate.postValue(msDateFrom())
         calendarController.invalidate()
     }
 

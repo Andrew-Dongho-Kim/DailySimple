@@ -1,6 +1,6 @@
 package com.dd.android.dailysimple.db
 
-import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.db.dao.CheckStatusDao
 import com.dd.android.dailysimple.db.dao.DailyHabitDao
 import com.dd.android.dailysimple.db.data.CheckStatus
@@ -22,7 +22,7 @@ class DailyHabitRepository(
 
     fun toggleIt(habitId: Long) =
         GlobalScope.launch(Dispatchers.IO) {
-            checkStatusDao.toggleIt(msDateOnlyFrom(), habitId)
+            checkStatusDao.toggleIt(msDateFrom(), habitId)
         }
 
     suspend fun insert(checkStatus: CheckStatus) =

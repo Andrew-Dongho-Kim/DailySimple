@@ -6,11 +6,11 @@
 
         <import type="android.view.View" />
 
-        <import type="com.dd.android.dailysimple.db.data.DailyTodo" />
+        <import type="com.dd.android.dailysimple.db.data.DoneState" />
 
         <import type="com.dd.android.dailysimple.daily.simplecalendar.SelectedDateInfo" />
 
-        <import type="com.dd.android.dailysimple.daily.DailyConst" />
+        <import type="com.dd.android.dailysimple.daily.AppConst" />
 
         <variable
             name="itemModel"
@@ -50,11 +50,11 @@
             android:layout_height="@dimen/daily_todo_check_box_size"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/basic_view_margin_horizontal_small"
-            android:alpha="@{(itemModel.done == DailyTodo.DONE) ?  DailyConst.DIM_ALPHA : DailyConst.NORMAL_ALPHA}"
+            android:alpha="@{DoneState.isDone(itemModel.done)? AppConst.DIM_ALPHA : AppConst.NORMAL_ALPHA}"
             android:duplicateParentState="true"
             android:padding="@dimen/daily_todo_check_box_padding"
             android:scaleType="centerInside"
-            android:visibility="@{dateInfo.state == SelectedDateInfo.FUTURE ? View.GONE : View.VISIBLE}"
+            android:visibility="@{(dateInfo.state == SelectedDateInfo.FUTURE)? View.GONE : View.VISIBLE}"
             app:checkStatus="@{itemModel.done}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/sub_indicator"
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/basic_view_margin_vertical_small"
             android:layout_marginBottom="@dimen/basic_view_margin_vertical_small"
-            android:alpha="@{(itemModel.done == DailyTodo.DONE) ?  DailyConst.DIM_ALPHA : DailyConst.NORMAL_ALPHA}"
+            android:alpha="@{DoneState.isDone(itemModel.done)? AppConst.DIM_ALPHA : AppConst.NORMAL_ALPHA}"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
@@ -103,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
-            android:alpha="@{(itemModel.done == DailyTodo.DONE) ? DailyConst.DIM_ALPHA : DailyConst.NORMAL_ALPHA}"
+            android:alpha="@{DoneState.isDone(itemModel.done) ? AppConst.DIM_ALPHA : AppConst.NORMAL_ALPHA}"
             android:text="@{itemModel.timeRemain}"
             android:textColor="@color/basic_text2_color"
             android:textStyle="bold"

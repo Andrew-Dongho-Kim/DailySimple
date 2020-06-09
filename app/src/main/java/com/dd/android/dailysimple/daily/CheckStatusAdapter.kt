@@ -13,8 +13,8 @@ import com.dd.android.dailysimple.BR
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.di.appDb
-import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2
 import com.dd.android.dailysimple.common.utils.DateUtils
+import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2
 import com.dd.android.dailysimple.db.data.CheckStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -27,7 +27,7 @@ private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, messa
 private inline fun logE(crossinline message: () -> String) = Logger.e(TAG, message)
 
 @BindingAdapter("daily:checkStatus")
-fun applyCheckStatus(imageView: ImageView, checkedCount: Int) {
+fun applyCheckStatus(imageView: ImageView, checkedCount: Long) {
     imageView.setImageResource(
         if (checkedCount > 0) {
             R.drawable.checked_oval_stroke

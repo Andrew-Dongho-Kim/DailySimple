@@ -79,6 +79,7 @@
     <string name="abb_second">초</string>
     <string name="left">남음</string>
     <string name="past">지남</string>
+    <string name="after">후</string>
 
     <string name="overdue_tasks_message">밀린 할 일이 &lt;u>%d개&lt;/u> 있습니다</string>
     <string name="overdue_task_message">밀린 할 일이 &lt;u>%d개&lt;/u> 있습니다</string>

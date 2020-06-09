@@ -11,7 +11,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.liveData
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.CalendarConst
-import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import java.util.*
 import java.util.Calendar.MONTH
 import java.util.Calendar.YEAR
@@ -19,7 +19,7 @@ import java.util.Calendar.YEAR
 class DailyCalendarViewModel(private val app: Application) : AndroidViewModel(app) {
 
     val selectedDate = liveData {
-        emit(msDateOnlyFrom())
+        emit(msDateFrom())
     } as MutableLiveData<Long>
 
     val year = Transformations.map(selectedDate) { time ->

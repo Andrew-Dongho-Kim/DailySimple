@@ -9,13 +9,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object DateUtils {
-
-    private const val MS_SECOND = 1000L
-
-    private const val MS_MINUTE = MS_SECOND * 60
-
-    private const val MS_HOUR = MS_MINUTE * 60
-
+    const val MS_SECOND = 1000L
+    const val MS_MINUTE = MS_SECOND * 60
+    const val MS_HOUR = MS_MINUTE * 60
     const val MS_DAY = MS_HOUR * 24
 
     val TIME_ZONE_UTC: TimeZone by lazy { TimeZone.getTimeZone("UTC") }
@@ -58,7 +54,6 @@ object DateUtils {
     fun month(time: Long) = calendar(time).get(Calendar.MONTH)
 
 
-
     fun calendarDateOnly(timezone: TimeZone? = null): Calendar =
         Calendar.getInstance(timezone ?: TimeZone.getDefault()).apply {
             time = Date()
@@ -88,7 +83,7 @@ object DateUtils {
         }
 
 
-    fun msDateOnlyFrom(
+    fun msDateFrom(
         date: Int = 0,
         hours: Int = 0,
         minutes: Int = 0,
@@ -104,18 +99,18 @@ object DateUtils {
             timeInMillis
         }
 
-    fun msWeekOnlyFrom(timezone: TimeZone? = null) =
+    fun msWeekFrom(timezone: TimeZone? = null) =
         calendarWeekOnly(timezone).run {
             timeInMillis
         }
 
-    fun msMonthOnlyFrom(timezone: TimeZone? = null) =
+    fun msMonthFrom(timezone: TimeZone? = null) =
         calendarMonthOnly(timezone).run {
             timeInMillis
         }
 
     fun msFrom(
-        msTime: Long,
+        msTime: Long = System.currentTimeMillis(),
         months: Int = 0,
         weeks: Int = 0,
         dates: Int = 0,
@@ -165,63 +160,6 @@ object DateUtils {
 
     fun msTimeNow() = System.currentTimeMillis()
 
-    fun toRemain(context: Context, remain: Long): String {
-        val left = remain > 0
-        var time = (if (left) remain else -remain)
-        val resources = context.resources
-        val days = (time / MS_DAY).toInt()
-        if (days > 0) {
-            return "${resources.getQuantityString(
-                R.plurals.plurals_day,
-                days,
-                days
-            )} ${resources.getString(
-                if (left) R.string.left else R.string.past
-            )}"
-        }
-
-        time = (time % MS_DAY)
-        val hours = time / MS_HOUR
-
-        time %= MS_HOUR
-        val minutes = time / MS_MINUTE
-        if (hours > 0 || minutes >= 10) {
-            return if (hours > 0) {
-                String.format(
-                    "%d${resources.getString(R.string.abb_hour)} %02d${resources.getString(
-                        R.string.abb_minute
-                    )} ${resources.getString(
-                        if (left) R.string.left else R.string.past
-                    )}", hours, minutes
-                )
-            } else {
-                String.format(
-                    "%02d${resources.getString(
-                        R.string.abb_minute
-                    )} ${resources.getString(
-                        if (left) R.string.left else R.string.past
-                    )}", minutes
-                )
-            }
-        }
-
-        time %= MS_MINUTE
-        val seconds = time / MS_SECOND
-        return String.format(
-            "%d${resources.getString(R.string.abb_minute)} %02d${resources.getString(
-                R.string.abb_second
-            )} ${resources.getString(
-                if (left) R.string.left else R.string.past
-            )
-            }", minutes, seconds
-        )
-    }
-
-    suspend fun delayRemain(remain: Long) {
-        delay(1000)
-    }
-
-
     fun toTime(date: Long, locale: Locale): String =
         SimpleDateFormat("a hh : mm", locale).format(Date(date))
 
@@ -233,13 +171,13 @@ object DateUtils {
 
     fun todayYMD(locale: Locale): String =
         toYMD(
-            msDateOnlyFrom(),
+            msDateFrom(),
             locale
         )
 
     fun todayAfterYMD(date: Int, locale: Locale): String =
         toYMD(
-            msDateOnlyFrom(date),
+            msDateFrom(date),
             locale
         )
 

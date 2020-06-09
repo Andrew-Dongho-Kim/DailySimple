@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.di.systemLocale
 import com.dd.android.dailysimple.common.utils.DateUtils.strYmdToLong
-import com.dd.android.dailysimple.daily.DailyConst.NO_ID
+import com.dd.android.dailysimple.daily.AppConst.NO_ID
 import com.dd.android.dailysimple.daily.edit.observable.AlarmObservable
 import com.dd.android.dailysimple.daily.edit.subtask.EditableTodoSubTask
 import com.dd.android.dailysimple.daily.edit.subtask.TodoSubTaskAdapter
@@ -16,7 +16,7 @@ import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
 import com.dd.android.dailysimple.databinding.FragmentMakeAndEditBinding
 import com.dd.android.dailysimple.db.data.Alarm
 import com.dd.android.dailysimple.db.data.DailyTodo
-import com.dd.android.dailysimple.db.data.DailyTodo.Companion.ONGOING
+import com.dd.android.dailysimple.db.data.DoneState.Companion.ONGOING
 import com.dd.android.dailysimple.db.data.TodoSubTask
 
 private const val TAG = "EditorTodo"

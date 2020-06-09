@@ -3,6 +3,7 @@ package com.dd.android.dailysimple.db.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.dd.android.dailysimple.db.data.DailyTodo
+import com.dd.android.dailysimple.db.data.DoneState
 import com.dd.android.dailysimple.db.data.TodoSubTask
 
 @Dao
@@ -23,14 +24,14 @@ interface DailyTodoDao {
     @Query("SELECT * FROM daily_todo WHERE start<=:start AND :end <= until ORDER BY done ASC")
     fun getTodoRange(start: Long, end: Long): LiveData<List<DailyTodo>>
 
-    @Query("SELECT * FROM daily_todo WHERE until <= :time AND done = ${DailyTodo.ONGOING}")
+    @Query("SELECT * FROM daily_todo WHERE until <= :time AND done = ${DoneState.ONGOING}")
     fun getOverdueTodo(time: Long): LiveData<List<DailyTodo>>
 
-    @Query("SELECT * FROM daily_todo WHERE :time <= start")
-    fun getUpcomingTodo(time: Long): LiveData<List<DailyTodo>>
+    @Query("SELECT * FROM daily_todo WHERE :start <= start AND start < :until")
+    fun getUpcomingTodo(start: Long, until: Long): LiveData<List<DailyTodo>>
 
-    @Query("UPDATE daily_todo SET done=${DailyTodo.DONE} WHERE :todoId = id")
-    fun makeToDone(todoId: Long)
+    @Query("UPDATE daily_todo SET done=:doneTime WHERE :todoId = id")
+    fun makeToDone(todoId: Long, doneTime:Long)
 
 
     // Sub tasks function
@@ -40,7 +41,7 @@ interface DailyTodoDao {
     @Query("DELETE FROM todo_sub_task WHERE id=:subTaskId")
     suspend fun deleteSubTask(subTaskId: Long)
 
-    @Query("SELECT * FROM todo_sub_task WHERE todo_id=:todoId ORDER BY state ASC")
+    @Query("SELECT * FROM todo_sub_task WHERE todo_id=:todoId ORDER BY done ASC")
     fun getSubTasks(todoId: Long): LiveData<List<TodoSubTask>>
 
 }

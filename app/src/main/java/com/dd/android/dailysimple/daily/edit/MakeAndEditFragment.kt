@@ -11,7 +11,7 @@ import com.dd.android.dailysimple.common.BaseFragment
 import com.dd.android.dailysimple.common.widget.TimePickerDialogFragment
 import com.dd.android.dailysimple.common.di.systemLocale
 import com.dd.android.dailysimple.common.utils.setUnderlineText
-import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.utils.DateUtils.strYmdToLong
 import com.dd.android.dailysimple.common.utils.DateUtils.toTime
 import com.dd.android.dailysimple.common.utils.DateUtils.toYMD
@@ -69,7 +69,7 @@ class MakeAndEditFragment : BaseFragment<FragmentMakeAndEditBinding>() {
     fun onDatePickClick(view: View) {
         val tv = view as TextView
         TimePickerDialogFragment.with(
-            minDate = msDateOnlyFrom(),
+            minDate = msDateFrom(),
             currDate = strYmdToLong(tv.text.toString(), systemLocale()),
             useTime = false
         ).show(

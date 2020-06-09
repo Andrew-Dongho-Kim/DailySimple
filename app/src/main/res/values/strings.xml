@@ -89,6 +89,7 @@
 
     <string name="left">left</string>
     <string name="past">past</string>
+    <string name="after">after</string>
 
     <plurals name="plurals_overdue_task_message">
         <item quantity="one">@string/overdue_task_message</item>

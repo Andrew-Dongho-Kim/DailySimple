@@ -5,11 +5,11 @@ import androidx.lifecycle.*
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.appDb
 import com.dd.android.dailysimple.common.di.getString
-import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
-import com.dd.android.dailysimple.daily.DailyConst.EMPTY_ITEM_ID_TODO
-import com.dd.android.dailysimple.daily.DailyConst.OVERDUE_TODO_GROUP
-import com.dd.android.dailysimple.daily.DailyConst.SIMPLE_HEADER_ID_TODO
-import com.dd.android.dailysimple.daily.DailyConst.UPCOMING_TODO_GROUP
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
+import com.dd.android.dailysimple.daily.AppConst.EMPTY_ITEM_ID_TODO
+import com.dd.android.dailysimple.daily.AppConst.OVERDUE_TODO_GROUP
+import com.dd.android.dailysimple.daily.AppConst.SIMPLE_HEADER_ID_TODO
+import com.dd.android.dailysimple.daily.AppConst.UPCOMING_TODO_GROUP
 import com.dd.android.dailysimple.daily.DailyMergeItem
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.TODO_ITEM
 import com.dd.android.dailysimple.daily.viewholders.DailyEmptyItemModel
@@ -47,7 +47,7 @@ class TodoViewModel(private val app: Application) : AndroidViewModel(app) {
     }
 
     val selectedDate = liveData {
-        emit(msDateOnlyFrom())
+        emit(msDateFrom())
     } as MutableLiveData<Long>
 
     private val currTodo = Transformations.switchMap(selectedDate) { time ->
@@ -103,7 +103,7 @@ class TodoViewModel(private val app: Application) : AndroidViewModel(app) {
 
     val wholeTodo = Transformations.switchMap(selectedDate) { time ->
         Transformations.map(
-            if (time == msDateOnlyFrom()) {
+            if (time == msDateFrom()) {
                 DailyMergeItem(
                     overdueGroup,
                     overdueGroupChild,

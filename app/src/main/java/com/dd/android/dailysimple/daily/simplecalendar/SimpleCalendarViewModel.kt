@@ -9,7 +9,7 @@ import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.dd.android.dailysimple.common.utils.DateUtils.month
-import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.utils.DateUtils.year
 import com.dd.android.dailysimple.daily.DayDateDataSource
 import com.dd.android.dailysimple.daily.DayDateItemModel
@@ -17,7 +17,7 @@ import com.dd.android.dailysimple.daily.DayDateItemModel
 class SimpleCalendarViewModel(application: Application) : AndroidViewModel(application) {
 
     val selectedDate = liveData {
-        emit(msDateOnlyFrom())
+        emit(msDateFrom())
     } as MutableLiveData<Long>
 
     val selectedDateDistinct = Transformations.distinctUntilChanged(selectedDate)

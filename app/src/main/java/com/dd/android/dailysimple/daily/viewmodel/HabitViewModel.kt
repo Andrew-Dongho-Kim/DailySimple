@@ -2,19 +2,13 @@ package com.dd.android.dailysimple.daily.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.*
-import androidx.paging.DataSource
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.appDb
 import com.dd.android.dailysimple.common.di.getString
-import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.common.utils.DateUtils
-import com.dd.android.dailysimple.daily.DailyConst.EMPTY_ITEM_ID_HABIT
-import com.dd.android.dailysimple.daily.DailyConst.SIMPLE_HEADER_ID_HABIT
+import com.dd.android.dailysimple.daily.AppConst.EMPTY_ITEM_ID_HABIT
+import com.dd.android.dailysimple.daily.AppConst.SIMPLE_HEADER_ID_HABIT
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.HABIT_ITEM
-import com.dd.android.dailysimple.daily.DayDateDataSource
-import com.dd.android.dailysimple.daily.DayDateItemModel
 import com.dd.android.dailysimple.daily.viewholders.DailyEmptyItemModel
 import com.dd.android.dailysimple.daily.viewholders.DailySimpleHeaderItem
 import com.dd.android.dailysimple.db.DailyHabitRepository
@@ -43,7 +37,7 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     val selectedDate = liveData {
-        emit(DateUtils.msDateOnlyFrom())
+        emit(DateUtils.msDateFrom())
     } as MutableLiveData<Long>
 
     val allHabits = Transformations.switchMap(selectedDate) { time ->

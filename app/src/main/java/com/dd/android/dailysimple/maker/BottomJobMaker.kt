@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import com.dd.android.dailysimple.HomeFragmentDirections.Companion.homeToMakeAndEdit
 import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.daily.DailyConst.NO_ID
+import com.dd.android.dailysimple.daily.AppConst.NO_ID
 import com.dd.android.dailysimple.daily.edit.EditType
 import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
 import com.dd.android.dailysimple.daily.viewmodel.ScheduleViewModel

@@ -6,7 +6,7 @@ import com.dd.android.dailysimple.common.CalendarConst.DAYS
 import com.dd.android.dailysimple.common.CalendarConst.MONTHS
 import com.dd.android.dailysimple.common.di.getString
 import com.dd.android.dailysimple.common.utils.DateUtils.calendar
-import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import java.util.Calendar.*
 
@@ -22,7 +22,7 @@ data class DayDateItemModel(
 
     val day = getString(DAYS[calendar(id).get(DAY_OF_WEEK) - 1])
 
-    val isToday = (id == msDateOnlyFrom())
+    val isToday = (id == msDateFrom())
 
     val isSelected = liveData {
         emit(false)

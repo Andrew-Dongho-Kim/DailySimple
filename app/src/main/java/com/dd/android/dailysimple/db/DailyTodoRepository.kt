@@ -1,7 +1,8 @@
 package com.dd.android.dailysimple.db
 
 import com.dd.android.dailysimple.common.utils.DateUtils.MS_DAY
-import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
+import com.dd.android.dailysimple.common.utils.DateUtils.msFrom
 import com.dd.android.dailysimple.db.dao.DailyTodoDao
 import com.dd.android.dailysimple.db.data.DailyTodo
 import com.dd.android.dailysimple.db.data.TodoSubTask
@@ -10,15 +11,15 @@ class DailyTodoRepository(
     private val dailyTodoDao: DailyTodoDao
 ) {
 
-    fun overdueTodo() = dailyTodoDao.getOverdueTodo(msDateOnlyFrom())
+    fun overdueTodo() = dailyTodoDao.getOverdueTodo(msDateFrom())
 
-    fun upcomingTodo() = dailyTodoDao.getUpcomingTodo(msDateOnlyFrom(1))
+    fun upcomingTodo() = dailyTodoDao.getUpcomingTodo(msDateFrom(1), msDateFrom(3))
 
     fun getTodoInDay(time: Long) = dailyTodoDao.getTodoRange(time, time + MS_DAY)
 
     fun getTodoById(todoId: Long) = dailyTodoDao.getTodoById(todoId)
 
-    fun makeToDone(todoId: Long) = dailyTodoDao.makeToDone(todoId)
+    fun makeToDone(todoId: Long) = dailyTodoDao.makeToDone(todoId, msFrom())
 
     fun getSubTasksById(todoId: Long) = dailyTodoDao.getSubTasks(todoId)
 
@@ -34,6 +35,6 @@ class DailyTodoRepository(
     suspend fun deleteTodo(todoId: Long) =
         dailyTodoDao.deleteTodo(todoId)
 
-    suspend fun deleteSubTask(subTaskId:Long) =
+    suspend fun deleteSubTask(subTaskId: Long) =
         dailyTodoDao.deleteSubTask(subTaskId)
 }

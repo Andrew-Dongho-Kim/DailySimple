@@ -8,7 +8,7 @@
 
         <import type="com.dd.android.dailysimple.daily.simplecalendar.SelectedDateInfo" />
 
-        <import type="com.dd.android.dailysimple.daily.DailyConst" />
+        <import type="com.dd.android.dailysimple.daily.AppConst" />
 
         <variable
             name="itemModel"
@@ -35,7 +35,7 @@
             style="@style/BasicTextDpNormal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="@{itemModel.done ? DailyConst.DIM_ALPHA : DailyConst.NORMAL_ALPHA}"
+            android:alpha="@{itemModel.done ? AppConst.DIM_ALPHA : AppConst.NORMAL_ALPHA}"
             android:text="@{itemModel.terms}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/basic_view_margin_horizontal_tiny_small"
-            android:alpha="@{itemModel.done ? DailyConst.DIM_ALPHA : DailyConst.NORMAL_ALPHA}"
+            android:alpha="@{itemModel.done ? AppConst.DIM_ALPHA : AppConst.NORMAL_ALPHA}"
             android:background="@drawable/rounded_view_background"
             android:enabled="@{dateInfo.state == SelectedDateInfo.TODAY}"
             android:foreground="@drawable/ripple_list_item"
@@ -65,7 +65,7 @@
             android:layout_marginStart="@dimen/basic_view_margin_horizontal_tiny_small"
             android:layout_marginTop="@dimen/habit_item_color_margin_vertical"
             android:layout_marginBottom="@dimen/habit_item_color_margin_vertical"
-            android:alpha="@{itemModel.done ? DailyConst.DIM_ALPHA : DailyConst.NORMAL_ALPHA}"
+            android:alpha="@{itemModel.done ? AppConst.DIM_ALPHA : AppConst.NORMAL_ALPHA}"
             android:background="@{itemModel.habit.color}"
             app:layout_constraintBottom_toBottomOf="@id/habit_title"
             app:layout_constraintStart_toEndOf="@id/checked"
@@ -77,7 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/basic_view_margin_horizontal_tiny_small"
-            android:alpha="@{itemModel.done ? DailyConst.DIM_ALPHA : DailyConst.NORMAL_ALPHA}"
+            android:alpha="@{itemModel.done ? AppConst.DIM_ALPHA : AppConst.NORMAL_ALPHA}"
             android:ellipsize="end"
             android:maxLines="1"
             android:singleLine="true"
@@ -96,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/basic_view_margin_horizontal_tiny_small"
-            android:alpha="@{itemModel.done ? DailyConst.DIM_ALPHA : DailyConst.NORMAL_ALPHA}"
+            android:alpha="@{itemModel.done ? AppConst.DIM_ALPHA : AppConst.NORMAL_ALPHA}"
             android:ellipsize="end"
             android:maxLines="1"
             android:singleLine="true"

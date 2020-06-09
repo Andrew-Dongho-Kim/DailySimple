@@ -6,7 +6,7 @@ import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.getString
 import com.dd.android.dailysimple.common.di.systemLocale
 import com.dd.android.dailysimple.common.utils.DateUtils.MS_DAY
-import com.dd.android.dailysimple.common.utils.DateUtils.msDateOnlyFrom
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.utils.DateUtils.toYMD
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import java.text.SimpleDateFormat
@@ -44,8 +44,8 @@ data class DailySchedule(
             id = NO_ID,
             title = "",
             memo = "",
-            start = msDateOnlyFrom(hours = DEFAULT_START),
-            end = msDateOnlyFrom(hours = DEFAULT_END),
+            start = msDateFrom(hours = DEFAULT_START),
+            end = msDateFrom(hours = DEFAULT_END),
             color = getColor(context, R.color.appPrimary)
         )
 

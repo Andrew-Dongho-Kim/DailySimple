@@ -8,7 +8,7 @@ import com.dd.android.dailysimple.HomeFragmentDirections.Companion.homeToMakeAnd
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2
-import com.dd.android.dailysimple.daily.DailyConst.NO_ID
+import com.dd.android.dailysimple.daily.AppConst.NO_ID
 import com.dd.android.dailysimple.daily.DailyViewType
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.HABIT_ITEM
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.SCHEDULE_ITEM
