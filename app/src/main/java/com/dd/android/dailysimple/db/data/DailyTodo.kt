@@ -51,7 +51,7 @@ data class DailyTodo(
     // @formatter:off
     @Ignore override var hasParent = false
 
-    @Ignore val isOverdue = msDateFrom() > until
+    @Ignore val isOverdue = msDateFrom() >= until
     @Ignore val isUpcoming = msDateFrom(1) <= start
 
     @Ignore val formattedStart = toYMD(start, systemLocale())
@@ -72,9 +72,9 @@ data class DailyTodo(
     @Ignore
     val timeRemain = Transformations.map(remain) { remain ->
         when {
+            isDone(done) -> toDoneText()
             isOverdue -> toTimeText(remain, R.string.past, R.color.apple)
             isUpcoming -> toTimeText(remain, R.string.after, R.color.appPrimary)
-            isDone(done) -> toDoneText()
             else -> toTimeText(remain, R.string.left)
         }
     }

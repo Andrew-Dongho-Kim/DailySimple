@@ -1,10 +1,7 @@
 package com.dd.android.dailysimple.common.utils
 
-import android.content.Context
 import android.text.format.Time
 import android.util.Log
-import com.dd.android.dailysimple.R
-import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.*
 

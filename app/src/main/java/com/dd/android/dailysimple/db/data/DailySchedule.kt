@@ -5,7 +5,6 @@ import androidx.core.content.ContextCompat.getColor
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.getString
 import com.dd.android.dailysimple.common.di.systemLocale
-import com.dd.android.dailysimple.common.utils.DateUtils.MS_DAY
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.utils.DateUtils.toYMD
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
@@ -15,20 +14,17 @@ data class DailySchedule(
     override val id: Long,
     var title: String,
     val start: Long,
+    val isAllDay: Boolean,
     val end: Long,
     val memo: String? = null,
     val color: Int
 ) : ItemModel {
 
     private val locale by lazy { systemLocale() }
-
     private val hourMinuteFormat by lazy { SimpleDateFormat("hh:mm a", locale) }
 
     val formattedStart = toYMD(start, locale)
-
     val formattedEnd = toYMD(end, locale)
-
-    val isAllDay = (end - start) >= MS_DAY
 
     val beginTime: String =
         if (isAllDay) {
@@ -46,6 +42,7 @@ data class DailySchedule(
             memo = "",
             start = msDateFrom(hours = DEFAULT_START),
             end = msDateFrom(hours = DEFAULT_END),
+            isAllDay = true,
             color = getColor(context, R.color.appPrimary)
         )
 

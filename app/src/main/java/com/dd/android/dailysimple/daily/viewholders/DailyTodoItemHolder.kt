@@ -45,21 +45,6 @@ class DailyTodoItemHolder(
     }
 
     private fun onToggleDone(view: View) {
-        model?.let {
-            if (it.isOverdue) {
-                DailyOverduePopup(
-                    view.context,
-                    viewModelStoreOwner = viewModelStoreOwner,
-                    todoId = it.id
-                ).showAsDropDown(
-                    view,
-                    50,
-                    0, Gravity.TOP or Gravity.START
-                )
-            } else {
-                it.toggleDone()
-                todoVm.updateTodo(it)
-            }
-        }
+        model?.let { todo -> todoVm.updateTodo(todo.also { it.toggleDone() }) }
     }
 }

@@ -10,12 +10,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.livedata.ContentProviderLiveData
+import com.dd.android.dailysimple.common.utils.DateUtils
 import com.dd.android.dailysimple.db.data.DailySchedule
 import com.dd.android.dailysimple.provider.calendar.EventReminderMethod.Companion.ALERT
 import com.dd.android.dailysimple.provider.calendar.EventReminderMethod.Companion.DEFAULT
 import com.dd.android.dailysimple.provider.calendar.EventReminderMethod.Companion.EMAIL
 import com.dd.android.dailysimple.provider.calendar.EventReminderMethod.Companion.SMS
 import java.util.*
+import kotlin.math.max
+import kotlin.math.min
 
 private const val LOG_TAG = "CalendarProviderHelper"
 
@@ -41,18 +44,12 @@ class CalendarProviderHelper(
 ) {
     private val cancelSignal by lazy { CancellationSignal() }
 
-
     fun getEvents(beginTime: Long, endTime: Long): LiveData<List<DailySchedule>> {
         return liveData {
             emit(queryInstances(beginTime, endTime))
-            emitSource(
-                ContentProviderLiveData(
-                    context,
-                    Instances.CONTENT_URI
-                ) {
-                    queryInstances(beginTime, endTime)
-                }
-            )
+            emitSource(ContentProviderLiveData(context, Instances.CONTENT_URI) {
+                queryInstances(beginTime, endTime)
+            })
         }
     }
 
@@ -87,6 +84,7 @@ class CalendarProviderHelper(
             title = cursor.getString(Events.TITLE),
             start = cursor.getLong(Events.DTSTART),
             end = cursor.getLong(Events.DTEND),
+            isAllDay = cursor.getInt(Events.ALL_DAY) == 1,
             memo = cursor.getString(Events.DESCRIPTION),
             color = cursor.getInt(Events.DISPLAY_COLOR)
         ).also {
@@ -98,19 +96,39 @@ class CalendarProviderHelper(
         }
 
     private fun queryInstances(beginTime: Long, endTime: Long): List<DailySchedule> {
-        val utcBegin = beginTime + 1
-        val utcEnd = endTime - 1
+        val begin = beginTime + 1
+        val end = endTime - 1
+        val utcBegin = DateUtils.utcToLocal(beginTime) + 1
+        val utcEnd = DateUtils.utcToLocal(endTime) - 1
 
-        logD { "queryInstances begin:${Date(utcBegin)}, end:${Date(utcEnd)}" }
+        val beginMin = min(begin, utcBegin)
+        val endMax = max(end, utcEnd)
+
+        logD { "queryInstances begin:${Date(begin)}, end:${Date(end)}" }
         val list = mutableListOf<DailySchedule>()
-        Instances.query(context.contentResolver, INSTANCE_PROJECTION, utcBegin, utcEnd).use {
-            if (it.moveToFirst()) {
+        Instances.query(
+            context.contentResolver,
+            INSTANCE_PROJECTION,
+            beginMin,
+            endMax
+        ).use {
+            if (it?.moveToFirst() == true) {
                 do {
-                    list.add(createFromInstances(it))
+                    val schedule = createFromInstances(it)
+                    val add = if (schedule.isAllDay) {
+                        intersect(schedule.start, schedule.end, utcBegin, utcEnd)
+                    } else {
+                        intersect(schedule.start, schedule.end, begin, end)
+                    }
+                    if (add) list.add(schedule)
                 } while (it.moveToNext())
             }
         }
         return list
+    }
+
+    private fun intersect(s1: Long, e1: Long, s2: Long, e2: Long): Boolean {
+        return !((e2 < s1) || (e1 < s2))
     }
 
     private fun createFromInstances(cursor: Cursor) = DailySchedule(
@@ -118,6 +136,7 @@ class CalendarProviderHelper(
         title = cursor.getString(Instances.TITLE),
         start = cursor.getLong(Instances.BEGIN),
         end = cursor.getLong(Instances.END),
+        isAllDay = cursor.getInt(Instances.ALL_DAY) == 1,
         memo = cursor.getString(Instances.DESCRIPTION),
         color = cursor.getInt(Instances.DISPLAY_COLOR)
     ).also {
@@ -159,6 +178,7 @@ class CalendarProviderHelper(
             Instances.TITLE,
             Instances.BEGIN,
             Instances.END,
+            Instances.ALL_DAY,
             Instances.EVENT_LOCATION,
             Instances.DESCRIPTION,
             Instances.DISPLAY_COLOR

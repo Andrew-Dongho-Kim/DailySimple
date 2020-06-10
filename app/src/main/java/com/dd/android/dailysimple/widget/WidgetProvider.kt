@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.RemoteViews
+import com.dd.android.dailysimple.HomeActivity
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.settingManager
 import com.dd.android.dailysimple.widget.WidgetConst.DEFAULT_WIDGET_ALPHA
@@ -26,6 +27,7 @@ class WidgetProvider : AppWidgetProvider() {
 
             val remoteViews = RemoteViews(context.packageName, R.layout.app_widget_today_task)
                 .setUpBackground()
+                .setUpTitleAction(context)
                 .setUpSettingAction(context)
                 .setUpListView(context, id)
 
@@ -40,6 +42,16 @@ class WidgetProvider : AppWidgetProvider() {
             Intent(context, WidgetConfigActivity::class.java), 0
         )
         setOnClickPendingIntent(R.id.setting, pendingIntent)
+        return this
+    }
+
+    private fun RemoteViews.setUpTitleAction(context: Context): RemoteViews {
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            Intent(context, HomeActivity::class.java), 0
+        )
+        setOnClickPendingIntent(R.id.title, pendingIntent)
         return this
     }
 
