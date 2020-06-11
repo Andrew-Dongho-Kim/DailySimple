@@ -90,6 +90,8 @@
     <string name="make_a_habit">습관 만들기</string>
     <string name="make_a_todo">할 일 만들기</string>
 
+    <string name="no_permission_to_read_calendar">내 캘린더 액세스 권한이 없습니다</string>
+
     <string name="no_schedule_message">등록된 일정이 없습니다</string>
     <string name="no_todo_message">등록된 할 일이 없습니다</string>
     <string name="no_habit_message">등록된 습관이 없습니다</string>

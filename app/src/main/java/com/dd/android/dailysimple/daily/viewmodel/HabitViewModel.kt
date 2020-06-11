@@ -9,7 +9,7 @@ import com.dd.android.dailysimple.common.utils.DateUtils
 import com.dd.android.dailysimple.daily.AppConst.EMPTY_ITEM_ID_HABIT
 import com.dd.android.dailysimple.daily.AppConst.SIMPLE_HEADER_ID_HABIT
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.HABIT_ITEM
-import com.dd.android.dailysimple.daily.viewholders.DailyEmptyItemModel
+import com.dd.android.dailysimple.daily.viewholders.DailyEmptyItem
 import com.dd.android.dailysimple.daily.viewholders.DailySimpleHeaderItem
 import com.dd.android.dailysimple.db.DailyHabitRepository
 import com.dd.android.dailysimple.db.data.DailyHabit
@@ -44,7 +44,7 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
         Transformations.map(repository.getHabits(time)) { habits ->
             if (habits.isEmpty()) {
                 listOf(
-                    DailyEmptyItemModel(
+                    DailyEmptyItem(
                         EMPTY_ITEM_ID_HABIT,
                         HABIT_ITEM,
                         getString(R.string.no_habit_message)

@@ -2,12 +2,9 @@ package com.dd.android.dailysimple.daily
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import com.dd.android.dailysimple.common.Logger
+import androidx.lifecycle.Transformations
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 
-
-private const val TAG = "DailyMergeItem"
-private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
 
 class DailyMergeItem(vararg liveDataArray: LiveData<out Any>) :
     MediatorLiveData<List<ItemModel>>() {
@@ -16,7 +13,7 @@ class DailyMergeItem(vararg liveDataArray: LiveData<out Any>) :
 
     init {
         models.forEach { liveData ->
-            addSource(liveData) {
+            addSource(Transformations.distinctUntilChanged(liveData)) {
                 if (ensureVm()) value = createModel()
             }
         }
@@ -42,7 +39,6 @@ class DailyMergeItem(vararg liveDataArray: LiveData<out Any>) :
                     addItemModel(this, model)
                 }
             }
-            logD { "Daily - createModel()" }
         }
 
     private fun addItemModel(itemList: MutableList<ItemModel>, item: Any?) {

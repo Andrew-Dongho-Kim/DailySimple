@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagedList
-import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.dd.android.dailysimple.common.Logger
@@ -48,7 +47,7 @@ class SimpleCalendarController(
 
         recyclerView.also {
             it.addOnScrollListener(this)
-            LinearSnapHelper().attachToRecyclerView(it)
+//            LinearSnapHelper().attachToRecyclerView(it)
         }
     }
 

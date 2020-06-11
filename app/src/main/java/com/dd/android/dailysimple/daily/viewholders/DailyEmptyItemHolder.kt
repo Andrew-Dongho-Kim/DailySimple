@@ -17,7 +17,7 @@ import com.dd.android.dailysimple.daily.edit.EditType
 import com.dd.android.dailysimple.databinding.DailyEmptyItemBinding
 
 class DailyEmptyItemHolder(parent: ViewGroup, private val navController: NavController) :
-    ViewHolder2<DailyEmptyItemBinding, DailyEmptyItemModel>(
+    ViewHolder2<DailyEmptyItemBinding, DailyEmptyItem>(
         parent,
         R.layout.daily_empty_item,
         BR.itemModel
@@ -37,7 +37,7 @@ class DailyEmptyItemHolder(parent: ViewGroup, private val navController: NavCont
     }
 }
 
-data class DailyEmptyItemModel(
+data class DailyEmptyItem(
     override val id: Long,
     @DailyViewType val type: Int,
     val description: String

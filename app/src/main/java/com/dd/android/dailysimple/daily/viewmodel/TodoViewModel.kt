@@ -12,7 +12,7 @@ import com.dd.android.dailysimple.daily.AppConst.SIMPLE_HEADER_ID_TODO
 import com.dd.android.dailysimple.daily.AppConst.UPCOMING_TODO_GROUP
 import com.dd.android.dailysimple.daily.DailyMergeItem
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.TODO_ITEM
-import com.dd.android.dailysimple.daily.viewholders.DailyEmptyItemModel
+import com.dd.android.dailysimple.daily.viewholders.DailyEmptyItem
 import com.dd.android.dailysimple.daily.viewholders.DailySimpleHeaderItem
 import com.dd.android.dailysimple.daily.viewholders.DailyTodoGroup
 import com.dd.android.dailysimple.db.DailyTodoRepository
@@ -117,7 +117,7 @@ class TodoViewModel(private val app: Application) : AndroidViewModel(app) {
         ) { todoList ->
             if (todoList.isEmpty()) {
                 listOf(
-                    DailyEmptyItemModel(
+                    DailyEmptyItem(
                         EMPTY_ITEM_ID_TODO,
                         TODO_ITEM,
                         getString(R.string.no_todo_message)

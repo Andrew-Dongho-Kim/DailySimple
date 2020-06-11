@@ -1,10 +1,12 @@
 package com.dd.android.dailysimple.provider.calendar
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.provider.CalendarContract.*
 import androidx.annotation.IntDef
 import androidx.core.content.ContentResolverCompat
+import androidx.core.content.ContextCompat
 import androidx.core.os.CancellationSignal
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
@@ -46,10 +48,18 @@ class CalendarProviderHelper(
 
     fun getEvents(beginTime: Long, endTime: Long): LiveData<List<DailySchedule>> {
         return liveData {
-            emit(queryInstances(beginTime, endTime))
-            emitSource(ContentProviderLiveData(context, Instances.CONTENT_URI) {
-                queryInstances(beginTime, endTime)
-            })
+            if (ContextCompat.checkSelfPermission(
+                    context,
+                    android.Manifest.permission.READ_CALENDAR
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                emit(emptyList<DailySchedule>())
+            } else {
+                emit(queryInstances(beginTime, endTime))
+                emitSource(ContentProviderLiveData(context, Instances.CONTENT_URI) {
+                    queryInstances(beginTime, endTime)
+                })
+            }
         }
     }
 

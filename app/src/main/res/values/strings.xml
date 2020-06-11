@@ -108,6 +108,8 @@
     <string name="make_a_habit">Make a habit</string>
     <string name="make_a_todo">Make a todo</string>
 
+    <string name="no_permission_to_read_calendar">There are no permission to access your calendar</string>
+
     <string name="no_schedule_message">There are no schedules</string>
     <string name="no_todo_message">There are no todo list</string>
     <string name="no_habit_message">There are no habits</string>

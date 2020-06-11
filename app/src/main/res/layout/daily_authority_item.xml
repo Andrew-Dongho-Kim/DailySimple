@@ -6,7 +6,7 @@
 
         <variable
             name="itemModel"
-            type="com.dd.android.dailysimple.daily.viewholders.DailyEmptyItem" />
+            type="com.dd.android.dailysimple.daily.viewholders.DailyAuthorityItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,25 +24,20 @@
         <TextView
             android:id="@+id/description_text"
             style="@style/BasicTextDpNormal"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:singleLine="true"
             android:text="@{itemModel.description}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/add"
+            app:layout_constraintEnd_toStartOf="@id/error"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/add"
+            android:id="@+id/error"
             android:layout_width="@dimen/basic_icon_size_small"
             android:layout_height="@dimen/basic_icon_size_small"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_add_black"
+            android:src="@drawable/ic_error_outline"
             android:tint="@color/appPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="parent"

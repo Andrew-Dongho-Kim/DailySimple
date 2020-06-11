@@ -1,6 +1,7 @@
 package com.dd.android.dailysimple
 
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.dd.android.dailysimple.common.BaseActivity
@@ -14,12 +15,9 @@ private const val TAG = "HomeActivity"
 private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
 
 class HomeActivity : BaseActivity() {
-
-    private val accountViewModel by viewModels<GoogleAccountViewModel>()
-
-    private val fabViewModel by viewModels<FabViewModel>()
-
     private val accountController = GoogleAccountController(this)
+    private val accountViewModel by viewModels<GoogleAccountViewModel>()
+    private val fabViewModel by viewModels<FabViewModel>()
 
     private var isFabOpen = false
 
@@ -37,6 +35,8 @@ class HomeActivity : BaseActivity() {
         fabViewModel.isOpen.observe(this, Observer { opened ->
             isFabOpen = opened
         })
+
+
     }
 
     override fun onBackPressed() {
