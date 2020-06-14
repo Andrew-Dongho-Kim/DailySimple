@@ -13,7 +13,7 @@ class DailyMergeItem(vararg liveDataArray: LiveData<out Any>) :
 
     init {
         models.forEach { liveData ->
-            addSource(Transformations.distinctUntilChanged(liveData)) {
+            addSource(liveData) {
                 if (ensureVm()) value = createModel()
             }
         }

@@ -1,14 +1,19 @@
 package com.dd.android.dailysimple
 
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationCompat.PRIORITY_DEFAULT
 import androidx.lifecycle.Observer
 import com.dd.android.dailysimple.common.BaseActivity
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.google.GoogleAccountController
 import com.dd.android.dailysimple.google.GoogleAccountViewModel
 import com.dd.android.dailysimple.maker.FabViewModel
+import com.dd.android.dailysimple.notification.createNotificationChannel
 
 private const val TAG = "HomeActivity"
 
@@ -35,8 +40,7 @@ class HomeActivity : BaseActivity() {
         fabViewModel.isOpen.observe(this, Observer { opened ->
             isFabOpen = opened
         })
-
-
+        testNotification()
     }
 
     override fun onBackPressed() {
@@ -45,6 +49,33 @@ class HomeActivity : BaseActivity() {
             return
         }
         super.onBackPressed()
+    }
+
+    private fun testNotification() {
+        createNotificationChannel(
+            applicationContext,
+            getString(R.string.channel_id_todo),
+            getString(R.string.todo),
+            "Test Notification"
+        )
+        val notificationId = 0
+        val builder =
+            NotificationCompat.Builder(applicationContext, getString(R.string.channel_id_todo))
+                .setContentIntent(
+                    PendingIntent.getActivity(
+                        applicationContext,
+                        notificationId,
+                        Intent(applicationContext, HomeActivity::class.java),
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                    )
+                )
+                .setPriority(PRIORITY_DEFAULT)
+                .setAutoCancel(true)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentTitle("Test title")
+                .setContentText("I am test notification~!")
+
+        getSystemService(NotificationManager::class.java)?.notify(notificationId, builder.build())
     }
 
 }
