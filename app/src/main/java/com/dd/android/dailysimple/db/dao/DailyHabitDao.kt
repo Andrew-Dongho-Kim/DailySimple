@@ -29,7 +29,6 @@ interface DailyHabitDao {
     @Query("SELECT * FROM daily_habit WHERE daily_habit.id=:id")
     fun getHabit(id: Long): LiveData<DailyHabit>
 
-
     @Query("SELECT * FROM check_status WHERE habit_id=:habitId AND :start <= date AND date < :until ORDER BY date DESC")
     fun getCheckStatus(habitId: Long, start: Long, until: Long): LiveData<List<CheckStatus>>
 
@@ -43,7 +42,6 @@ interface DailyHabitDao {
                         WEEK -> firstDayOfWeek(time)
                         MONTH -> firstDayOfMonth(time)
                     }
-
                     add(
                         DailyHabitWithCheckStatus(
                             habit = habit,

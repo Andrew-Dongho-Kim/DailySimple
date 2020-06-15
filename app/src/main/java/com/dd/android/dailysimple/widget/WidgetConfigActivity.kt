@@ -1,16 +1,13 @@
 package com.dd.android.dailysimple.widget
 
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID
 import android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.RemoteViews
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.BaseActivity
-import com.dd.android.dailysimple.common.di.appContext
 
 /**
  * The App Widget host calls the configuration Activity and

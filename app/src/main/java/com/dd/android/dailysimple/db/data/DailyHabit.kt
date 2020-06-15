@@ -20,7 +20,7 @@ class DailyHabitTypeConverters {
     fun fromTermsToInt(term: DailyHabit.CheckTerm?) = term?.ordinal
 
     @TypeConverter
-    fun fomIntToTerms(value: Int?) = value?.let { values()[it] }
+    fun fromIntToTerms(value: Int?) = value?.let { values()[it] }
 }
 
 

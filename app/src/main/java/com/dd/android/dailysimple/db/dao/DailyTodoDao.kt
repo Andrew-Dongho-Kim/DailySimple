@@ -25,7 +25,7 @@ interface DailyTodoDao {
     @Query("SELECT * FROM daily_todo WHERE start<=:start AND :end <= until ORDER BY done ASC")
     fun getTodoRange(start: Long, end: Long): LiveData<List<DailyTodo>>
 
-    @Query("SELECT * FROM daily_todo WHERE until <= :start AND done < :end ")
+    @Query("SELECT * FROM daily_todo WHERE until <= :start AND (done=${DoneState.ONGOING} OR (:start < done AND done < :end)) ")
     fun getOverdueTodo(start: Long, end: Long = msFrom(start, dates = 1)): LiveData<List<DailyTodo>>
 
     @Query("SELECT * FROM daily_todo WHERE :start <= start AND start < :until")
