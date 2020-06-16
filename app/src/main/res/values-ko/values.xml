@@ -57,6 +57,9 @@
     <string name="november">11월</string>
     <string name="december">12월</string>
     <string name="year">%d년</string>
+    <string name="date">%d일</string>
+    <string name="year_and_month">%1$s %2$s</string>
+    <string name="year_and_month_date">%1$s %2$s %3$s</string>
 
     <string name="today">오늘</string>
     <string name="sunday">일</string>

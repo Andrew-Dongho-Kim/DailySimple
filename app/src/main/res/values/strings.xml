@@ -66,6 +66,9 @@
     <string name="november">NOV</string>
     <string name="december">DEC</string>
     <string name="year">%d</string>
+    <string name="date">%d</string>
+    <string name="year_and_month">%2$s %1$s</string>
+    <string name="year_and_month_date">%2$s %3$s, %1$s</string>
 
     <string name="today">Today</string>
     <string name="sunday">SU</string>

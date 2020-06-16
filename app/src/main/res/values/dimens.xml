@@ -43,6 +43,7 @@
     <dimen name="basic_view_margin_vertical_big">25dp</dimen>
 
     <dimen name="basic_icon_size">24dp</dimen>
+    <dimen name="basic_icon_size_tiny_big">32dp</dimen>
     <dimen name="basic_icon_size_small">18dp</dimen>
 
     <!-- Daily Fragment -->

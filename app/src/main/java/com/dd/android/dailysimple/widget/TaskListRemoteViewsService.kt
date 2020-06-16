@@ -1,32 +1,42 @@
 package com.dd.android.dailysimple.widget
 
 import android.app.Application
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Intent
 import android.os.IBinder
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import androidx.lifecycle.*
-import androidx.recyclerview.widget.DiffUtil
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.dd.android.dailysimple.R
+import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.daily.DailyItemModels
+import com.dd.android.dailysimple.daily.DailyViewType.Companion.HABIT_ITEM
+import com.dd.android.dailysimple.daily.DailyViewType.Companion.SCHEDULE_ITEM
+import com.dd.android.dailysimple.daily.DailyViewType.Companion.TODO_ITEM
+import com.dd.android.dailysimple.daily.IdMap
+import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
+import com.dd.android.dailysimple.daily.viewmodel.ScheduleViewModel
+import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
+import com.dd.android.dailysimple.db.data.DailyHabitWithCheckStatus
+import com.dd.android.dailysimple.db.data.DailySchedule
+import com.dd.android.dailysimple.db.data.DailyTodo
+import com.dd.android.dailysimple.db.data.DoneState.Companion.isDone
+import kotlinx.coroutines.*
 
-// https://codelabs.developers.google.com/codelabs/advanced-android-training-widgets/index.html?index=..%2F..advanced-android-training#0
-class TaskListRemoteViewsService : RemoteViewsService(), LifecycleOwner, ViewModelStoreOwner {
 
-    private val lifecycleDispatcher = ServiceLifecycleDispatcher(this)
-    private val viewModelStore = ViewModelStore()
+private const val TAG = "TodoListRemoteViews"
+private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
 
-    private val taskItemRemoteViewsFactory = TaskItemRemoteViewsFactory(application)
-    private val itemModel = DailyItemModels(this)
+class TaskListRemoteViewsService : RemoteViewsService(), LifecycleOwner {
+
+    private val lifecycleDispatcher by lazy { ServiceLifecycleDispatcher(this) }
 
     override fun onCreate() {
         lifecycleDispatcher.onServicePreSuperOnCreate()
         super.onCreate()
-
-        itemModel.data.observe(this, Observer {
-            taskItemRemoteViewsFactory.submitList(it)
-        })
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -45,76 +55,137 @@ class TaskListRemoteViewsService : RemoteViewsService(), LifecycleOwner, ViewMod
     }
 
     override fun getLifecycle(): Lifecycle = lifecycleDispatcher.lifecycle
-    override fun getViewModelStore() = viewModelStore
-    override fun onGetViewFactory(intent: Intent): RemoteViewsFactory = taskItemRemoteViewsFactory
+
+    override fun onGetViewFactory(intent: Intent): RemoteViewsFactory =
+        TaskItemRemoteViewsFactory(application)
 
 }
 
 
-private class TaskItemRemoteViewsFactory(private val app: Application) :
-    RemoteViewsService.RemoteViewsFactory {
+private class TaskItemRemoteViewsFactory(
+    private val app: Application
+) : RemoteViewsService.RemoteViewsFactory, ViewModelStoreOwner,
+    HasDefaultViewModelProviderFactory, Observer<List<ItemModel>> {
 
-    private val taskItems = mutableListOf<ItemModel>()
+    private val broadcastManager by lazy { LocalBroadcastManager.getInstance(app) }
 
-    fun submitList(items:List<ItemModel>) {
-        val result = DiffUtil.calculateDiff(DiffCallback())
-        taskItems.clear()
-    }
+    private val viewModelStore = ViewModelStore()
+    private val mainScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
+    private val itemModel by lazy { DailyItemModels(this) }
+    private val items = mutableListOf<ItemModel>()
+
 
     override fun onCreate() {
-
+        logD { "TaskItemRemoveViewsFactory was created:$this" }
+        itemModel.data.observeForever(this)
     }
 
     override fun getLoadingView(): RemoteViews {
-        TODO("Not yet implemented")
-    }
-
-    override fun getItemId(position: Int): Long {
-        TODO("Not yet implemented")
-    }
-
-    override fun onDataSetChanged() {
+        return RemoteViews(app.packageName, R.layout.widget_todo_item)
     }
 
     override fun hasStableIds() = true
 
-    override fun getViewAt(position: Int): RemoteViews {
-        return RemoteViews(app.packageName, R.layout.widget_item_todo).apply {
+    override fun getItemId(position: Int) =
+        items[position].run { (IdMap[javaClass] ?: error("unknown : $this")).idBase + id }
 
+
+    override fun getViewAt(position: Int): RemoteViews {
+        return when (getViewType(position)) {
+            SCHEDULE_ITEM -> createScheduleItem(items[position] as DailySchedule)
+            TODO_ITEM -> createTodoItem(items[position] as DailyTodo)
+            HABIT_ITEM -> createHabitItem(items[position] as DailyHabitWithCheckStatus)
+            else -> RemoteViews(app.packageName, R.layout.widget_todo_item)
+            //throw IllegalStateException("Unknown View-type :${getViewType(position)}")
+        }
+    }
+
+    fun createScheduleItem(scheduleItem: DailySchedule): RemoteViews {
+        return RemoteViews(app.packageName, R.layout.widget_todo_item).apply {
+        }
+    }
+
+    fun createTodoItem(todoItem: DailyTodo): RemoteViews {
+        return RemoteViews(app.packageName, R.layout.widget_todo_item).apply {
+            setTextViewText(R.id.title, todoItem.title)
+            setImageViewResource(
+                R.id.check,
+                if (isDone(todoItem.done)) {
+                    R.drawable.checked_oval_stroke
+                } else {
+                    R.drawable.unchecked_oval_stroke
+                }
+            )
+        }
+    }
+
+    fun createHabitItem(habitItem: DailyHabitWithCheckStatus): RemoteViews {
+        return RemoteViews(app.packageName, R.layout.widget_todo_item).apply {
+            setTextViewText(R.id.title, habitItem.habit.title)
+            setImageViewResource(
+                R.id.check,
+                if (habitItem.done.value == true) {
+                    R.drawable.checked_oval_stroke
+                } else {
+                    R.drawable.unchecked_oval_stroke
+                }
+            )
         }
     }
 
     override fun getCount(): Int {
-        TODO("Not yet implemented")
+        return items.size
     }
 
     override fun getViewTypeCount(): Int {
-        TODO("Not yet implemented")
+        return 3
     }
 
     override fun onDestroy() {
-        TODO("Not yet implemented")
-    }
-
-    private class DiffCallback : DiffUtil.Callback() {
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            TODO("Not yet implemented")
-        }
-
-        override fun getOldListSize(): Int {
-            TODO("Not yet implemented")
-        }
-
-        override fun getNewListSize(): Int {
-            TODO("Not yet implemented")
-        }
-
-        override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
-            return super.getChangePayload(oldItemPosition, newItemPosition)
-        }
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            TODO("Not yet implemented")
+        mainScope.launch {
+            itemModel.data.removeObserver(this@TaskItemRemoteViewsFactory)
+            cancel()
         }
     }
+
+    override fun onDataSetChanged() {
+        logD { "onDataSetChanged()" }
+    }
+
+    override fun getViewModelStore() = viewModelStore
+
+    override fun getDefaultViewModelProviderFactory(): ViewModelProvider.Factory {
+        return object : ViewModelProvider.Factory {
+            @Suppress("unchecked_cast")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return when (modelClass) {
+                    ScheduleViewModel::class.java -> ScheduleViewModel(app)
+                    HabitViewModel::class.java -> HabitViewModel(app)
+                    else -> TodoViewModel(app)
+                } as T
+            }
+        }
+    }
+
+    override fun onChanged(list: List<ItemModel>) {
+        items.clear()
+        items.addAll(list)
+
+        val appWidgetManager = AppWidgetManager.getInstance(app)
+        val appWidgetIds = appWidgetManager.getAppWidgetIds(
+            ComponentName(
+                app,
+                WidgetProvider::class.java
+            )
+        )
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.task_list)
+
+//        broadcastManager.sendBroadcast(Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE))
+        logD { "ItemModel was changed:${list.size}" }
+    }
+
+    fun getViewType(position: Int) =
+        items[position].run { (IdMap[javaClass] ?: error("unknown : $this")).viewType }
+
 }

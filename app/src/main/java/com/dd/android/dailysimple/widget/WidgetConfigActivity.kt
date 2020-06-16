@@ -5,9 +5,9 @@ import android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID
 import android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID
 import android.content.Intent
 import android.os.Bundle
-import android.widget.RemoteViews
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.BaseActivity
+import com.dd.android.dailysimple.widget.remoteviews.TodayTaskRemoteViews
 
 /**
  * The App Widget host calls the configuration Activity and
@@ -49,9 +49,14 @@ class WidgetConfigActivity : BaseActivity() {
     }
 
     fun update() {
-        RemoteViews(packageName, R.layout.app_widget_today_task).also {
-            appWidgetManager.updateAppWidget(appWidgetId, it)
-        }
+        TodayTaskRemoteViews(this)
+            .setUpBackground()
+            .setUpTitle()
+            .setUpTitleAction()
+            .setUpSettingAction()
+            .setUpListView(appWidgetId).also {
+                appWidgetManager.updateAppWidget(appWidgetId, it)
+            }
         setResult(RESULT_OK, Intent().apply { putExtra(EXTRA_APPWIDGET_ID, appWidgetId) })
     }
 

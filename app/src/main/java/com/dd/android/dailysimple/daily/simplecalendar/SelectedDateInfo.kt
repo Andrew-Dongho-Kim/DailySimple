@@ -11,15 +11,15 @@ import java.util.*
 data class SelectedDateInfo(
     val date: LiveData<Long>
 ) {
-    
+
     val ymText = Transformations.map(date) {
         Calendar.getInstance().run {
             timeInMillis = it
-            "${getString(R.string.year, get(Calendar.YEAR))} ${getString(
-                CalendarConst.MONTHS[get(
-                    Calendar.MONTH
-                )]
-            )}"
+            getString(
+                R.string.year_and_month,
+                getString(R.string.year, get(Calendar.YEAR)),
+                getString(CalendarConst.MONTHS[get(Calendar.MONTH)])
+            )
         }
     }
 
