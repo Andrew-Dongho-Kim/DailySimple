@@ -8,13 +8,13 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.BaseFragment
-import com.dd.android.dailysimple.common.widget.TimePickerDialogFragment
 import com.dd.android.dailysimple.common.di.systemLocale
-import com.dd.android.dailysimple.common.utils.setUnderlineText
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.utils.DateUtils.strYmdToLong
 import com.dd.android.dailysimple.common.utils.DateUtils.toTime
 import com.dd.android.dailysimple.common.utils.DateUtils.toYMD
+import com.dd.android.dailysimple.common.utils.setUnderlineText
+import com.dd.android.dailysimple.common.widget.TimePickerDialogFragment
 import com.dd.android.dailysimple.databinding.FragmentMakeAndEditBinding
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
@@ -36,7 +36,7 @@ class MakeAndEditFragment : BaseFragment<FragmentMakeAndEditBinding>() {
 
     private fun setUpEditor() {
         editor = when (requireArguments().get(ARG_TYPE) as Int) {
-            EditType.TODO -> EditorTodo(bind, viewLifecycleOwner, this)
+            EditType.TODO -> EditorTodo(requireContext(), bind, viewLifecycleOwner, this)
             else -> EditorHabit(
                 requireContext(),
                 bind,

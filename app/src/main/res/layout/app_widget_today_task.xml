@@ -68,7 +68,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/title"
-        android:layout_marginTop="@dimen/basic_view_margin_vertical" />
+        android:layout_marginTop="@dimen/basic_view_margin_vertical"
+        android:divider="@null"
+        android:listSelector="@android:color/transparent" />
 
     <TextView
         android:id="@+id/empty_view"

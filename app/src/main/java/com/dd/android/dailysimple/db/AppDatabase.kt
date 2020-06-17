@@ -22,7 +22,7 @@ private const val DATABASE_NAME = "schedule-db"
         DailyHabit::class, CheckStatus::class,
         DailyTodo::class, TodoSubTask::class
     ],
-    version = 5,
+    version = 6,
     exportSchema = false
 )
 @TypeConverters(*[DailyHabitTypeConverters::class])
@@ -49,7 +49,13 @@ abstract class AppDatabase : RoomDatabase() {
                 AppDatabase::class.java,
                 DATABASE_NAME
             )
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+                .addMigrations(
+                    MIGRATION_1_2,
+                    MIGRATION_2_3,
+                    MIGRATION_3_4,
+                    MIGRATION_4_5,
+                    MIGRATION_5_6
+                )
                 .build()
     }
 }
@@ -118,6 +124,13 @@ val MIGRATION_4_5 = object : Migration(4, 5) {
 }
 
 val MIGRATION_5_6 = object : Migration(5, 6) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE daily_todo ADD COLUMN color INTEGER NOT NULL DEFAULT 0")
+    }
+}
+
+
+val MIGRATION_6_7 = object : Migration(6, 7) {
     override fun migrate(database: SupportSQLiteDatabase) {
 //        val table = "daily_habit"
 //        executeSQLMakeTableToLegacy(database, table)

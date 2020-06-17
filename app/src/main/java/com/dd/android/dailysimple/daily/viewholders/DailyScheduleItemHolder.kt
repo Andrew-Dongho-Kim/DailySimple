@@ -18,7 +18,7 @@ class DailyScheduleItemHolder(
     ViewHolder2<DailyScheduleItemBinding, DailySchedule>(
         parent,
         R.layout.daily_schedule_item,
-        BR.viewModel
+        BR.itemModel
     ) {
 
     init {

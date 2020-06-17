@@ -1,10 +1,12 @@
 package com.dd.android.dailysimple.db.data
 
+import android.content.Context
 import android.text.Html
 import android.text.SpannableString
 import android.text.Spanned
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.liveData
 import androidx.room.*
@@ -42,6 +44,7 @@ data class DailyTodo(
     override val id: Long,
     var title: String,
     var memo: String,
+    var color: Int,
     var start: Long,
     var until: Long,
     var done: Long,
@@ -130,10 +133,11 @@ data class DailyTodo(
         }
 
     companion object {
-        fun create() = DailyTodo(
+        fun create(context:Context) = DailyTodo(
             id = NO_ID,
             title = "",
             memo = "",
+            color = ContextCompat.getColor(context, R.color.appPrimary),
             start = msDateFrom(),
             until = msDateFrom(DEFAULT_END),
             done = ONGOING

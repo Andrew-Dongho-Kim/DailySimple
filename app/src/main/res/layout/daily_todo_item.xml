@@ -87,6 +87,15 @@
             app:layout_goneMarginStart="@dimen/basic_view_margin_horizontal"
             tools:text="Today todo list" />
 
+        <View
+            android:id="@+id/color"
+            android:layout_width="@dimen/schedule_item_color_width"
+            android:layout_height="@dimen/schedule_item_color_height"
+            android:layout_marginBottom="@dimen/schedule_item_color_margin_vertical"
+            android:background="@{itemModel.color}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/title" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/sub_task_icon"
             android:layout_width="@dimen/basic_icon_size_small"

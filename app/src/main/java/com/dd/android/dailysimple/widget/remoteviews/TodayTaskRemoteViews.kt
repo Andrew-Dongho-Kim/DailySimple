@@ -10,7 +10,7 @@ import com.dd.android.dailysimple.HomeActivity
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.CalendarConst
 import com.dd.android.dailysimple.common.di.settingManager
-import com.dd.android.dailysimple.common.widget.setImageAlpha
+import com.dd.android.dailysimple.common.widget.setImageViewImageAlpha
 import com.dd.android.dailysimple.widget.TaskListRemoteViewsService
 import com.dd.android.dailysimple.widget.WidgetConfigActivity
 import com.dd.android.dailysimple.widget.WidgetConst
@@ -25,7 +25,10 @@ class TodayTaskRemoteViews(private val context: Context) :
         val pendingIntent = PendingIntent.getActivity(
             context,
             0,
-            Intent(context, WidgetConfigActivity::class.java), 0
+            Intent(
+                context,
+                WidgetConfigActivity::class.java
+            ).apply { addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }, PendingIntent.FLAG_UPDATE_CURRENT
         )
         setOnClickPendingIntent(R.id.add, pendingIntent)
         return this
@@ -56,7 +59,7 @@ class TodayTaskRemoteViews(private val context: Context) :
     }
 
     fun setUpBackground(): TodayTaskRemoteViews {
-        setImageAlpha(
+        setImageViewImageAlpha(
             R.id.widget_background,
             settingManager.getInt(
                 WidgetConst.SETTING_KEY_WIDGET_ALPHA,
@@ -81,6 +84,12 @@ class TodayTaskRemoteViews(private val context: Context) :
         // It should be in the same layout used to instantiate the RemoteViews
         // object above.
         setEmptyView(R.id.task_list, R.id.empty_view)
+
+        setPendingIntentTemplate(
+            R.id.task_list, PendingIntent.getActivity(
+                context, 0, Intent(), 0
+            )
+        )
         return this
     }
 }

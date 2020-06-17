@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="@dimen/basic_view_margin_horizontal"
+    android:foreground="@drawable/ripple_list_item"
+    android:paddingStart="@dimen/basic_view_margin_horizontal_tiny_small"
     android:paddingTop="@dimen/basic_view_margin_vertical_small"
     android:paddingEnd="@dimen/basic_view_margin_horizontal"
     android:paddingBottom="@dimen/basic_view_margin_vertical_small">
@@ -29,5 +30,13 @@
         android:layout_toEndOf="@id/check"
         android:gravity="center_vertical"
         tools:text="오늘 해야할 일" />
+
+    <ImageView
+        android:id="@+id/color"
+        android:layout_width="@dimen/schedule_item_color_width"
+        android:layout_height="@dimen/schedule_item_color_height"
+        android:layout_alignStart="@id/title"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/schedule_item_color_margin_vertical" />
 
 </RelativeLayout>

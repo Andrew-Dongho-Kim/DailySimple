@@ -1,11 +1,17 @@
 package com.dd.android.dailysimple.common.widget
 
 import android.widget.RemoteViews
+import androidx.annotation.ColorRes
 import androidx.annotation.IdRes
-import com.dd.android.dailysimple.R
+import androidx.annotation.LayoutRes
+import com.dd.android.dailysimple.common.di.appContext
 
 
-fun RemoteViews.setImageAlpha(@IdRes id: Int, alpha: Int) = setInt(
-    R.id.widget_background,
-    "setImageAlpha", alpha
-)
+fun RemoteViews.setImageViewImageAlpha(@IdRes id: Int, alpha: Int) =
+    setInt(id, "setImageAlpha", alpha)
+
+fun RemoteViews.setViewBackground(@IdRes id: Int, @ColorRes colorResId: Int) =
+    setInt(id, "setBackgroundColor", colorResId)
+
+
+fun RemoteViews(@LayoutRes layoutResId: Int) = RemoteViews(appContext.packageName, layoutResId)

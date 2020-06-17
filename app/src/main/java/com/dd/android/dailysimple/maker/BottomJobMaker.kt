@@ -76,7 +76,7 @@ class BottomJobMaker(
                 habitVm.insert(DailyHabit.create(context).apply { title = jobTitle })
             }
             SIMPLY_MAKE_TODO -> {
-                todoVm.insertTodo(DailyTodo.create().apply { title = jobTitle })
+                todoVm.insertTodo(DailyTodo.create(context).apply { title = jobTitle })
             }
             SIMPLY_MAKE_SCHEDULE -> {
                 scheduleVm.insertSchedule(DailySchedule.create(context).apply { title = jobTitle })

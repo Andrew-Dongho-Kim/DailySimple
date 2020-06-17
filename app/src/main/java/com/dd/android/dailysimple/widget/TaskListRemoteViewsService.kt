@@ -4,19 +4,27 @@ import android.app.Application
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Intent
+import android.net.Uri
 import android.os.IBinder
+import android.provider.Settings
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import androidx.lifecycle.*
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.Logger
+import com.dd.android.dailysimple.common.widget.RemoteViews
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
+import com.dd.android.dailysimple.common.widget.setViewBackground
 import com.dd.android.dailysimple.daily.DailyItemModels
+import com.dd.android.dailysimple.daily.DailyViewType.Companion.AUTHORITY_ITEM
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.HABIT_ITEM
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.SCHEDULE_ITEM
+import com.dd.android.dailysimple.daily.DailyViewType.Companion.SIMPLE_HEADER
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.TODO_ITEM
 import com.dd.android.dailysimple.daily.IdMap
+import com.dd.android.dailysimple.daily.viewholders.DailyAuthorityItem
+import com.dd.android.dailysimple.daily.viewholders.DailySimpleHeaderItem
 import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
 import com.dd.android.dailysimple.daily.viewmodel.ScheduleViewModel
 import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
@@ -93,6 +101,8 @@ private class TaskItemRemoteViewsFactory(
 
     override fun getViewAt(position: Int): RemoteViews {
         return when (getViewType(position)) {
+            SIMPLE_HEADER -> createHeaderItem(items[position] as DailySimpleHeaderItem)
+            AUTHORITY_ITEM -> createAuthorityItem(items[position] as DailyAuthorityItem)
             SCHEDULE_ITEM -> createScheduleItem(items[position] as DailySchedule)
             TODO_ITEM -> createTodoItem(items[position] as DailyTodo)
             HABIT_ITEM -> createHabitItem(items[position] as DailyHabitWithCheckStatus)
@@ -101,14 +111,35 @@ private class TaskItemRemoteViewsFactory(
         }
     }
 
+    fun createHeaderItem(headerItem: DailySimpleHeaderItem): RemoteViews {
+        return RemoteViews(R.layout.widget_header_item).apply {
+            setTextViewText(R.id.header_text, headerItem.headerTitle)
+        }
+    }
+
+    fun createAuthorityItem(authorityItem: DailyAuthorityItem): RemoteViews {
+        return RemoteViews(R.layout.widget_authority_item).apply {
+            setOnClickFillInIntent(
+                R.id.root_view,
+                Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.fromParts("package", app.packageName, null)
+                )
+            )
+            setTextViewText(R.id.description_text, authorityItem.description)
+        }
+    }
+
     fun createScheduleItem(scheduleItem: DailySchedule): RemoteViews {
-        return RemoteViews(app.packageName, R.layout.widget_todo_item).apply {
+        return RemoteViews(R.layout.widget_todo_item).apply {
+            setTextViewText(R.id.title, scheduleItem.title)
         }
     }
 
     fun createTodoItem(todoItem: DailyTodo): RemoteViews {
-        return RemoteViews(app.packageName, R.layout.widget_todo_item).apply {
+        return RemoteViews(R.layout.widget_todo_item).apply {
             setTextViewText(R.id.title, todoItem.title)
+            setViewBackground(R.id.color, todoItem.color)
             setImageViewResource(
                 R.id.check,
                 if (isDone(todoItem.done)) {
@@ -180,8 +211,6 @@ private class TaskItemRemoteViewsFactory(
             )
         )
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.task_list)
-
-//        broadcastManager.sendBroadcast(Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE))
         logD { "ItemModel was changed:${list.size}" }
     }
 

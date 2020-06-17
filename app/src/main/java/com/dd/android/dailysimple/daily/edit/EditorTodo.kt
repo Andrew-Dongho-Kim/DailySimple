@@ -1,5 +1,7 @@
 package com.dd.android.dailysimple.daily.edit
 
+import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,19 +27,20 @@ private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, messa
 
 
 class EditorTodo(
+    private val context:Context,
     private val bind: FragmentMakeAndEditBinding,
-    private val viewLifecycleOwner: LifecycleOwner,
+    private val lifecycleOwner: LifecycleOwner,
     viewModelStoreOwner: ViewModelStoreOwner
 ) : Editable {
-
-    private lateinit var model: DailyTodo
 
     private var id = 0L
     private val alarmObservable = AlarmObservable(Alarm())
     private val todoVm = ViewModelProvider(viewModelStoreOwner).get(TodoViewModel::class.java)
 
+    private lateinit var model: DailyTodo
+
     private val subTaskAdapter by lazy {
-        TodoSubTaskAdapter(viewLifecycleOwner).apply { setHasStableIds(true) }
+        TodoSubTaskAdapter(lifecycleOwner).apply { setHasStableIds(true) }
     }
     private val subTasks = mutableListOf<EditableTodoSubTask>()
 
@@ -48,8 +51,8 @@ class EditorTodo(
         }
 
     override fun bind(id: Long) {
-        todoVm.getTodo(id).observe(viewLifecycleOwner, Observer { model ->
-            this.model = (model ?: DailyTodo.create()).apply {
+        todoVm.getTodo(id).observe(lifecycleOwner, Observer { model ->
+            this.model = (model ?: DailyTodo.create(context)).apply {
                 alarm = ensureAlarm(id, alarm)
             }
             bind.content = this.model.toEditContent()
@@ -83,7 +86,7 @@ class EditorTodo(
 
         // TODO DiffUtil
         if (todoId == NO_ID) return
-        todoVm.getSubTasks(todoId).observe(viewLifecycleOwner, Observer { list ->
+        todoVm.getSubTasks(todoId).observe(lifecycleOwner, Observer { list ->
             subTasks.clear()
             subTasks.addAll(list.mapIndexed { index, task ->
                 EditableTodoSubTask(
@@ -137,8 +140,9 @@ class EditorTodo(
     private fun editTodoWith(block: (newIds: List<Long>) -> Unit) = todoVm.insertTodo(
         DailyTodo(
             id = model.id,
-            title = (bind.titleEditor.text.toString()),
-            memo = (bind.memoEditor.text.toString()),
+            title = bind.titleEditor.text.toString(),
+            memo = bind.memoEditor.text.toString(),
+            color = (bind.color.background as ColorDrawable).color,
             start = strYmdToLong(bind.startDate.text.toString(), systemLocale()),
             until = strYmdToLong(bind.endDate.text.toString(), systemLocale()),
             done = ONGOING,
