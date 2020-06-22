@@ -2,14 +2,28 @@ package com.dd.android.dailysimple.widget
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
+import com.dd.android.dailysimple.SettingManager
 import com.dd.android.dailysimple.common.Logger
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
+import com.dd.android.dailysimple.widget.WidgetConst.ACTION_UPDATE_SELECTED_DATE
+import com.dd.android.dailysimple.widget.WidgetConst.DATA_SELECTED_DATE
+import com.dd.android.dailysimple.widget.WidgetConst.SETTING_KEY_SELECTED_DATE
 import com.dd.android.dailysimple.widget.remoteviews.TodayTaskRemoteViews
 
 private const val TAG = "WidgetProvider"
 private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
 
 class WidgetProvider : AppWidgetProvider() {
+
+    override fun onReceive(context: Context, intent: Intent) {
+        when (intent.action) {
+            ACTION_UPDATE_SELECTED_DATE -> updateSelectedDate(context, intent)
+            else -> super.onReceive(context, intent)
+        }
+    }
 
     override fun onUpdate(
         context: Context,
@@ -22,7 +36,8 @@ class WidgetProvider : AppWidgetProvider() {
             )
                 .setUpBackground()
                 .setUpTitle()
-                .setUpTitleAction()
+                .setUpNextDateButton()
+                .setUpPrevDateButton()
                 .setUpSettingAction()
                 .setUpListView(id)
 
@@ -31,8 +46,17 @@ class WidgetProvider : AppWidgetProvider() {
         }
     }
 
+    private fun updateSelectedDate(context: Context, intent: Intent) {
+        val selectedDate = intent.getLongExtra(DATA_SELECTED_DATE, msDateFrom())
+        SettingManager(context).putLong(SETTING_KEY_SELECTED_DATE, selectedDate)
 
-    override fun onDeleted(context: Context, appWidgetIds: IntArray) {
+        AppWidgetManager.getInstance(context).run {
+            val appWidgetIds = getAppWidgetIds(ComponentName(context, context.packageName))
+            updateAppWidget(appWidgetIds, TodayTaskRemoteViews(context).setUpTitle())
 
+            logD { "updateSelectedDate appWidgetIds:$appWidgetIds, selectedDate:$selectedDate" }
+        }
     }
+
+
 }

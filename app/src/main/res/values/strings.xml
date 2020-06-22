@@ -6,6 +6,10 @@
     <string name="channel_id_habit" translatable="false">channel_id_habit</string>
     <string name="channel_id_schedule" translatable="false">channel_id_schedule</string>
 
+    <string name="percent" translatable="false">%d%%</string>
+
+    <string name="match_with_dark_mode">Match with Dark mode</string>
+
     <string name="background_color">Background color</string>
     <string name="background_alpha">Background alpha</string>
     <string name="white">White</string>

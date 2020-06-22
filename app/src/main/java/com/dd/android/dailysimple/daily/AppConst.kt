@@ -1,7 +1,7 @@
 package com.dd.android.dailysimple.daily
 
 object AppConst {
-    const val UNKOWN = -1
+    const val UNKNOWN = -1
     const val NO_ID = 0L
 
     // SIMPLE HEADER

@@ -10,20 +10,23 @@ import android.provider.Settings
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import androidx.lifecycle.*
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.dd.android.dailysimple.R
+import com.dd.android.dailysimple.SettingManager
 import com.dd.android.dailysimple.common.Logger
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.widget.RemoteViews
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.common.widget.setViewBackground
 import com.dd.android.dailysimple.daily.DailyItemModels
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.AUTHORITY_ITEM
+import com.dd.android.dailysimple.daily.DailyViewType.Companion.EMPTY_ITEM
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.HABIT_ITEM
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.SCHEDULE_ITEM
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.SIMPLE_HEADER
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.TODO_ITEM
 import com.dd.android.dailysimple.daily.IdMap
 import com.dd.android.dailysimple.daily.viewholders.DailyAuthorityItem
+import com.dd.android.dailysimple.daily.viewholders.DailyEmptyItem
 import com.dd.android.dailysimple.daily.viewholders.DailySimpleHeaderItem
 import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
 import com.dd.android.dailysimple.daily.viewmodel.ScheduleViewModel
@@ -32,6 +35,8 @@ import com.dd.android.dailysimple.db.data.DailyHabitWithCheckStatus
 import com.dd.android.dailysimple.db.data.DailySchedule
 import com.dd.android.dailysimple.db.data.DailyTodo
 import com.dd.android.dailysimple.db.data.DoneState.Companion.isDone
+import com.dd.android.dailysimple.widget.WidgetConst.ACTION_UPDATE_SELECTED_DATE
+import com.dd.android.dailysimple.widget.WidgetConst.DATA_SELECTED_DATE
 import kotlinx.coroutines.*
 
 
@@ -47,10 +52,21 @@ class TaskListRemoteViewsService : RemoteViewsService(), LifecycleOwner {
         super.onCreate()
     }
 
-    override fun onBind(intent: Intent?): IBinder? {
+    override fun onBind(intent: Intent): IBinder? {
         lifecycleDispatcher.onServicePreSuperOnBind()
+        when (intent.action) {
+            ACTION_UPDATE_SELECTED_DATE -> handleSelectedDateChanged(intent)
+        }
         return super.onBind(intent)
     }
+
+
+    private fun handleSelectedDateChanged(intent: Intent) {
+
+        val selectedTime = intent.getLongExtra(DATA_SELECTED_DATE, msDateFrom())
+
+    }
+
 
     override fun onStart(intent: Intent?, startId: Int) {
         lifecycleDispatcher.onServicePreSuperOnStart()
@@ -74,8 +90,6 @@ private class TaskItemRemoteViewsFactory(
     private val app: Application
 ) : RemoteViewsService.RemoteViewsFactory, ViewModelStoreOwner,
     HasDefaultViewModelProviderFactory, Observer<List<ItemModel>> {
-
-    private val broadcastManager by lazy { LocalBroadcastManager.getInstance(app) }
 
     private val viewModelStore = ViewModelStore()
     private val mainScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
@@ -102,6 +116,7 @@ private class TaskItemRemoteViewsFactory(
     override fun getViewAt(position: Int): RemoteViews {
         return when (getViewType(position)) {
             SIMPLE_HEADER -> createHeaderItem(items[position] as DailySimpleHeaderItem)
+            EMPTY_ITEM -> createEmptyItem(items[position] as DailyEmptyItem)
             AUTHORITY_ITEM -> createAuthorityItem(items[position] as DailyAuthorityItem)
             SCHEDULE_ITEM -> createScheduleItem(items[position] as DailySchedule)
             TODO_ITEM -> createTodoItem(items[position] as DailyTodo)
@@ -111,14 +126,19 @@ private class TaskItemRemoteViewsFactory(
         }
     }
 
-    fun createHeaderItem(headerItem: DailySimpleHeaderItem): RemoteViews {
-        return RemoteViews(R.layout.widget_header_item).apply {
+    fun createHeaderItem(headerItem: DailySimpleHeaderItem) =
+        RemoteViews(R.layout.widget_header_item).apply {
             setTextViewText(R.id.header_text, headerItem.headerTitle)
         }
-    }
 
-    fun createAuthorityItem(authorityItem: DailyAuthorityItem): RemoteViews {
-        return RemoteViews(R.layout.widget_authority_item).apply {
+    fun createEmptyItem(emptyItem: DailyEmptyItem) =
+        RemoteViews(R.layout.widget_empty_item).apply {
+            setTextViewText(R.id.description_text, emptyItem.description)
+        }
+
+
+    fun createAuthorityItem(authorityItem: DailyAuthorityItem) =
+        RemoteViews(R.layout.widget_authority_item).apply {
             setOnClickFillInIntent(
                 R.id.root_view,
                 Intent(
@@ -128,7 +148,7 @@ private class TaskItemRemoteViewsFactory(
             )
             setTextViewText(R.id.description_text, authorityItem.description)
         }
-    }
+
 
     fun createScheduleItem(scheduleItem: DailySchedule): RemoteViews {
         return RemoteViews(R.layout.widget_todo_item).apply {
@@ -170,7 +190,7 @@ private class TaskItemRemoteViewsFactory(
     }
 
     override fun getViewTypeCount(): Int {
-        return 3
+        return 4
     }
 
     override fun onDestroy() {
@@ -178,10 +198,6 @@ private class TaskItemRemoteViewsFactory(
             itemModel.data.removeObserver(this@TaskItemRemoteViewsFactory)
             cancel()
         }
-    }
-
-    override fun onDataSetChanged() {
-        logD { "onDataSetChanged()" }
     }
 
     override fun getViewModelStore() = viewModelStore
@@ -197,6 +213,11 @@ private class TaskItemRemoteViewsFactory(
                 } as T
             }
         }
+    }
+
+    override fun onDataSetChanged() {
+        logD { "onDataSetChanged()" }
+
     }
 
     override fun onChanged(list: List<ItemModel>) {

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="match_with_dark_mode">다크 모드에 맞추기</string>
+
     <string name="background_color">배경 색상</string>
     <string name="background_alpha">배경 투명도</string>
     <string name="white">흰색</string>

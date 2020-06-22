@@ -16,6 +16,16 @@
         <item name="dialogTheme">@style/AppDialogTheme</item>
     </style>
 
+    <style name="AppTheme.Transparent">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
     <style name="Widget.AppCompat.DropDownItem.Spinner" parent="android:Widget.Material.DropDownItem.Spinner" tools:override="true">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Widget.DropDownItem
         </item>

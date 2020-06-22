@@ -1,6 +1,7 @@
 package com.dd.android.dailysimple.widget.remoteviews
 
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
@@ -10,16 +11,24 @@ import com.dd.android.dailysimple.HomeActivity
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.CalendarConst
 import com.dd.android.dailysimple.common.di.settingManager
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
+import com.dd.android.dailysimple.common.utils.DateUtils.msFrom
 import com.dd.android.dailysimple.common.widget.setImageViewImageAlpha
 import com.dd.android.dailysimple.widget.TaskListRemoteViewsService
 import com.dd.android.dailysimple.widget.WidgetConfigActivity
 import com.dd.android.dailysimple.widget.WidgetConst
+import com.dd.android.dailysimple.widget.WidgetConst.ACTION_UPDATE_SELECTED_DATE
+import com.dd.android.dailysimple.widget.WidgetConst.DATA_SELECTED_DATE
+import com.dd.android.dailysimple.widget.WidgetConst.SETTING_KEY_SELECTED_DATE
 import java.util.*
 
 class TodayTaskRemoteViews(private val context: Context) :
     RemoteViews(context.packageName, R.layout.app_widget_today_task) {
 
     private val settingManager by lazy { settingManager() }
+
+    private fun msSelectedDate() =
+        settingManager.getLong(SETTING_KEY_SELECTED_DATE, msDateFrom())
 
     fun setUpSettingAction(): TodayTaskRemoteViews {
         val pendingIntent = PendingIntent.getActivity(
@@ -35,7 +44,9 @@ class TodayTaskRemoteViews(private val context: Context) :
     }
 
     fun setUpTitle(): TodayTaskRemoteViews {
-        val calendar = Calendar.getInstance()
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = msSelectedDate()
+        }
         setTextViewText(
             R.id.title,
             context.getString(
@@ -45,16 +56,36 @@ class TodayTaskRemoteViews(private val context: Context) :
                 context.getString(R.string.date, calendar.get(Calendar.DATE))
             )
         )
+        setOnClickPendingIntent(
+            R.id.title, PendingIntent.getActivity(
+                context,
+                0,
+                Intent(context, HomeActivity::class.java), 0
+            )
+        )
         return this
     }
 
-    fun setUpTitleAction(): TodayTaskRemoteViews {
-        val pendingIntent = PendingIntent.getActivity(
-            context,
-            0,
-            Intent(context, HomeActivity::class.java), 0
+
+    fun setUpNextDateButton(): TodayTaskRemoteViews {
+        setOnClickPendingIntent(
+            R.id.next,
+            PendingIntent.getBroadcast(context, 0, Intent(ACTION_UPDATE_SELECTED_DATE).apply {
+                `package` = context.packageName
+                putExtra(DATA_SELECTED_DATE, msFrom(msSelectedDate(), dates = 1))
+            }, FLAG_UPDATE_CURRENT)
         )
-        setOnClickPendingIntent(R.id.title, pendingIntent)
+        return this
+    }
+
+    fun setUpPrevDateButton(): TodayTaskRemoteViews {
+        setOnClickPendingIntent(
+            R.id.prev,
+            PendingIntent.getBroadcast(context, 0, Intent(ACTION_UPDATE_SELECTED_DATE).apply {
+                `package` = context.packageName
+                putExtra(DATA_SELECTED_DATE, msFrom(msSelectedDate(), dates = -1))
+            }, FLAG_UPDATE_CURRENT)
+        )
         return this
     }
 

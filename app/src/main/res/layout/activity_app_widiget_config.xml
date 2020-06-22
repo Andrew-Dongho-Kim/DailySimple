@@ -7,15 +7,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <include
             android:id="@+id/widget_preview"
             layout="@layout/app_widget_today_task"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal"
+            android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
             app:layout_constraintBottom_toBottomOf="@id/preview_bottom_guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/preview_bottom_guideline"
@@ -92,6 +102,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/background_black" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/alpha_text"
+            style="@style/BasicTextDpTinyBig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header_background_alpha" />
+
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/alpha_seekbar"
             android:layout_width="0dp"
@@ -99,9 +118,31 @@
             android:layout_marginStart="@dimen/basic_view_margin_horizontal"
             android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
             android:max="255"
+            app:layout_constraintBottom_toBottomOf="@id/alpha_text"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/alpha_text"
+            app:layout_constraintTop_toTopOf="@id/alpha_text" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/apply_dark_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/apply_dark_mode_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/apply_dark_mode_text" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/apply_dark_mode_text"
+            style="@style/BasicTextDpTinyBig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal"
+            android:paddingTop="@dimen/basic_view_margin_vertical"
+            android:paddingBottom="@dimen/basic_view_margin_vertical"
+            android:text="@string/match_with_dark_mode"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header_background_alpha" />
+            app:layout_constraintTop_toBottomOf="@id/alpha_seekbar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

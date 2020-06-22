@@ -18,7 +18,7 @@ import com.dd.android.dailysimple.db.data.DailyHabit
 import com.dd.android.dailysimple.db.data.DailySchedule
 import com.dd.android.dailysimple.db.data.DailyTodo
 
-class BottomJobMaker(
+class BottomTaskCreator(
     private val context: Context,
     private val fabBind: FabLayoutCommonBinding,
     fabVm: FabViewModel,

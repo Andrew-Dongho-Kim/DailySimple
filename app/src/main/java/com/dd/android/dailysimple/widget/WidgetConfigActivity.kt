@@ -5,8 +5,17 @@ import android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID
 import android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
+import android.widget.SeekBar
+import androidx.databinding.DataBindingUtil
 import com.dd.android.dailysimple.R
+import com.dd.android.dailysimple.SettingManager
 import com.dd.android.dailysimple.common.BaseActivity
+import com.dd.android.dailysimple.common.Logger
+import com.dd.android.dailysimple.databinding.ActivityAppWidigetConfigBinding
+import com.dd.android.dailysimple.widget.WidgetConst.ALPHA_MAX
+import com.dd.android.dailysimple.widget.WidgetConst.DEFAULT_WIDGET_ALPHA
+import com.dd.android.dailysimple.widget.WidgetConst.SETTING_KEY_WIDGET_ALPHA
 import com.dd.android.dailysimple.widget.remoteviews.TodayTaskRemoteViews
 
 /**
@@ -24,11 +33,21 @@ import com.dd.android.dailysimple.widget.remoteviews.TodayTaskRemoteViews
  * However, onUpdate() will be called for subsequent updates - it is
  * only skipped the first time
  */
+
+private const val TAG = "DailyWidgetConfig"
+private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
+private inline fun logE(crossinline message: () -> String) = Logger.e(TAG, message)
+
 class WidgetConfigActivity : BaseActivity() {
+    private lateinit var bind: ActivityAppWidigetConfigBinding
 
+    private val settingManager by lazy { SettingManager(this) }
     private val appWidgetManager by lazy { AppWidgetManager.getInstance(this) }
-
     private var appWidgetId = INVALID_APPWIDGET_ID
+
+    private val previewWidgetBackground by lazy { bind.widgetPreview.findViewById<ImageView>(R.id.widget_background) }
+
+    private var alpha: Int = DEFAULT_WIDGET_ALPHA
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,23 +55,69 @@ class WidgetConfigActivity : BaseActivity() {
         // Set the result to CANCELED. This will cause the widget host to cancel
         // out of the widget placement if they press the back button.
 //        setResult(RESULT_CANCELED)
-        setContentView(R.layout.activity_app_widiget_config)
+        bind = DataBindingUtil.setContentView(this, R.layout.activity_app_widiget_config)
 
+        setUpAppWidgetId()
+        setUpToolbar()
+        setUpAlphaSeekBar()
+        setUpTheme()
+
+        updateSetting()
+        updateWidget()
+    }
+
+    private fun setUpToolbar() {
+        setSupportActionBar(bind.toolbar)
+        supportActionBar?.let {
+            it.title = "Widget Settings"
+            it.setDisplayHomeAsUpEnabled(true)
+        }
+    }
+
+    private fun setUpAppWidgetId() {
         // Find the widget id from the intent.
         appWidgetId = intent?.extras?.getInt(
             EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID
         ) ?: INVALID_APPWIDGET_ID
 
-        if (appWidgetId == INVALID_APPWIDGET_ID) finish()
-
-        update()
+        if (appWidgetId == INVALID_APPWIDGET_ID) {
+            finish()
+            logE { "Invalid app widget id : $appWidgetId" }
+        }
     }
 
-    fun update() {
+    private fun setUpAlphaSeekBar() {
+        alpha = settingManager.getInt(SETTING_KEY_WIDGET_ALPHA, DEFAULT_WIDGET_ALPHA)
+
+        previewWidgetBackground.imageAlpha = alpha
+        bind.alphaText.text =
+            getString(R.string.percent, (alpha / ALPHA_MAX * 100).toInt())
+        bind.alphaSeekbar.progress = alpha
+        bind.alphaSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                alpha = progress
+                previewWidgetBackground.imageAlpha = alpha
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+        })
+    }
+
+    private fun setUpTheme() {
+
+    }
+
+    private fun updateSetting() {
+        settingManager.putInt(SETTING_KEY_WIDGET_ALPHA, alpha)
+    }
+
+    private fun updateWidget() {
         TodayTaskRemoteViews(this)
             .setUpBackground()
             .setUpTitle()
-            .setUpTitleAction()
+            .setUpNextDateButton()
+            .setUpPrevDateButton()
             .setUpSettingAction()
             .setUpListView(appWidgetId).also {
                 appWidgetManager.updateAppWidget(appWidgetId, it)
@@ -60,7 +125,8 @@ class WidgetConfigActivity : BaseActivity() {
         setResult(RESULT_OK, Intent().apply { putExtra(EXTRA_APPWIDGET_ID, appWidgetId) })
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
     }
+
 }

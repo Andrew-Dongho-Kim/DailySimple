@@ -29,7 +29,7 @@ import com.dd.android.dailysimple.daily.viewmodel.ScheduleViewModel
 import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
 import com.dd.android.dailysimple.databinding.FragmentDailyBinding
 import com.dd.android.dailysimple.google.GoogleAccountViewModel
-import com.dd.android.dailysimple.maker.BottomJobMaker
+import com.dd.android.dailysimple.maker.BottomTaskCreator
 import com.dd.android.dailysimple.maker.FabViewModel
 import com.dd.android.dailysimple.plan.ScheduleCardItemDecoration
 import kotlin.reflect.KClass
@@ -61,7 +61,7 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
         setUpObserver()
         setUpSimpleCalendar()
         setUpContent()
-        BottomJobMaker(
+        BottomTaskCreator(
             requireContext(),
             bind.fabLayout,
             fabVm, habitVm, todoVm, scheduleVm,

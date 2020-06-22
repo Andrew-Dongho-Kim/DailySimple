@@ -6,7 +6,7 @@ import android.app.NotificationManager.IMPORTANCE_DEFAULT
 import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationManagerCompat
-import com.dd.android.dailysimple.daily.AppConst.UNKOWN
+import com.dd.android.dailysimple.daily.AppConst.UNKNOWN
 
 @SuppressLint("WrongConstant")
 fun createNotificationChannel(
@@ -14,7 +14,7 @@ fun createNotificationChannel(
     channelId: String,
     channelName: String,
     channelDescription: String,
-    importance: Int = UNKOWN,
+    importance: Int = UNKNOWN,
     enableLights: Boolean = true,
     enableVibration: Boolean = true
 ) {
@@ -27,7 +27,7 @@ fun createNotificationChannel(
     val channel = NotificationChannel(
         channelId,
         channelName,
-        if (importance == UNKOWN) IMPORTANCE_DEFAULT else importance
+        if (importance == UNKNOWN) IMPORTANCE_DEFAULT else importance
     ).apply {
         enableLights(enableLights)
         enableVibration(enableVibration)
