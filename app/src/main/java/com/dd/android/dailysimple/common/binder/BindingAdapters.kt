@@ -14,7 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.dd.android.dailysimple.common.utils.setUnderlineText
 
 
-@BindingAdapter("app:thumbnail")
+@BindingAdapter("thumbnail")
 fun thumbnailUrl(view: AppCompatImageView, url: String?) {
     if (url.isNullOrEmpty()) return
     Glide.with(view.context).load(url)
@@ -24,7 +24,7 @@ fun thumbnailUrl(view: AppCompatImageView, url: String?) {
 }
 
 
-@BindingAdapter("app:circleThumbnail")
+@BindingAdapter("circleThumbnail")
 fun circleThumbnailUrl(view: AppCompatImageView, url: String?) {
     if (url.isNullOrEmpty()) return
 
@@ -36,7 +36,7 @@ fun circleThumbnailUrl(view: AppCompatImageView, url: String?) {
         .into(view)
 }
 
-@BindingAdapter("app:circleThumbnail")
+@BindingAdapter("circleThumbnail")
 fun circleThumbnail(view: AppCompatImageView, @DrawableRes resId: Int) {
     if (resId == 0) return
 
@@ -52,7 +52,7 @@ interface OnItemSelectedListener {
     fun onItemSelected(position: Int)
 }
 
-@BindingAdapter("app:onItemSelected")
+@BindingAdapter("onItemSelected")
 fun onItemSelected(spinner: AppCompatSpinner, listener: OnItemSelectedListener?) {
     spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onNothingSelected(parent: AdapterView<*>) {
@@ -65,42 +65,43 @@ fun onItemSelected(spinner: AppCompatSpinner, listener: OnItemSelectedListener?)
     }
 }
 
-@BindingAdapter("app:selectItemPosition")
+@BindingAdapter("selectItemPosition")
 fun selectItemPosition(spinner: AppCompatSpinner, position: Int) {
     spinner.setSelection(position)
 }
 
-@BindingAdapter("app:onCheckChanged")
+@BindingAdapter("onCheckChanged")
 fun onCheckChanged(compound: SwitchCompat, listener: CompoundButton.OnCheckedChangeListener) {
     compound.setOnCheckedChangeListener(listener)
 }
 
-@BindingAdapter("app:onCheckChanged")
+@BindingAdapter("onCheckChanged")
 fun onCheckChanged(compound: AppCompatCheckBox, listener: CompoundButton.OnCheckedChangeListener) {
     compound.setOnCheckedChangeListener(listener)
 }
 
-@BindingAdapter("app:onDateChanged")
+@BindingAdapter("onDateChanged")
 fun onDateChanged(calendar: CalendarView, listener: CalendarView.OnDateChangeListener) {
     calendar.setOnDateChangeListener(listener)
 }
 
-@BindingAdapter("app:onTimeChanged")
+@BindingAdapter("onTimeChanged")
 fun onTimeChanged(timePicker: TimePicker, listener: TimePicker.OnTimeChangedListener) {
     timePicker.setOnTimeChangedListener(listener)
 }
 
-@BindingAdapter("app:onEditorAction")
+@BindingAdapter("onEditorAction")
 fun onEditorAction(textView: TextView, listener: TextView.OnEditorActionListener) {
     textView.setOnEditorActionListener(listener)
 }
 
-@BindingAdapter("app:underlineText")
+@BindingAdapter("underlineText")
 fun setUnderlineText(textView: TextView, text: String?) {
     text?.let { textView.setUnderlineText(it) }
 }
 
-@BindingAdapter("app:spannableText")
+@Suppress("deprecation")
+@BindingAdapter("spannableText")
 fun setSpannableText(textView: TextView, text: String?) {
     text?.let { textView.text = Html.fromHtml(it) }
 }
@@ -109,7 +110,7 @@ interface OnTextChangeListener {
     fun onTextChanged(text: String?)
 }
 
-@BindingAdapter("app:onTextChanged")
+@BindingAdapter("onTextChanged")
 fun onTextChanged(editText: AppCompatEditText, listener: OnTextChangeListener) {
     editText.addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {}

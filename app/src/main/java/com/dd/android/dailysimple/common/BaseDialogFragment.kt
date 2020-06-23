@@ -25,6 +25,7 @@ abstract class BaseDialogFragment<B : ViewDataBinding> : DialogFragment() {
     @get:LayoutRes
     abstract val layout: Int
 
+    @Suppress("deprecation")
     @CallSuper
     override fun onAttach(activity: Activity) {
         super.onAttach(activity)

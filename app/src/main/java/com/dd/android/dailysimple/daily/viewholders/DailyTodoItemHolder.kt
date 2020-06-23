@@ -1,7 +1,5 @@
 package com.dd.android.dailysimple.daily.viewholders
 
-import android.view.Gravity
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.ViewModelProvider
@@ -10,7 +8,6 @@ import androidx.navigation.NavController
 import com.dd.android.dailysimple.HomeFragmentDirections.Companion.homeToMakeAndEdit
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2
-import com.dd.android.dailysimple.daily.DailyOverduePopup
 import com.dd.android.dailysimple.daily.simplecalendar.SelectedDateInfo
 import com.dd.android.dailysimple.daily.edit.EditType
 import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
@@ -32,19 +29,19 @@ class DailyTodoItemHolder(
     )
 
     init {
-        itemClickListener = ::onItemClick
-        bind.check.setOnClickListener(::onToggleDone)
+        itemClickListener = { onItemClick() }
+        bind.check.setOnClickListener { onToggleDone() }
         bind.dateInfo =
             SelectedDateInfo(
                 todoVm.selectedDate
             )
     }
 
-    private fun onItemClick(view: View) {
+    private fun onItemClick() {
         navController.navigate(homeToMakeAndEdit(model!!.id, EditType.TODO))
     }
 
-    private fun onToggleDone(view: View) {
+    private fun onToggleDone() {
         model?.let { todo -> todoVm.updateTodo(todo.also { it.toggleDone() }) }
     }
 }

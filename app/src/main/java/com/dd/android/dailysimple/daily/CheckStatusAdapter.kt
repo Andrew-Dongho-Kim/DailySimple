@@ -26,7 +26,7 @@ private const val TAG = "CheckStatus"
 private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
 private inline fun logE(crossinline message: () -> String) = Logger.e(TAG, message)
 
-@BindingAdapter("daily:checkStatus")
+@BindingAdapter("checkStatus")
 fun applyCheckStatus(imageView: ImageView, checkedCount: Long) {
     imageView.setImageResource(
         if (checkedCount > 0) {

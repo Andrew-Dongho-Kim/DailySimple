@@ -65,6 +65,7 @@ abstract class BaseActivity : AppCompatActivity(),
         logD { "$this - onStop()" }
     }
 
+    @Suppress("deprecation")
     @CallSuper
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

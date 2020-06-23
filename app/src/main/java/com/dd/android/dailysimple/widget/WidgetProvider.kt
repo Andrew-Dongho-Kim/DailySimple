@@ -12,11 +12,17 @@ import com.dd.android.dailysimple.widget.WidgetConst.ACTION_UPDATE_SELECTED_DATE
 import com.dd.android.dailysimple.widget.WidgetConst.DATA_SELECTED_DATE
 import com.dd.android.dailysimple.widget.WidgetConst.SETTING_KEY_SELECTED_DATE
 import com.dd.android.dailysimple.widget.remoteviews.TodayTaskRemoteViews
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 private const val TAG = "WidgetProvider"
 private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
 
+@AndroidEntryPoint
 class WidgetProvider : AppWidgetProvider() {
+
+    @Inject
+    lateinit var settingManager: SettingManager
 
     override fun onReceive(context: Context, intent: Intent) {
         when (intent.action) {
@@ -48,7 +54,7 @@ class WidgetProvider : AppWidgetProvider() {
 
     private fun updateSelectedDate(context: Context, intent: Intent) {
         val selectedDate = intent.getLongExtra(DATA_SELECTED_DATE, msDateFrom())
-        SettingManager(context).putLong(SETTING_KEY_SELECTED_DATE, selectedDate)
+        settingManager.putLong(SETTING_KEY_SELECTED_DATE, selectedDate)
 
         AppWidgetManager.getInstance(context).run {
             val appWidgetIds = getAppWidgetIds(ComponentName(context, context.packageName))

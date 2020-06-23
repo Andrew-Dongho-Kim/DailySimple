@@ -2,7 +2,6 @@ package com.dd.android.dailysimple.daily
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.PopupWindow
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -28,22 +27,22 @@ class DailyOverduePopup(
     private val bind = DataBindingUtil.bind<DailyOverduePopupWindowBinding>(contentView)!!
 
     init {
-        bind.done.setOnClickListener(::onDoneClick)
-        bind.edit.setOnClickListener(::onEditClick)
-        bind.delete.setOnClickListener(::onDeleteClick)
+        bind.done.setOnClickListener { onDoneClick() }
+        bind.edit.setOnClickListener { onEditClick() }
+        bind.delete.setOnClickListener { onDeleteClick() }
     }
 
 
-    private fun onDoneClick(view: View) {
+    private fun onDoneClick() {
         toVm.makeToDone(todoId)
         dismiss()
     }
 
-    private fun onEditClick(view: View) {
+    private fun onEditClick() {
         dismiss()
     }
 
-    private fun onDeleteClick(view: View) {
+    private fun onDeleteClick() {
         toVm.deleteTodo(todoId)
         dismiss()
     }

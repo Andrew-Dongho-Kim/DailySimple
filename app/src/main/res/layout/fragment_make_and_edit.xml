@@ -10,7 +10,7 @@
 
         <import type="com.dd.android.dailysimple.db.data.DailyHabit" />
 
-        <import type="com.dd.android.dailysimple.common.di.AppDependencyInjectorKt" />
+        <import type="com.dd.android.dailysimple.common.di.AppDependencyKt" />
 
         <variable
             name="ui"
@@ -311,7 +311,7 @@
                             app:layout_constraintBottom_toBottomOf="@id/time_icon"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@id/time_icon"
-                            app:underlineText="@{DateUtils.INSTANCE.toTime(alarmModel.alarmTime, AppDependencyInjectorKt.systemLocale())}" />
+                            app:underlineText="@{DateUtils.INSTANCE.toTime(alarmModel.alarmTime, AppDependencyKt.systemLocale())}" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout

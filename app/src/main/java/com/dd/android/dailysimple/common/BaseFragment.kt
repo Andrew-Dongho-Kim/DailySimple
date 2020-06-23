@@ -57,6 +57,7 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
             "${this::class.simpleName}(@${Integer.toHexString(this.hashCode())}) ${message()}"
         }
 
+    @Suppress("deprecation")
     @CallSuper
     override fun onAttach(activity: Activity) {
         super.onAttach(activity)

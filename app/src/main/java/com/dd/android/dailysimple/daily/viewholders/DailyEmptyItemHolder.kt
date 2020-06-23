@@ -1,6 +1,5 @@
 package com.dd.android.dailysimple.daily.viewholders
 
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.library.baseAdapters.BR
 import androidx.navigation.NavController
@@ -23,10 +22,10 @@ class DailyEmptyItemHolder(parent: ViewGroup, private val navController: NavCont
         BR.itemModel
     ) {
     init {
-        itemClickListener = ::onClick
+        itemClickListener = { _ -> onClick() }
     }
 
-    private fun onClick(view: View) {
+    private fun onClick() {
         model?.let {
             when (it.type) {
                 SCHEDULE_ITEM -> navController.navigate(homeToMakeAndEdit(NO_ID, EditType.SCHEDULE))

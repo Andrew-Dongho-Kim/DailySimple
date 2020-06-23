@@ -1,7 +1,6 @@
 package com.dd.android.dailysimple.common.utils
 
 import android.text.format.Time
-import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -11,26 +10,8 @@ object DateUtils {
     const val MS_HOUR = MS_MINUTE * 60
     const val MS_DAY = MS_HOUR * 24
 
-    val TIME_ZONE_UTC: TimeZone by lazy { TimeZone.getTimeZone("UTC") }
 
-
-    fun localToUTC(time: Long): Long {
-        try {
-            val dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm:ss").apply {
-                timeZone = TIME_ZONE_UTC
-            }
-
-            val strDate = dateFormat.format(Date(time))
-            val dateFormatLocal = SimpleDateFormat("yyyy.MM.dd HH:mm:ss")
-            val utcDate = dateFormatLocal.parse(strDate)
-
-            Log.d("TEST-DH", "$utcDate")
-            return utcDate?.time ?: time
-        } catch (e: Exception) {
-        }
-        return time
-    }
-
+    @Suppress("deprecation")
     fun utcToLocal(utcTime: Long): Long {
         try {
             val timeFormat = Time()
@@ -61,12 +42,12 @@ object DateUtils {
         }
 
     fun calendarWeekOnly(timezone: TimeZone? = null): Calendar =
-        calendarDateOnly().apply {
+        calendarDateOnly(timezone).apply {
             set(Calendar.DAY_OF_WEEK, 0)
         }
 
     fun calendarMonthOnly(timeZone: TimeZone? = null): Calendar =
-        calendarDateOnly().apply {
+        calendarDateOnly(timeZone).apply {
             set(Calendar.DAY_OF_MONTH, 0)
         }
 

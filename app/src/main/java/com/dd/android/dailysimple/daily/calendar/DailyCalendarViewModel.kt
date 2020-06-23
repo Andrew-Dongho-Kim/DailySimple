@@ -37,7 +37,7 @@ class DailyCalendarViewModel(private val app: Application) : AndroidViewModel(ap
     }
 }
 
-@BindingAdapter("calendar:fillRows")
+@BindingAdapter("fillRows")
 fun setRows(view: View, rows: Int) {
     val parent = view.parent as? ViewGroup
 

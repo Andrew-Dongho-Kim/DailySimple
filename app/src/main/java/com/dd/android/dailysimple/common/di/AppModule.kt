@@ -1,43 +1,56 @@
 package com.dd.android.dailysimple.common.di
 
-import android.app.Application
 import android.content.Context
 import android.os.Build
 import com.dd.android.dailysimple.SettingManager
 import com.dd.android.dailysimple.db.AppDatabase
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.*
-import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * In cases where you need Hilt to provide different implementation of the same type
+ * as dependencies, you must provide Hilt with multiple bindings.
+ * You can define multiple bindings for the same type with qualifiers.
+ *
+ * A qualifier is an annotation that you use to identify a specific binding for a type
+ * when that type has multiple bindings defined.
+ *
+ * <code>
+ * @Qualifier
+ * @Retention(AnnotationRetention.BINARY)
+ * annotation class AuthInterceptorOkHttpClient
+ *
+ * @Qualifier
+ * @Retention(AnnotationRetention.BINARY)
+ * annotation class OtherInterceptorOkHttpClient
+ *
+ * </code>
+ */
 @Module
-class AppModule(private val app: Application) {
+@InstallIn(ApplicationComponent::class)
+class AppModule {
 
     @Singleton
     @Provides
-    fun provideAppContext(): Context {
-        return app
-    }
+    fun provideAppDatabase(@ApplicationContext context: Context) = AppDatabase.getInstance(context)
 
     @Singleton
-    @Provides
-    @Inject
-    fun provideAppDatabase(context: Context) = AppDatabase.getInstance(context)
-
     @Provides
     @Suppress("deprecation")
-    fun provideLocale(): Locale {
+    fun provideLocale(@ApplicationContext context: Context): Locale {
         return if (Build.VERSION_CODES.N <= Build.VERSION.SDK_INT) {
-            app.resources.configuration.locales[0]
+            context.resources.configuration.locales[0]
         } else {
-            app.resources.configuration.locale
+            context.resources.configuration.locale
         }
     }
 
     @Singleton
     @Provides
-    @Inject
-    fun provideSettingManager(context: Context) = SettingManager(context)
-
+    fun provideSettingManager(@ApplicationContext context: Context) = SettingManager(context)
 }
