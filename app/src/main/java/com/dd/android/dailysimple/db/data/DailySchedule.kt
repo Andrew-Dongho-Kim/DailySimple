@@ -36,16 +36,17 @@ data class DailySchedule(
     val endTime: String = hourMinuteFormat.format(end)
 
     companion object {
-        fun create(context: Context) = DailySchedule(
+        fun create(context: Context? = null) = DailySchedule(
             id = NO_ID,
             title = "",
             memo = "",
             start = msDateFrom(hours = DEFAULT_START),
             end = msDateFrom(hours = DEFAULT_END),
             isAllDay = true,
-            color = getColor(context, R.color.appPrimary)
+            color = context?.let { getColor(it, R.color.appPrimary) } ?: 0
         )
 
+        val EMPTY = create()
         private const val NO_ID = 0L
 
         private const val DEFAULT_START = 1

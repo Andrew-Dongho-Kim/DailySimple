@@ -10,7 +10,7 @@ import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2
 
-class GroupScheduleAdapter : RecyclerView.Adapter<ViewHolder2<ViewDataBinding, ItemModel>>() {
+class PlanAdapter : RecyclerView.Adapter<ViewHolder2<ViewDataBinding, ItemModel>>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

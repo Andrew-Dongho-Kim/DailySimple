@@ -7,9 +7,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.IBinder
 import android.provider.Settings
+import android.view.View
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import androidx.lifecycle.*
+import com.dd.android.dailysimple.HomeActivity
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
@@ -150,8 +152,15 @@ private class TaskItemRemoteViewsFactory(
 
 
     fun createScheduleItem(scheduleItem: DailySchedule): RemoteViews {
-        return createRemoteViews(R.layout.widget_todo_item).apply {
+        return createRemoteViews(R.layout.widget_schedule_item).apply {
             setTextViewText(R.id.title, scheduleItem.title)
+            setTextViewText(R.id.begin, scheduleItem.beginTime)
+            setTextViewText(R.id.end, scheduleItem.endTime)
+            setViewVisibility(R.id.end, if (scheduleItem.isAllDay) View.INVISIBLE else View.VISIBLE)
+            setViewBackground(R.id.color, scheduleItem.color)
+            setOnClickFillInIntent(R.id.root_view, Intent(app, HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            })
         }
     }
 

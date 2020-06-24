@@ -55,5 +55,6 @@ fun DailySchedule.toEditContent(): EditContent =
         title,
         formattedStart,
         formattedEnd,
+        color = color,
         memo = memo
     )

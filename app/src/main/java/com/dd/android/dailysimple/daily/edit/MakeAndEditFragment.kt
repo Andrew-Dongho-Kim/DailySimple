@@ -18,6 +18,7 @@ import com.dd.android.dailysimple.common.widget.TimePickerDialogFragment
 import com.dd.android.dailysimple.databinding.FragmentMakeAndEditBinding
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
+import java.lang.IllegalArgumentException
 
 private const val ARG_TYPE = "type"
 private const val ARG_ID = "id"
@@ -36,13 +37,10 @@ class MakeAndEditFragment : BaseFragment<FragmentMakeAndEditBinding>() {
 
     private fun setUpEditor() {
         editor = when (requireArguments().get(ARG_TYPE) as Int) {
+            EditType.SCHEDULE -> EditorSchedule(requireContext(), bind, viewLifecycleOwner, this)
             EditType.TODO -> EditorTodo(requireContext(), bind, viewLifecycleOwner, this)
-            else -> EditorHabit(
-                requireContext(),
-                bind,
-                viewLifecycleOwner,
-                this
-            )
+            EditType.HABIT -> EditorHabit(requireContext(), bind, viewLifecycleOwner, this)
+            else -> throw IllegalArgumentException("Illegal EditType")
         }
     }
 

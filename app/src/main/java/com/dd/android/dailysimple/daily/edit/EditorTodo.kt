@@ -33,11 +33,11 @@ class EditorTodo(
     viewModelStoreOwner: ViewModelStoreOwner
 ) : Editable {
 
-    private var id = 0L
-    private val alarmObservable = AlarmObservable(Alarm())
     private val todoVm = ViewModelProvider(viewModelStoreOwner).get(TodoViewModel::class.java)
-
     private lateinit var model: DailyTodo
+    private var id = 0L
+
+    private val alarmObservable = AlarmObservable(Alarm())
 
     private val subTaskAdapter by lazy {
         TodoSubTaskAdapter(lifecycleOwner).apply { setHasStableIds(true) }

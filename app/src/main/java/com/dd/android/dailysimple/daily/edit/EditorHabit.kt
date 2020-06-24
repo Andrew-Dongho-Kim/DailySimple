@@ -26,11 +26,10 @@ class EditorHabit(
     viewModelStoreOwner: ViewModelStoreOwner
 ) : Editable {
 
+    private val habitVm = ViewModelProvider(viewModelStoreOwner).get(HabitViewModel::class.java)
     private lateinit var model: DailyHabit
 
     private val alarmObservable = AlarmObservable(Alarm())
-
-    private val habitVm = ViewModelProvider(viewModelStoreOwner).get(HabitViewModel::class.java)
 
     override var alarmTime: Long
         get() = alarmObservable.alarmTime

@@ -43,6 +43,8 @@ class ScheduleViewModel(private val app: Application) : AndroidViewModel(app) {
         }
     }
 
+    fun getScheduleById(id: Long) = calendarProvider.getEventById(id)
+
     fun insertSchedule(vararg schedule: DailySchedule) {
 
     }

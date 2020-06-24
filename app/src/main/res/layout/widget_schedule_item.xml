@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:foreground="@drawable/ripple_list_item"
+    android:paddingStart="@dimen/basic_view_margin_horizontal_tiny_small"
+    android:paddingTop="@dimen/basic_view_margin_vertical_small"
+    android:paddingEnd="@dimen/basic_view_margin_horizontal"
+    android:paddingBottom="@dimen/basic_view_margin_vertical_small">
+
+    <TextView
+        android:id="@+id/begin"
+        style="@style/BasicTextDpTinySmall"
+        android:layout_width="@dimen/schedule_item_title_width"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="@dimen/basic_view_margin_horizontal_small"
+        tools:text="05:00 PM" />
+
+    <TextView
+        android:id="@+id/end"
+        style="@style/BasicTextDpTinySmall"
+        android:layout_width="@dimen/schedule_item_title_width"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/begin"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/basic_view_margin_horizontal_small"
+        android:textColor="@color/basic_text2_color"
+        tools:text="06:00 PM" />
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/BasicTextDpNormal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/basic_view_margin_horizontal_small"
+        android:layout_marginEnd="@dimen/basic_view_margin_horizontal_small"
+        android:layout_toEndOf="@id/end"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        tools:text="I am event" />
+
+    <ImageView
+        android:id="@+id/color"
+        android:layout_width="@dimen/schedule_item_color_width"
+        android:layout_height="@dimen/schedule_item_color_height"
+        android:layout_alignStart="@id/title"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/schedule_item_color_margin_vertical"
+        android:contentDescription="@null" />
+
+</RelativeLayout>

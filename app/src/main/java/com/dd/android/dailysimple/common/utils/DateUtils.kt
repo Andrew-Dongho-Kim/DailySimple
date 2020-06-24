@@ -28,7 +28,6 @@ object DateUtils {
     }
 
     fun year(time: Long) = calendar(time).get(Calendar.YEAR)
-
     fun month(time: Long) = calendar(time).get(Calendar.MONTH)
 
 

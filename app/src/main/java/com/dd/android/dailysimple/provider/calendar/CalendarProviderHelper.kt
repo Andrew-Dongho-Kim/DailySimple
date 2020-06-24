@@ -1,5 +1,6 @@
 package com.dd.android.dailysimple.provider.calendar
 
+import android.content.ContentUris
 import android.content.Context
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -46,6 +47,23 @@ class CalendarProviderHelper(
 ) {
     private val cancelSignal by lazy { CancellationSignal() }
 
+    fun getEventById(eventId: Long): LiveData<DailySchedule> {
+        return liveData {
+            if (ContextCompat.checkSelfPermission(
+                    context,
+                    android.Manifest.permission.READ_CALENDAR
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                emit(DailySchedule.EMPTY)
+            } else {
+                emit(queryEvent(eventId))
+                emitSource(ContentProviderLiveData(context, Instances.CONTENT_URI) {
+                    queryEvent(eventId)
+                })
+            }
+        }
+    }
+
     fun getEvents(beginTime: Long, endTime: Long): LiveData<List<DailySchedule>> {
         return liveData {
             if (ContextCompat.checkSelfPermission(
@@ -61,6 +79,10 @@ class CalendarProviderHelper(
                 })
             }
         }
+    }
+
+    fun insertEvents(schedule: DailySchedule) {
+        
     }
 
     private fun queryEvents(beginTime: Long, endTime: Long): List<DailySchedule> {
@@ -88,22 +110,22 @@ class CalendarProviderHelper(
         return list
     }
 
-    private fun createFromEvents(cursor: Cursor) =
-        DailySchedule(
-            id = cursor.getLong(Events._ID),
-            title = cursor.getString(Events.TITLE),
-            start = cursor.getLong(Events.DTSTART),
-            end = cursor.getLong(Events.DTEND),
-            isAllDay = cursor.getInt(Events.ALL_DAY) == 1,
-            memo = cursor.getString(Events.DESCRIPTION),
-            color = cursor.getInt(Events.DISPLAY_COLOR)
-        ).also {
-            logD {
-                "Schedule title:${it.title}, start:${Date(it.start)}, end:${Date(
-                    it.end
-                )}"
+    private fun queryEvent(eventId: Long): DailySchedule {
+        ContentResolverCompat.query(
+            context.contentResolver,
+            ContentUris.withAppendedId(Events.CONTENT_URI, eventId),
+            EVENT_PROJECTION,
+            null,
+            null,
+            null,
+            cancelSignal
+        ).use {
+            if (it.moveToFirst()) {
+                return createFromEvents(it)
             }
         }
+        return DailySchedule.EMPTY
+    }
 
     private fun queryInstances(beginTime: Long, endTime: Long): List<DailySchedule> {
         val begin = beginTime + 1
@@ -156,6 +178,23 @@ class CalendarProviderHelper(
             )}"
         }
     }
+
+    private fun createFromEvents(cursor: Cursor) =
+        DailySchedule(
+            id = cursor.getLong(Events._ID),
+            title = cursor.getString(Events.TITLE),
+            start = cursor.getLong(Events.DTSTART),
+            end = cursor.getLong(Events.DTEND),
+            isAllDay = cursor.getInt(Events.ALL_DAY) == 1,
+            memo = cursor.getString(Events.DESCRIPTION),
+            color = cursor.getInt(Events.DISPLAY_COLOR)
+        ).also {
+            logD {
+                "Schedule title:${it.title}, start:${Date(it.start)}, end:${Date(
+                    it.end
+                )}"
+            }
+        }
 
     fun getCalendar(accountName: String, accountType: String): Cursor =
         ContentResolverCompat.query(

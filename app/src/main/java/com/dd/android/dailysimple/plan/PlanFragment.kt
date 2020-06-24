@@ -18,7 +18,7 @@ class PlanFragment : BaseFragment<FragmentDailyBinding>() {
         with(bind.recycler) {
             layoutManager = LinearLayoutManager(activity)
             adapter =
-                GroupScheduleAdapter()
+                PlanAdapter()
                     .apply {
                     }
 

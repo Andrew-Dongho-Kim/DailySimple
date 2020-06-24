@@ -2,6 +2,7 @@ package com.dd.android.dailysimple.daily.edit
 
 import android.content.Context
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.dd.android.dailysimple.common.Logger
@@ -22,12 +23,11 @@ class EditorSchedule(
     viewModelStoreOwner: ViewModelStoreOwner
 ) : Editable {
 
+    private val scheduleVm =
+        ViewModelProvider(viewModelStoreOwner).get(ScheduleViewModel::class.java)
     private lateinit var model: DailySchedule
 
     private val alarmObservable = AlarmObservable(Alarm())
-
-    private val scheduleVm =
-        ViewModelProvider(viewModelStoreOwner).get(ScheduleViewModel::class.java)
 
     override var alarmTime: Long
         get() = alarmObservable.alarmTime
@@ -36,14 +36,16 @@ class EditorSchedule(
         }
 
     override fun bind(id: Long) {
-//        scheduleVm.getSchedule(id).observe(viewLifecycleOwner, Observer { model ->
-//            this.model = (model ?: DailySchedule.create(context)).apply {
+        scheduleVm.getScheduleById(id).observe(viewLifecycleOwner, Observer { model ->
+            this.model = (model ?: DailySchedule.create(context)).apply {
 //                alarm = ensureAlarm(id, alarm)
-//            }
-//            bind.content = this.model.toEditContent()
-//            logD { "habitId : $id, model:${this.model}" }
-//        })
+            }
+            bind.content = this.model.toEditContent()
+            logD { "habitId : $id, model:${this.model}" }
+        })
         bind.alarmModel = alarmObservable
+        bind.featuers =
+            EditFeatures(supportRepeat = true, supportSubTasks = false, supportAttachments = false)
     }
 
     private fun ensureAlarm(habitId: Long, alarm: Alarm?) = alarm?.also { it ->
