@@ -40,7 +40,9 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
         emit(DateUtils.msDateFrom())
     } as MutableLiveData<Long>
 
-    val allHabits = Transformations.switchMap(selectedDate) { time ->
+    private val distinctSelectedDate = Transformations.distinctUntilChanged(selectedDate)
+
+    val allHabits = Transformations.switchMap(distinctSelectedDate) { time ->
         Transformations.map(repository.getHabits(time)) { habits ->
             if (habits.isEmpty()) {
                 listOf(

@@ -42,6 +42,12 @@ class DailyItemModels(viewModelStoreOwner: ViewModelStoreOwner) : ViewModel() {
         }
     }
 
+    fun postDate(date: Long) {
+        scheduleVm.selectedDate.postValue(date)
+        todoVm.selectedDate.postValue(date)
+        habitsVm.selectedDate.postValue(date)
+    }
+
     private fun ensureVm(): Boolean {
         models.forEach { liveData ->
             if (liveData.value == null) return false

@@ -36,8 +36,7 @@ import com.dd.android.dailysimple.db.data.DailyHabitWithCheckStatus
 import com.dd.android.dailysimple.db.data.DailySchedule
 import com.dd.android.dailysimple.db.data.DailyTodo
 import com.dd.android.dailysimple.db.data.DoneState.Companion.isDone
-import com.dd.android.dailysimple.widget.WidgetConst.ACTION_UPDATE_SELECTED_DATE
-import com.dd.android.dailysimple.widget.WidgetConst.DATA_SELECTED_DATE
+import com.dd.android.dailysimple.setting.SettingManager
 import kotlinx.coroutines.*
 
 
@@ -55,17 +54,7 @@ class TaskListRemoteViewsService : RemoteViewsService(), LifecycleOwner {
 
     override fun onBind(intent: Intent): IBinder? {
         lifecycleDispatcher.onServicePreSuperOnBind()
-        when (intent.action) {
-            ACTION_UPDATE_SELECTED_DATE -> handleSelectedDateChanged(intent)
-        }
         return super.onBind(intent)
-    }
-
-
-    private fun handleSelectedDateChanged(intent: Intent) {
-
-        val selectedTime = intent.getLongExtra(DATA_SELECTED_DATE, msDateFrom())
-
     }
 
     @Suppress("deprecation")
@@ -92,6 +81,8 @@ private class TaskItemRemoteViewsFactory(
 ) : RemoteViewsService.RemoteViewsFactory, ViewModelStoreOwner,
     HasDefaultViewModelProviderFactory, Observer<List<ItemModel>> {
 
+    private val settingManager by lazy { SettingManager(app) }
+
     private val viewModelStore = ViewModelStore()
     private val mainScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
@@ -112,7 +103,6 @@ private class TaskItemRemoteViewsFactory(
 
     override fun getItemId(position: Int) =
         items[position].run { (IdMap[javaClass] ?: error("unknown : $this")).idBase + id }
-
 
     override fun getViewAt(position: Int): RemoteViews {
         return when (getViewType(position)) {
@@ -182,6 +172,7 @@ private class TaskItemRemoteViewsFactory(
     fun createHabitItem(habitItem: DailyHabitWithCheckStatus): RemoteViews {
         return RemoteViews(app.packageName, R.layout.widget_todo_item).apply {
             setTextViewText(R.id.title, habitItem.habit.title)
+            setViewBackground(R.id.color, habitItem.habit.color)
             setImageViewResource(
                 R.id.check,
                 if (habitItem.done.value == true) {
@@ -198,7 +189,7 @@ private class TaskItemRemoteViewsFactory(
     }
 
     override fun getViewTypeCount(): Int {
-        return 4
+        return 5
     }
 
     override fun onDestroy() {
@@ -225,7 +216,12 @@ private class TaskItemRemoteViewsFactory(
 
     override fun onDataSetChanged() {
         logD { "onDataSetChanged()" }
-
+        itemModel.postDate(
+            settingManager.getLong(
+                WidgetConst.SETTING_KEY_WIDGET_SELECTED_DATE,
+                msDateFrom()
+            )
+        )
     }
 
     override fun onChanged(list: List<ItemModel>) {

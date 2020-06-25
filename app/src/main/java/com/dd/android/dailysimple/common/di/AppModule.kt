@@ -2,7 +2,7 @@ package com.dd.android.dailysimple.common.di
 
 import android.content.Context
 import android.os.Build
-import com.dd.android.dailysimple.SettingManager
+import com.dd.android.dailysimple.setting.SettingManager
 import com.dd.android.dailysimple.db.AppDatabase
 import dagger.Module
 import dagger.Provides
@@ -52,5 +52,6 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideSettingManager(@ApplicationContext context: Context) = SettingManager(context)
+    fun provideSettingManager(@ApplicationContext context: Context) =
+        SettingManager(context)
 }

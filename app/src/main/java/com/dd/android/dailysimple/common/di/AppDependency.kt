@@ -5,7 +5,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.dd.android.dailysimple.DailySimpleApplication
-import com.dd.android.dailysimple.SettingManager
+import com.dd.android.dailysimple.setting.SettingManager
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.db.AppDatabase
 import dagger.hilt.android.qualifiers.ApplicationContext

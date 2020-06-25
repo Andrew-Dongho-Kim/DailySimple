@@ -9,13 +9,15 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.databinding.DataBindingUtil
 import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.SettingManager
 import com.dd.android.dailysimple.common.BaseActivity
 import com.dd.android.dailysimple.common.Logger
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.databinding.ActivityAppWidigetConfigBinding
+import com.dd.android.dailysimple.setting.SettingManager
 import com.dd.android.dailysimple.widget.WidgetConst.ALPHA_MAX
 import com.dd.android.dailysimple.widget.WidgetConst.DEFAULT_WIDGET_ALPHA
 import com.dd.android.dailysimple.widget.WidgetConst.SETTING_KEY_WIDGET_ALPHA
+import com.dd.android.dailysimple.widget.WidgetConst.SETTING_KEY_WIDGET_SELECTED_DATE
 import com.dd.android.dailysimple.widget.remoteviews.TodayTaskRemoteViews
 
 /**
@@ -41,7 +43,9 @@ private inline fun logE(crossinline message: () -> String) = Logger.e(TAG, messa
 class WidgetConfigActivity : BaseActivity() {
     private lateinit var bind: ActivityAppWidigetConfigBinding
 
-    private val settingManager by lazy { SettingManager(this) }
+    private val settingManager by lazy {
+        SettingManager(this)
+    }
     private val appWidgetManager by lazy { AppWidgetManager.getInstance(this) }
     private var appWidgetId = INVALID_APPWIDGET_ID
 
@@ -110,12 +114,13 @@ class WidgetConfigActivity : BaseActivity() {
 
     private fun updateSetting() {
         settingManager.putInt(SETTING_KEY_WIDGET_ALPHA, alpha)
+        settingManager.putLong(SETTING_KEY_WIDGET_SELECTED_DATE, msDateFrom())
     }
 
     private fun updateWidget() {
         TodayTaskRemoteViews(this)
-            .setUpBackground()
-            .setUpTitle()
+            .setUpBackground(alpha)
+            .setUpTitle(msDateFrom())
             .setUpNextDateButton()
             .setUpPrevDateButton()
             .setUpSettingAction()

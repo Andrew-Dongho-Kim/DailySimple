@@ -50,15 +50,18 @@ class TodoViewModel(private val app: Application) : AndroidViewModel(app) {
         emit(msDateFrom())
     } as MutableLiveData<Long>
 
-    private val currTodo = Transformations.switchMap(selectedDate) { time ->
-        repository.getTodoInDay(time)
-    }
+    private val distinctSelectedDate = Transformations.distinctUntilChanged(selectedDate)
+
+    private val currTodo =
+        Transformations.switchMap(distinctSelectedDate) { time ->
+            repository.getTodoInDay(time)
+        }
 
     private val isOverdueExpanded = liveData {
         emit(false)
     } as MutableLiveData<Boolean>
 
-    private val overdueTodo = Transformations.switchMap(selectedDate) {
+    private val overdueTodo = Transformations.switchMap(distinctSelectedDate) {
         repository.overdueTodo()
     }
 
@@ -83,7 +86,7 @@ class TodoViewModel(private val app: Application) : AndroidViewModel(app) {
         emit(false)
     } as MutableLiveData<Boolean>
 
-    private val upcomingTodo = Transformations.switchMap(selectedDate) {
+    private val upcomingTodo = Transformations.switchMap(distinctSelectedDate) {
         repository.upcomingTodo()
     }
 
@@ -101,7 +104,7 @@ class TodoViewModel(private val app: Application) : AndroidViewModel(app) {
         it.listLiveData
     }
 
-    val wholeTodo = Transformations.switchMap(selectedDate) { time ->
+    val wholeTodo = Transformations.switchMap(distinctSelectedDate) { time ->
         Transformations.map(
             if (time == msDateFrom()) {
                 DailyMergeItem(

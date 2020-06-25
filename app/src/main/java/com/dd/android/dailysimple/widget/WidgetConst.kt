@@ -2,11 +2,14 @@ package com.dd.android.dailysimple.widget
 
 object WidgetConst {
 
-    const val SETTING_KEY_WIDGET_ALPHA = "widget_alpha"
-    const val SETTING_KEY_SELECTED_DATE = "widget_selected_date"
+    const val TAG = "Widget"
 
-    const val ACTION_UPDATE_SELECTED_DATE = "com.dd.android.dailysimple.ACTION_UPDATE_SELECTED_DATE"
-    const val DATA_SELECTED_DATE = "selected_date"
+    const val SETTING_KEY_WIDGET_ALPHA = "widget_alpha"
+    const val SETTING_KEY_WIDGET_SELECTED_DATE = "widget_selected_date"
+
+    private const val PREFIX_ACTION = "com.dd.android.dailysimple"
+    const val ACTION_TO_NEXT_DATE = "${PREFIX_ACTION}.ACTION_TO_NEXT_DATE"
+    const val ACTION_TO_PREV_DATE = "${PREFIX_ACTION}.ACTION_TO_PREV_DATE"
 
     const val ALPHA_MAX = 255f
     const val DEFAULT_WIDGET_ALPHA = 200

@@ -36,10 +36,16 @@
             </intent-filter>
         </activity>
 
+        <provider
+            android:name=".setting.SettingProvider"
+            android:authorities="com.dd.android.dailysimple.setting"
+            android:exported="false" />
+
         <receiver android:name=".widget.WidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.dd.android.dailysimple.ACTION_UPDATE_SELECTED_DATE" />
+                <action android:name="com.dd.android.dailysimple.ACTION_TO_NEXT_DATE" />
+                <action android:name="com.dd.android.dailysimple.ACTION_TO_PREV_DATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
