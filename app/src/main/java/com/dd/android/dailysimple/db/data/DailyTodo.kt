@@ -14,12 +14,14 @@ import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.getColor
 import com.dd.android.dailysimple.common.di.getString
 import com.dd.android.dailysimple.common.di.systemLocale
+import com.dd.android.dailysimple.common.utils.DateUtils
 import com.dd.android.dailysimple.common.utils.DateUtils.MS_DAY
 import com.dd.android.dailysimple.common.utils.DateUtils.MS_HOUR
 import com.dd.android.dailysimple.common.utils.DateUtils.MS_MINUTE
 import com.dd.android.dailysimple.common.utils.DateUtils.MS_SECOND
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.utils.DateUtils.msFrom
+import com.dd.android.dailysimple.common.utils.DateUtils.toMD
 import com.dd.android.dailysimple.common.utils.DateUtils.toYMD
 import com.dd.android.dailysimple.common.utils.htmlTextColor
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
@@ -133,7 +135,7 @@ data class DailyTodo(
         }
 
     companion object {
-        fun create(context:Context) = DailyTodo(
+        fun create(context: Context) = DailyTodo(
             id = NO_ID,
             title = "",
             memo = "",
@@ -164,7 +166,10 @@ data class TodoSubTask(
     var todoId: Long,
     var title: String,
     var done: Long = ONGOING
-) : ItemModel
+) : ItemModel {
+
+    val doneMD get() = toMD(done, systemLocale())
+}
 
 
 @Entity(tableName = "todo_attachment")

@@ -30,10 +30,9 @@ class ScheduleViewModel(private val app: Application) : AndroidViewModel(app) {
 
     private val distinctSelectedDate = Transformations.distinctUntilChanged(selectedDate)
 
-    val header =
-        liveData {
-            emit(DailySimpleHeaderItem(SIMPLE_HEADER_ID_SCHEDULE, app.getString(R.string.schedule)))
-        }
+    val header = liveData {
+        emit(DailySimpleHeaderItem(SIMPLE_HEADER_ID_SCHEDULE, app.getString(R.string.schedule)))
+    }
 
     val schedule = Transformations.switchMap(distinctSelectedDate) { time ->
         Transformations.map(calendarProvider.getEvents(time, msFrom(time, dates = 1))) { events ->

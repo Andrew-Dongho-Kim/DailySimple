@@ -5,7 +5,8 @@ import android.view.View
 import android.view.inputmethod.EditorInfo.IME_ACTION_PREVIOUS
 import com.dd.android.dailysimple.common.utils.DateUtils.msFrom
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
-import com.dd.android.dailysimple.db.data.DoneState
+import com.dd.android.dailysimple.db.data.DoneState.Companion.ONGOING
+import com.dd.android.dailysimple.db.data.DoneState.Companion.isDone
 import com.dd.android.dailysimple.db.data.TodoSubTask
 
 data class EditableTodoSubTask(
@@ -18,7 +19,11 @@ data class EditableTodoSubTask(
     override val id = task.id
 
     fun toggleDone(checked: Boolean) {
-        task.done = if (checked) msFrom() else DoneState.ONGOING
+        if (checked) {
+            if (!isDone(task.done)) task.done = msFrom()
+        } else {
+            task.done = ONGOING
+        }
         edited = true
     }
 

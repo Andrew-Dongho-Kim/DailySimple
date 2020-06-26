@@ -1,6 +1,7 @@
 package com.dd.android.dailysimple.daily.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.appDb
@@ -30,14 +31,11 @@ class TodoViewModel(private val app: Application) : AndroidViewModel(app) {
     private val viewModelThreadScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     private val repository by lazy {
-        val db = appDb()
-        DailyTodoRepository(db.dailyTodoDao())
+        DailyTodoRepository(appDb().dailyTodoDao())
     }
 
     val header = liveData {
-        emit(
-            DailySimpleHeaderItem(SIMPLE_HEADER_ID_TODO, app.getString(R.string.todo))
-        )
+        emit(DailySimpleHeaderItem(SIMPLE_HEADER_ID_TODO, app.getString(R.string.todo)))
     }
 
     fun getTodo(todoId: Long) = repository.getTodoById(todoId)
@@ -52,10 +50,9 @@ class TodoViewModel(private val app: Application) : AndroidViewModel(app) {
 
     private val distinctSelectedDate = Transformations.distinctUntilChanged(selectedDate)
 
-    private val currTodo =
-        Transformations.switchMap(distinctSelectedDate) { time ->
-            repository.getTodoInDay(time)
-        }
+    private val currTodo = Transformations.switchMap(distinctSelectedDate) { time ->
+        repository.getTodoInDay(time)
+    }
 
     private val isOverdueExpanded = liveData {
         emit(false)
@@ -105,6 +102,7 @@ class TodoViewModel(private val app: Application) : AndroidViewModel(app) {
     }
 
     val wholeTodo = Transformations.switchMap(distinctSelectedDate) { time ->
+        Log.d("TEST-DH", "WholeTodo selected date : $time")
         Transformations.map(
             if (time == msDateFrom()) {
                 DailyMergeItem(

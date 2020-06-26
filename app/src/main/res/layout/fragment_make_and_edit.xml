@@ -50,6 +50,7 @@
                     android:id="@+id/collapsible_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|top"
                     android:background="@drawable/make_and_edit_title_background"
                     android:minHeight="@dimen/make_and_edit_habit_title_height_min"
                     android:paddingStart="@dimen/basic_view_margin_horizontal_tiny_big"
@@ -183,8 +184,10 @@
             </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.core.widget.NestedScrollView
+                android:id="@+id/scrollable_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal|top"
                 android:paddingTop="@dimen/basic_view_margin_vertical"
                 android:paddingBottom="@dimen/basic_view_margin_vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">

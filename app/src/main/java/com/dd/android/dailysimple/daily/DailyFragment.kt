@@ -21,6 +21,7 @@ import com.dd.android.dailysimple.common.BaseFragment
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.OnDateChangedListener
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
+import com.dd.android.dailysimple.common.widget.adjustBigScreenWidth
 import com.dd.android.dailysimple.daily.simplecalendar.SelectedDateInfo
 import com.dd.android.dailysimple.daily.simplecalendar.SimpleCalendarController
 import com.dd.android.dailysimple.daily.simplecalendar.SimpleCalendarViewModel
@@ -142,6 +143,7 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
 //                ) { pos -> adapter.getItemViewType(pos) < 0 }
 //            )
             setUpCache()
+            adjustBigScreenWidth()
         }
 
         DailyItemModels(viewModelStoreOwner).data.observe(

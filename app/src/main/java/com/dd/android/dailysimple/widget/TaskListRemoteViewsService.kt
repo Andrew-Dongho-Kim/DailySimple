@@ -26,6 +26,7 @@ import com.dd.android.dailysimple.daily.DailyViewType.Companion.SCHEDULE_ITEM
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.SIMPLE_HEADER
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.TODO_ITEM
 import com.dd.android.dailysimple.daily.IdMap
+import com.dd.android.dailysimple.daily.UNKNOWN_VIEW_TYPE
 import com.dd.android.dailysimple.daily.viewholders.DailyAuthorityItem
 import com.dd.android.dailysimple.daily.viewholders.DailyEmptyItem
 import com.dd.android.dailysimple.daily.viewholders.DailySimpleHeaderItem
@@ -40,7 +41,7 @@ import com.dd.android.dailysimple.setting.SettingManager
 import kotlinx.coroutines.*
 
 
-private const val TAG = "TodoListRemoteViews"
+private const val TAG = "${WidgetConst.TAG}TaskListService"
 private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
 
 class TaskListRemoteViewsService : RemoteViewsService(), LifecycleOwner {
@@ -239,7 +240,11 @@ private class TaskItemRemoteViewsFactory(
         logD { "ItemModel was changed:${list.size}" }
     }
 
-    fun getViewType(position: Int) =
-        items[position].run { (IdMap[javaClass] ?: error("unknown : $this")).viewType }
-
+    fun getViewType(position: Int): Int {
+        return if (items.size <= position) {
+            UNKNOWN_VIEW_TYPE
+        } else {
+            items[position].run { (IdMap[javaClass] ?: error("unknown : $this")).viewType }
+        }
+    }
 }

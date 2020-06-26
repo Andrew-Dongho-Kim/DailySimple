@@ -4,6 +4,7 @@
     <color name="appPrimaryDark">#5a9bff</color>
     <color name="appAccent">#5a9bff</color>
 
+    <color name="appReverse">@color/appWhite</color>
     <color name="basic_common_background">#010101</color>
     <color name="basic_common_background_dark">#212121</color>
     <color name="basic_view_background">@color/appBlack</color>

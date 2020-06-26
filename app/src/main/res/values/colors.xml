@@ -5,6 +5,7 @@
     <color name="appPrimaryLight">#5a9bff</color>
     <color name="appAccent">#227aff</color>
 
+    <color name="appReverse">@color/appBlack</color>
     <color name="appWhite">#fafafa</color>
     <color name="appGray">#dfdfdf</color>
     <color name="appDarkGray">#9f9f9f</color>

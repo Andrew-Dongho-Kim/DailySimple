@@ -46,6 +46,8 @@
     <dimen name="basic_icon_size_tiny_big">32dp</dimen>
     <dimen name="basic_icon_size_small">18dp</dimen>
 
+    <dimen name="widget_icon_size">36dp</dimen>
+
     <!-- Daily Fragment -->
     <dimen name="daily_calendar_toolbar_down_movement">80dp</dimen>
     <dimen name="daily_calendar_toolbar_height_min">120dp</dimen>

@@ -46,6 +46,7 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.dd.android.dailysimple.ACTION_TO_NEXT_DATE" />
                 <action android:name="com.dd.android.dailysimple.ACTION_TO_PREV_DATE" />
+                <action android:name="com.dd.android.dailysimple.ACTION_TO_TODAY" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"

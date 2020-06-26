@@ -12,26 +12,13 @@ import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.CalendarConst
 import com.dd.android.dailysimple.common.widget.setImageViewImageAlpha
 import com.dd.android.dailysimple.widget.TaskListRemoteViewsService
-import com.dd.android.dailysimple.widget.WidgetConfigActivity
 import com.dd.android.dailysimple.widget.WidgetConst.ACTION_TO_NEXT_DATE
 import com.dd.android.dailysimple.widget.WidgetConst.ACTION_TO_PREV_DATE
+import com.dd.android.dailysimple.widget.WidgetConst.ACTION_TO_TODAY
 import java.util.*
 
 class TodayTaskRemoteViews(private val context: Context) :
     RemoteViews(context.packageName, R.layout.app_widget_today_task) {
-
-    fun setUpSettingAction(): TodayTaskRemoteViews {
-        val pendingIntent = PendingIntent.getActivity(
-            context,
-            0,
-            Intent(
-                context,
-                WidgetConfigActivity::class.java
-            ).apply { addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }, FLAG_UPDATE_CURRENT
-        )
-        setOnClickPendingIntent(R.id.add, pendingIntent)
-        return this
-    }
 
     fun setUpTitle(msTime: Long): TodayTaskRemoteViews {
         val calendar = Calendar.getInstance().apply {
@@ -57,6 +44,15 @@ class TodayTaskRemoteViews(private val context: Context) :
         return this
     }
 
+    fun setUpTodayButton(): TodayTaskRemoteViews {
+        setOnClickPendingIntent(
+            R.id.today,
+            PendingIntent.getBroadcast(context, 0, Intent(ACTION_TO_TODAY).apply {
+                `package` = context.packageName
+            }, FLAG_UPDATE_CURRENT)
+        )
+        return this
+    }
 
     fun setUpNextDateButton(): TodayTaskRemoteViews {
         setOnClickPendingIntent(

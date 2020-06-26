@@ -1,9 +1,6 @@
 package com.dd.android.dailysimple.daily
 
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.*
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
@@ -34,25 +31,38 @@ class DailyItemModels(viewModelStoreOwner: ViewModelStoreOwner) : ViewModel() {
         habitsVm.allHabits
     )
 
+    private var waitUpdates = mutableListOf<LiveData<*>>(*models)
+
     val data = MediatorLiveData<List<ItemModel>>().apply {
         models.forEach { liveData ->
             addSource(liveData) {
-                if (ensureVm()) value = createModel()
+                dumpWho(it)
+                if (needUpdates(liveData)) {
+                    value = createModel()
+                }
             }
         }
+    }
+
+    private fun dumpWho(obj: Any) {
+        val clazz = if (obj is List<*>) {
+            if (obj.size > 0) obj[0]?.javaClass?.simpleName else obj.javaClass.simpleName
+        } else {
+            obj.javaClass.simpleName
+        }
+        logD { "updated : $clazz" }
     }
 
     fun postDate(date: Long) {
         scheduleVm.selectedDate.postValue(date)
         todoVm.selectedDate.postValue(date)
         habitsVm.selectedDate.postValue(date)
+        waitUpdates = mutableListOf(scheduleVm.schedule, todoVm.wholeTodo, habitsVm.allHabits)
     }
 
-    private fun ensureVm(): Boolean {
-        models.forEach { liveData ->
-            if (liveData.value == null) return false
-        }
-        return true
+    private fun needUpdates(source: LiveData<*>): Boolean {
+        waitUpdates.remove(source)
+        return waitUpdates.size == 0
     }
 
     private fun createModel(): List<ItemModel> =

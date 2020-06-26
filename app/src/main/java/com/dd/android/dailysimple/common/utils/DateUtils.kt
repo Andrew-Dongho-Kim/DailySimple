@@ -141,10 +141,13 @@ object DateUtils {
         SimpleDateFormat("a hh : mm", locale).format(Date(date))
 
     fun toYMD(date: Long, locale: Locale): String =
-        SimpleDateFormat("yyyy. MM. dd", locale).format(Date(date))
+        SimpleDateFormat("yy. MM. dd", locale).format(Date(date))
+
+    fun toMD(date: Long, locale: Locale): String =
+        SimpleDateFormat("MM. dd", locale).format(Date(date))
 
     fun strYmdToLong(text: String, locale: Locale) =
-        SimpleDateFormat("yyyy. MM. dd", locale).parse(text)?.time ?: 0L
+        SimpleDateFormat("yy. MM. dd", locale).parse(text)?.time ?: 0L
 
     fun todayYMD(locale: Locale): String =
         toYMD(

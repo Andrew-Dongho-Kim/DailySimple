@@ -32,6 +32,7 @@
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal|top"
                 android:background="@color/basic_common_background"
                 android:clipToPadding="false"
                 android:paddingBottom="@dimen/basic_view_margin_vertical"

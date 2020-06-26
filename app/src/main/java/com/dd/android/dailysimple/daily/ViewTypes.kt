@@ -38,6 +38,8 @@ annotation class DailyViewType {
     }
 }
 
+val UNKNOWN_VIEW_TYPE = -10
+
 data class IdBase(val viewType: Int, val idBase: Long)
 
 val IdMap = mapOf(

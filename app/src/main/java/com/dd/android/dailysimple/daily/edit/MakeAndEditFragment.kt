@@ -15,10 +15,10 @@ import com.dd.android.dailysimple.common.utils.DateUtils.toTime
 import com.dd.android.dailysimple.common.utils.DateUtils.toYMD
 import com.dd.android.dailysimple.common.utils.setUnderlineText
 import com.dd.android.dailysimple.common.widget.TimePickerDialogFragment
+import com.dd.android.dailysimple.common.widget.adjustBigScreenWidth
 import com.dd.android.dailysimple.databinding.FragmentMakeAndEditBinding
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
-import java.lang.IllegalArgumentException
 
 private const val ARG_TYPE = "type"
 private const val ARG_ID = "id"
@@ -30,9 +30,15 @@ class MakeAndEditFragment : BaseFragment<FragmentMakeAndEditBinding>() {
     override val layout: Int = R.layout.fragment_make_and_edit
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setUpContent()
         setUpEditor()
         setUpBind()
         setStatusBarColor(R.color.basic_view_background)
+    }
+
+    private fun setUpContent() {
+        bind.collapsibleToolbar.adjustBigScreenWidth()
+        bind.scrollableContent.adjustBigScreenWidth()
     }
 
     private fun setUpEditor() {

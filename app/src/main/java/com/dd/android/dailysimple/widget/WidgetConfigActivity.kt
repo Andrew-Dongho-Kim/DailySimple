@@ -91,16 +91,12 @@ class WidgetConfigActivity : BaseActivity() {
     }
 
     private fun setUpAlphaSeekBar() {
-        alpha = settingManager.getInt(SETTING_KEY_WIDGET_ALPHA, DEFAULT_WIDGET_ALPHA)
-
-        previewWidgetBackground.imageAlpha = alpha
-        bind.alphaText.text =
-            getString(R.string.percent, (alpha / ALPHA_MAX * 100).toInt())
+        setAlpha(settingManager.getInt(SETTING_KEY_WIDGET_ALPHA, DEFAULT_WIDGET_ALPHA))
         bind.alphaSeekbar.progress = alpha
+
         bind.alphaSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                alpha = progress
-                previewWidgetBackground.imageAlpha = alpha
+                setAlpha(progress)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
@@ -110,6 +106,13 @@ class WidgetConfigActivity : BaseActivity() {
 
     private fun setUpTheme() {
 
+    }
+
+    private fun setAlpha(alpha: Int) {
+        this.alpha = alpha
+        previewWidgetBackground.imageAlpha = alpha
+        bind.alphaText.text =
+            getString(R.string.percent, (alpha / ALPHA_MAX * 100).toInt())
     }
 
     private fun updateSetting() {
@@ -123,7 +126,7 @@ class WidgetConfigActivity : BaseActivity() {
             .setUpTitle(msDateFrom())
             .setUpNextDateButton()
             .setUpPrevDateButton()
-            .setUpSettingAction()
+            .setUpTodayButton()
             .setUpListView(appWidgetId).also {
                 appWidgetManager.updateAppWidget(appWidgetId, it)
             }

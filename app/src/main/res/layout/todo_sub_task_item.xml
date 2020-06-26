@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="com.dd.android.dailysimple.daily.AppConst" />
 
         <import type="com.dd.android.dailysimple.db.data.DoneState" />
@@ -47,6 +49,18 @@
             app:layout_constraintStart_toEndOf="@id/check"
             app:layout_constraintTop_toTopOf="parent"
             app:onTextChanged="@{text-> itemModel.postTitle(text)}" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/done_date"
+            style="@style/BasicTextDpTinySmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{itemModel.task.doneMD}"
+            android:textColor="@color/appPrimary"
+            android:visibility="@{DoneState.isDone(itemModel.task.done) ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/sub_task_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
