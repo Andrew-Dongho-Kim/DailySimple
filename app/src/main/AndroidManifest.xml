@@ -23,8 +23,13 @@
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <nav-graph android:value="@navigation/navigation_deep_depth" />
+            <nav-graph android:value="@navigation/navigation_with_bottom_bar" />
         </activity>
 
         <activity

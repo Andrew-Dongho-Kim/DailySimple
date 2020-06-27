@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dd.android.dailysimple.HomeFragmentDirections
+import com.dd.android.dailysimple.HomeFragmentDirections.Companion.homeToDailyCalendar
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.BaseFragment
 import com.dd.android.dailysimple.common.Logger
@@ -36,8 +36,12 @@ import com.dd.android.dailysimple.plan.ScheduleCardItemDecoration
 import kotlin.reflect.KClass
 
 private const val TAG = "DailyMain"
-
 private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, message)
+
+/**
+ * @see com.dd.android.dailysimple.R.id.daily_fragment
+ */
+private const val ARG_DATE = "date"
 
 class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListener {
     /**
@@ -49,6 +53,7 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
     private lateinit var habitVm: HabitViewModel
     private lateinit var scheduleVm: ScheduleViewModel
     private lateinit var simpleCalendarVm: SimpleCalendarViewModel
+    private val itemModel by lazy { DailyItemModels(viewModelStoreOwner) }
 
     private lateinit var calendarController: SimpleCalendarController
     private var hasCalendarPermission = false
@@ -60,18 +65,21 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
         setUpCalendarPermission()
         setUpViewModel()
         setUpObserver()
-        setUpSimpleCalendar()
+
+        setUpCalendarHeader()
+        setUpBottomTaskCreator()
         setUpContent()
-        BottomTaskCreator(
-            requireContext(),
-            bind.fabLayout,
-            fabVm, habitVm, todoVm, scheduleVm,
-            viewLifecycleOwner,
-            navController
-        )
+        setUpArguments()
+
         setHasOptionsMenu(true)
     }
 
+    private fun <T : ViewModel> viewModel(kclass: KClass<T>) =
+        ViewModelProvider(viewModelStoreOwner).get(kclass.java)
+
+    /**
+     * Set up calendar permission to get schedule information for the user
+     */
     private fun setUpCalendarPermission() {
         registerForActivityResult(RequestPermission()) { granted ->
             if (granted) {
@@ -83,6 +91,13 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
             requireContext(),
             READ_CALENDAR
         ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun setUpArguments() {
+        arguments?.getLong(ARG_DATE, msDateFrom())?.also {
+            simpleCalendarVm.selectedDate.postValue(it)
+            logD { "setUpArguments date : $it" }
+        }
     }
 
     private fun setUpObserver() {
@@ -101,26 +116,29 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
         bind.fabVm = fabVm
     }
 
-    private fun <T : ViewModel> viewModel(kclass: KClass<T>) =
-        ViewModelProvider(viewModelStoreOwner).get(kclass.java)
-
-    private fun setUpSimpleCalendar() {
-        bind.customToolbar.ymText.setOnClickListener {
-            navController.navigate(
-                HomeFragmentDirections.homeToDailyCalendar()
-            )
+    private fun setUpCalendarHeader() {
+        with(bind.customToolbar) {
+            ymText.setOnClickListener { navController.navigate(homeToDailyCalendar()) }
+            collapsibleToolbar.outlineProvider = ViewOutlineProvider.BACKGROUND
+            collapsibleToolbar.clipToOutline = true
         }
-        bind.customToolbar.collapsibleToolbar.outlineProvider = ViewOutlineProvider.BACKGROUND
-        bind.customToolbar.collapsibleToolbar.clipToOutline = true
 
         calendarController =
             SimpleCalendarController(
                 bind.customToolbar.calendar, viewLifecycleOwner, viewModelStoreOwner
             ) {
-                scheduleVm.selectedDate.postValue(it)
-                habitVm.selectedDate.postValue(it)
-                todoVm.selectedDate.postValue(it)
+                itemModel.postDate(it)
             }
+    }
+
+    private fun setUpBottomTaskCreator() {
+        BottomTaskCreator(
+            requireContext(),
+            bind.fabLayout,
+            fabVm, habitVm, todoVm, scheduleVm,
+            viewLifecycleOwner,
+            navController
+        )
     }
 
     private fun setUpContent() {
@@ -128,6 +146,14 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
             .apply {
                 setHasStableIds(true)
             }
+
+        itemModel.data.observe(viewLifecycleOwner, Observer { list ->
+            with(adapter) {
+                items.clear()
+                items.addAll(list)
+                notifyDataSetChanged()
+            }
+        })
 
         with(bind.recycler) {
             layoutManager = LinearLayoutManager(activity)
@@ -146,15 +172,8 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
             adjustBigScreenWidth()
         }
 
-        DailyItemModels(viewModelStoreOwner).data.observe(
-            viewLifecycleOwner,
-            Observer { list ->
-                adapter.items.clear()
-                adapter.items.addAll(list)
-                adapter.notifyDataSetChanged()
-            })
 
-//        ItemTouchHelper(
+        //        ItemTouchHelper(
 //            DailyItemTouchAction(activity, adapter, navController)
 //        ).attachToRecyclerView(recycler)
     }

@@ -1,7 +1,6 @@
 package com.dd.android.dailysimple.daily.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.appDb
@@ -102,7 +101,6 @@ class TodoViewModel(private val app: Application) : AndroidViewModel(app) {
     }
 
     val wholeTodo = Transformations.switchMap(distinctSelectedDate) { time ->
-        Log.d("TEST-DH", "WholeTodo selected date : $time")
         Transformations.map(
             if (time == msDateFrom()) {
                 DailyMergeItem(

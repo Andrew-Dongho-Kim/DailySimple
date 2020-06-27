@@ -15,6 +15,12 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
+        <argument
+            android:name="date"
+            app:argType="long" />
+        <deepLink
+            android:id="@+id/deep_link_daily"
+            app:uri="dsimp://daily/{date}" />
     </fragment>
 
     <fragment
@@ -28,12 +34,17 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
+        <deepLink
+            android:id="@+id/deep_link_plan"
+            app:uri="dsimp://plan" />
     </fragment>
 
     <fragment
         android:id="@+id/setting_fragment"
         android:name="com.dd.android.dailysimple.SettingFragment">
-
+        <deepLink
+            android:id="@+id/deep_link_setting"
+            app:uri="dsimp://setting" />
     </fragment>
 
 </navigation>

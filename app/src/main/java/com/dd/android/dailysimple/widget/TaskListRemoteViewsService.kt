@@ -11,8 +11,8 @@ import android.view.View
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import androidx.lifecycle.*
-import com.dd.android.dailysimple.HomeActivity
 import com.dd.android.dailysimple.R
+import com.dd.android.dailysimple.common.AppDeepLink
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.widget.createRemoteViews
@@ -27,6 +27,7 @@ import com.dd.android.dailysimple.daily.DailyViewType.Companion.SIMPLE_HEADER
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.TODO_ITEM
 import com.dd.android.dailysimple.daily.IdMap
 import com.dd.android.dailysimple.daily.UNKNOWN_VIEW_TYPE
+import com.dd.android.dailysimple.daily.edit.EditType
 import com.dd.android.dailysimple.daily.viewholders.DailyAuthorityItem
 import com.dd.android.dailysimple.daily.viewholders.DailyEmptyItem
 import com.dd.android.dailysimple.daily.viewholders.DailySimpleHeaderItem
@@ -149,9 +150,10 @@ private class TaskItemRemoteViewsFactory(
             setTextViewText(R.id.end, scheduleItem.endTime)
             setViewVisibility(R.id.end, if (scheduleItem.isAllDay) View.INVISIBLE else View.VISIBLE)
             setViewBackground(R.id.color, scheduleItem.color)
-            setOnClickFillInIntent(R.id.root_view, Intent(app, HomeActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            })
+            setOnClickFillInIntent(
+                R.id.root_view,
+                AppDeepLink.intentToEdit(EditType.SCHEDULE, scheduleItem.id)
+            )
         }
     }
 
@@ -167,6 +169,10 @@ private class TaskItemRemoteViewsFactory(
                     R.drawable.unchecked_oval_stroke
                 }
             )
+            setOnClickFillInIntent(
+                R.id.root_view,
+                AppDeepLink.intentToEdit(EditType.TODO, todoItem.id)
+            )
         }
     }
 
@@ -181,6 +187,10 @@ private class TaskItemRemoteViewsFactory(
                 } else {
                     R.drawable.unchecked_oval_stroke
                 }
+            )
+            setOnClickFillInIntent(
+                R.id.root_view,
+                AppDeepLink.intentToEdit(EditType.SCHEDULE, habitItem.id)
             )
         }
     }

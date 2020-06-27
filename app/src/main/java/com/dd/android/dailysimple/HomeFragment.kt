@@ -16,9 +16,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setUpNavigation() {
-        val navHostFragment = childFragmentManager
-            .findFragmentByTag(getString(R.string.bottom_nav_host))
-                as NavHostFragment
+        val navHostFragment = childFragmentManager.findFragmentByTag(getString(R.string.bottom_nav_host)) as NavHostFragment
 
         NavigationUI.setupWithNavController(
             bind.bottomNavigationBar,

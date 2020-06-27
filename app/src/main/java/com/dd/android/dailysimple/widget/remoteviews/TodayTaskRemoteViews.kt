@@ -7,8 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.RemoteViews
-import com.dd.android.dailysimple.HomeActivity
 import com.dd.android.dailysimple.R
+import com.dd.android.dailysimple.common.AppDeepLink
 import com.dd.android.dailysimple.common.CalendarConst
 import com.dd.android.dailysimple.common.widget.setImageViewImageAlpha
 import com.dd.android.dailysimple.widget.TaskListRemoteViewsService
@@ -38,7 +38,7 @@ class TodayTaskRemoteViews(private val context: Context) :
             R.id.title, PendingIntent.getActivity(
                 context,
                 0,
-                Intent(context, HomeActivity::class.java), 0
+                AppDeepLink.intentToDaily(msTime), FLAG_UPDATE_CURRENT
             )
         )
         return this

@@ -76,6 +76,7 @@ class SimpleCalendarController(
         simpleCalendarVm.calendar.observe(lifecycleOwner, Observer {
             adapter.submitList(it)
             this.calendarPagedList = it
+
             lifecycleOwner.lifecycleScope.launch {
                 delay(LIST_PREPARE_DELAY)
                 logD { "Scroll to selected date !" }

@@ -50,11 +50,14 @@
             app:argType="long" />
     </fragment>
 
+    <!-- deep-link : adb shell am start -W -a android.intent.action.VIEW -d 'dsimp://daily_calendar' com.dd.android.dailysimple -->
     <fragment
         android:id="@+id/daily_calendar_fragment"
         android:name="com.dd.android.dailysimple.daily.calendar.DailyCalendarFragment"
         tools:layout="@layout/fragment_daily_calendar">
-
+        <deepLink
+            android:id="@+id/deep_link_calendar"
+            app:uri="dsimp://daily_calendar" />
     </fragment>
 
     <fragment
@@ -64,6 +67,9 @@
         <argument
             android:name="habitId"
             app:argType="long" />
+        <deepLink
+            android:id="@+id/deep_link_habit_detail"
+            app:uri="dsimp://habit_detail/{habitId}" />
     </fragment>
 
     <fragment
@@ -76,6 +82,9 @@
         <argument
             android:name="type"
             app:argType="integer" />
+        <deepLink
+            android:id="@+id/deeplink_make_and_edit"
+            app:uri="dsimp://make_and_edit/{type}/{id}" />
     </fragment>
 
 </navigation>

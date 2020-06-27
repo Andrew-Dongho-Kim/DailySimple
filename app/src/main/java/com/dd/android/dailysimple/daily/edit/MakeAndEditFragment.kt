@@ -20,6 +20,9 @@ import com.dd.android.dailysimple.databinding.FragmentMakeAndEditBinding
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 
+/**
+ * @see com.dd.android.dailysimple.R.id.make_and_edit_fragment
+ */
 private const val ARG_TYPE = "type"
 private const val ARG_ID = "id"
 
