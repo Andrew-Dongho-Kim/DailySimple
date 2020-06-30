@@ -9,10 +9,11 @@ import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.getColor
 import com.dd.android.dailysimple.common.di.getString
 import com.dd.android.dailysimple.common.di.systemLocale
-import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
+import com.dd.android.dailysimple.common.utils.DateUtils.msFrom
 import com.dd.android.dailysimple.common.utils.DateUtils.toYMD
 import com.dd.android.dailysimple.common.utils.htmlTextColor
+import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.db.data.DailyHabit.CheckTerm.*
 
 class DailyHabitTypeConverters {
@@ -45,12 +46,13 @@ data class DailyHabit(
     @Embedded var alarm: Alarm? = null
 ) : ItemModel {
 
-    @Ignore
-    val formattedStart = toYMD(start, systemLocale())
+    @get:Ignore
+    val formattedStart
+        get() = toYMD(start, systemLocale())
 
-    @Ignore
-    val formattedEnd =
-        until?.let { toYMD(it, systemLocale()) } ?: getString(R.string.infinite)
+    @get:Ignore
+    val formattedEnd
+        get() = until?.let { toYMD(it, systemLocale()) } ?: getString(R.string.infinite)
 
 
     enum class CheckTerm {
@@ -60,16 +62,25 @@ data class DailyHabit(
     }
 
     companion object {
+
         private const val NO_ID = 0L
 
         private const val DEFAULT_END = 66
 
-        fun create(context: Context) = DailyHabit(
+        fun create(
+            context: Context,
+            title: String = "",
+            memo: String = "",
+            color: Int = ContextCompat.getColor(context, R.color.appPrimary),
+            start: Long = msDateFrom(),
+            end: Long = msFrom(start, dates = DEFAULT_END)
+        ) = DailyHabit(
             id = NO_ID,
-            title = "",
-            color = ContextCompat.getColor(context, R.color.appPrimary),
-            start = msDateFrom(),
-            until = msDateFrom(DEFAULT_END)
+            title = title,
+            memo = memo,
+            color = color,
+            start = start,
+            until = end
         )
     }
 }
@@ -96,7 +107,7 @@ data class CheckStatus(
 data class DailyHabitWithCheckStatus(
     val habit: DailyHabit,
     val checkedList: LiveData<List<CheckStatus>>,
-    val selectedTime:Long
+    val selectedTime: Long
 ) : ItemModel {
 
     @Ignore

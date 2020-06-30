@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dd.android.dailysimple.HomeFragmentDirections.Companion.homeToDailyCalendar
 import com.dd.android.dailysimple.R
@@ -22,6 +23,7 @@ import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.OnDateChangedListener
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.widget.adjustBigScreenWidth
+import com.dd.android.dailysimple.common.widget.recycler.ItemModelDiffCallback
 import com.dd.android.dailysimple.daily.simplecalendar.SelectedDateInfo
 import com.dd.android.dailysimple.daily.simplecalendar.SimpleCalendarController
 import com.dd.android.dailysimple.daily.simplecalendar.SimpleCalendarViewModel
@@ -45,9 +47,9 @@ private const val ARG_DATE = "date"
 
 class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListener {
     /**
-     * View Models
+     * View Models & ViewModel Store Owner
      */
-    private val viewModelStoreOwner by lazy { this }
+    private val viewModelStoreOwner by lazy { requireActivity() }
     private lateinit var fabVm: FabViewModel
     private lateinit var todoVm: TodoViewModel
     private lateinit var habitVm: HabitViewModel
@@ -105,7 +107,7 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
     }
 
     private fun setUpViewModel() {
-        fabVm = ViewModelProvider(activity).get(FabViewModel::class.java)
+        fabVm = viewModel(FabViewModel::class)
         todoVm = viewModel(TodoViewModel::class)
         habitVm = viewModel(HabitViewModel::class)
         scheduleVm = viewModel(ScheduleViewModel::class)
@@ -149,9 +151,10 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
 
         itemModel.data.observe(viewLifecycleOwner, Observer { list ->
             with(adapter) {
+                val diffResult = DiffUtil.calculateDiff( ItemModelDiffCallback(items, list))
                 items.clear()
                 items.addAll(list)
-                notifyDataSetChanged()
+                diffResult.dispatchUpdatesTo(this)
             }
         })
 

@@ -16,6 +16,7 @@ import com.dd.android.dailysimple.common.utils.DateUtils.toYMD
 import com.dd.android.dailysimple.common.utils.setUnderlineText
 import com.dd.android.dailysimple.common.widget.TimePickerDialogFragment
 import com.dd.android.dailysimple.common.widget.adjustBigScreenWidth
+import com.dd.android.dailysimple.daily.AppConst.NO_ID
 import com.dd.android.dailysimple.databinding.FragmentMakeAndEditBinding
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
@@ -29,6 +30,8 @@ private const val ARG_ID = "id"
 class MakeAndEditFragment : BaseFragment<FragmentMakeAndEditBinding>() {
 
     private lateinit var editor: Editable
+
+    private val viewModelStoreOwner by lazy { requireActivity() }
 
     override val layout: Int = R.layout.fragment_make_and_edit
 
@@ -46,15 +49,32 @@ class MakeAndEditFragment : BaseFragment<FragmentMakeAndEditBinding>() {
 
     private fun setUpEditor() {
         editor = when (requireArguments().get(ARG_TYPE) as Int) {
-            EditType.SCHEDULE -> EditorSchedule(requireContext(), bind, viewLifecycleOwner, this)
-            EditType.TODO -> EditorTodo(requireContext(), bind, viewLifecycleOwner, this)
-            EditType.HABIT -> EditorHabit(requireContext(), bind, viewLifecycleOwner, this)
+            EditType.SCHEDULE -> EditorSchedule(
+                requireContext(),
+                bind,
+                viewLifecycleOwner,
+                viewModelStoreOwner
+            )
+            EditType.TODO -> EditorTodo(
+                requireContext(),
+                bind,
+                viewLifecycleOwner,
+                viewModelStoreOwner
+            )
+            EditType.HABIT -> EditorHabit(
+                requireContext(),
+                bind,
+                viewLifecycleOwner,
+                viewModelStoreOwner
+            )
             else -> throw IllegalArgumentException("Illegal EditType")
         }
     }
 
     private fun setUpBind() {
-        editor.bind(requireArguments().get(ARG_ID) as Long)
+        val id = arguments?.getLong(ARG_ID) ?: NO_ID
+
+        editor.bind(id)
         bind.ui = this
     }
 

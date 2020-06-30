@@ -14,7 +14,6 @@ import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.getColor
 import com.dd.android.dailysimple.common.di.getString
 import com.dd.android.dailysimple.common.di.systemLocale
-import com.dd.android.dailysimple.common.utils.DateUtils
 import com.dd.android.dailysimple.common.utils.DateUtils.MS_DAY
 import com.dd.android.dailysimple.common.utils.DateUtils.MS_HOUR
 import com.dd.android.dailysimple.common.utils.DateUtils.MS_MINUTE
@@ -59,8 +58,8 @@ data class DailyTodo(
     @Ignore val isOverdue = msDateFrom() >= until
     @Ignore val isUpcoming = msDateFrom(1) <= start
 
-    @Ignore val formattedStart = toYMD(start, systemLocale())
-    @Ignore val formattedEnd = toYMD(until, systemLocale())
+    @get:Ignore val formattedStart get() = toYMD(start, systemLocale())
+    @get:Ignore val formattedEnd get() = toYMD(until, systemLocale())
     // @formatter:on
 
     @Ignore
@@ -135,14 +134,22 @@ data class DailyTodo(
         }
 
     companion object {
-        fun create(context: Context) = DailyTodo(
+        fun create(
+            context: Context,
+            title: String = "",
+            memo: String = "",
+            color: Int = ContextCompat.getColor(context, R.color.appPrimary),
+            start: Long = msDateFrom(),
+            end: Long = msFrom(start, dates = DEFAULT_END),
+            done: Long = ONGOING
+        ) = DailyTodo(
             id = NO_ID,
-            title = "",
-            memo = "",
-            color = ContextCompat.getColor(context, R.color.appPrimary),
-            start = msDateFrom(),
-            until = msDateFrom(DEFAULT_END),
-            done = ONGOING
+            title = title,
+            memo = memo,
+            color = color,
+            start = start,
+            until = end,
+            done = done
         )
 
         private const val NO_ID = 0L

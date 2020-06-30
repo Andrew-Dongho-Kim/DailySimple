@@ -27,7 +27,7 @@ private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, messa
 
 
 class EditorTodo(
-    private val context:Context,
+    private val context: Context,
     private val bind: FragmentMakeAndEditBinding,
     private val lifecycleOwner: LifecycleOwner,
     viewModelStoreOwner: ViewModelStoreOwner
@@ -52,12 +52,17 @@ class EditorTodo(
 
     override fun bind(id: Long) {
         todoVm.getTodo(id).observe(lifecycleOwner, Observer { model ->
-            this.model = (model ?: DailyTodo.create(context)).apply {
+            this.model = (model ?: DailyTodo.create(
+                context,
+                start = todoVm.selectedDate.value!!
+            )).apply {
                 alarm = ensureAlarm(id, alarm)
             }
+
             bind.content = this.model.toEditContent()
             logD { "todoId : $id, model:${this.model}" }
         })
+
         bindSubTasks(id)
         bind.alarmModel = alarmObservable
         bind.featuers = EditFeatures(supportRepeat = false)

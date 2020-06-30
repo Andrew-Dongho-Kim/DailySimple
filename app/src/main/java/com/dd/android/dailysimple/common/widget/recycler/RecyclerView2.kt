@@ -8,6 +8,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 interface ItemModel {
@@ -85,4 +86,28 @@ open class ViewHolder2<B : ViewDataBinding, M : ItemModel>(
         fun <V : View> RecyclerView.ViewHolder.findViewById(id: Int): V? =
             itemView.findViewById<V>(id)
     }
+}
+
+class ItemModelDiffCallback(
+    private val oldList: List<ItemModel>,
+    private val newList: List<ItemModel>
+) : DiffUtil.Callback() {
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldList[oldItemPosition].id == newList[newItemPosition].id
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldList[oldItemPosition] == newList[newItemPosition]
+    }
+
+    override fun getOldListSize(): Int {
+        return oldList.size
+    }
+
+    override fun getNewListSize(): Int {
+        return newList.size
+    }
+
+
 }

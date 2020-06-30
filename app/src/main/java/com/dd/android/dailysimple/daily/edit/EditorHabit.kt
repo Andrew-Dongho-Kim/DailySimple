@@ -39,9 +39,13 @@ class EditorHabit(
 
     override fun bind(id: Long) {
         habitVm.getHabit(id).observe(viewLifecycleOwner, Observer { model ->
-            this.model = (model ?: DailyHabit.create(context)).apply {
-                alarm = ensureAlarm(id, alarm)
-            }
+            this.model =
+                (model ?: DailyHabit.create(
+                    context,
+                    start = habitVm.selectedDate.value!!
+                )).apply {
+                    alarm = ensureAlarm(id, alarm)
+                }
             bind.content = this.model.toEditContent()
             logD { "habitId : $id, model:${this.model}" }
         })

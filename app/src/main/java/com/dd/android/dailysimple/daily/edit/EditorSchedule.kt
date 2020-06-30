@@ -37,20 +37,27 @@ class EditorSchedule(
 
     override fun bind(id: Long) {
         scheduleVm.getScheduleById(id).observe(viewLifecycleOwner, Observer { model ->
-            this.model = (model ?: DailySchedule.create(context)).apply {
+            this.model = (model ?: DailySchedule.create(
+                context,
+                start = scheduleVm.selectedDate.value!!
+            )).apply {
 //                alarm = ensureAlarm(id, alarm)
             }
+
             bind.content = this.model.toEditContent()
             logD { "habitId : $id, model:${this.model}" }
         })
+
         bind.alarmModel = alarmObservable
         bind.featuers =
             EditFeatures(supportRepeat = true, supportSubTasks = false, supportAttachments = false)
+
     }
 
     private fun ensureAlarm(habitId: Long, alarm: Alarm?) = alarm?.also { it ->
         alarmObservable.alarm = it
         alarmObservable.isOn = true
+
         logD { "Habit(${habitId}) alarm : $it" }
     } ?: alarmObservable.alarm
 

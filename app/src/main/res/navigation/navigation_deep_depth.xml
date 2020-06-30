@@ -78,6 +78,7 @@
         tools:layout="@layout/fragment_make_and_edit">
         <argument
             android:name="id"
+            android:defaultValue="0L"
             app:argType="long" />
         <argument
             android:name="type"

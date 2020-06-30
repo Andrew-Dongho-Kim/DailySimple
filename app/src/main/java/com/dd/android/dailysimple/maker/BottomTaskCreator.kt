@@ -73,13 +73,25 @@ class BottomTaskCreator(
 
         when (selected) {
             SIMPLY_MAKE_HABIT -> {
-                habitVm.insert(DailyHabit.create(context).apply { title = jobTitle })
+                habitVm.insert(
+                    DailyHabit.create(
+                        context, title = jobTitle, start = habitVm.selectedDate.value!!
+                    )
+                )
             }
             SIMPLY_MAKE_TODO -> {
-                todoVm.insertTodo(DailyTodo.create(context).apply { title = jobTitle })
+                todoVm.insertTodo(
+                    DailyTodo.create(
+                        context, title = jobTitle, start = todoVm.selectedDate.value!!
+                    )
+                )
             }
             SIMPLY_MAKE_SCHEDULE -> {
-                scheduleVm.insertSchedule(DailySchedule.create(context).apply { title = jobTitle })
+                scheduleVm.insertSchedule(
+                    DailySchedule.create(
+                        context, title = jobTitle, start = scheduleVm.selectedDate.value!!
+                    )
+                )
             }
         }
         with(fabBind.simpleMaker) {

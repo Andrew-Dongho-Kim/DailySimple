@@ -5,18 +5,23 @@ import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.provider.Settings
 import android.view.View
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import androidx.lifecycle.*
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListUpdateCallback
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.AppDeepLink
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.widget.createRemoteViews
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
+import com.dd.android.dailysimple.common.widget.recycler.ItemModelDiffCallback
 import com.dd.android.dailysimple.common.widget.setViewBackground
 import com.dd.android.dailysimple.daily.DailyItemModels
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.AUTHORITY_ITEM
@@ -40,6 +45,7 @@ import com.dd.android.dailysimple.db.data.DailyTodo
 import com.dd.android.dailysimple.db.data.DoneState.Companion.isDone
 import com.dd.android.dailysimple.setting.SettingManager
 import kotlinx.coroutines.*
+import java.lang.Runnable
 
 
 private const val TAG = "${WidgetConst.TAG}TaskListService"
@@ -81,16 +87,27 @@ class TaskListRemoteViewsService : RemoteViewsService(), LifecycleOwner {
 private class TaskItemRemoteViewsFactory(
     private val app: Application
 ) : RemoteViewsService.RemoteViewsFactory, ViewModelStoreOwner,
-    HasDefaultViewModelProviderFactory, Observer<List<ItemModel>> {
+    HasDefaultViewModelProviderFactory, Observer<List<ItemModel>>, ListUpdateCallback {
 
     private val settingManager by lazy { SettingManager(app) }
-
-    private val viewModelStore = ViewModelStore()
-    private val mainScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     private val itemModel by lazy { DailyItemModels(this) }
     private val items = mutableListOf<ItemModel>()
 
+    private val viewModelStore = ViewModelStore()
+    private val mainScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    private val mainHandler = Handler(Looper.getMainLooper())
+    private val updateRunnable = Runnable {
+        val appWidgetManager = AppWidgetManager.getInstance(app)
+        val appWidgetIds = appWidgetManager.getAppWidgetIds(
+            ComponentName(
+                app,
+                WidgetProvider::class.java
+            )
+        )
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.task_list)
+        logD { "Item was updated : ${items.size}" }
+    }
 
     override fun onCreate() {
         logD { "TaskItemRemoveViewsFactory was created:$this" }
@@ -106,6 +123,22 @@ private class TaskItemRemoteViewsFactory(
     override fun getItemId(position: Int) =
         items[position].run { (IdMap[javaClass] ?: error("unknown : $this")).idBase + id }
 
+    fun getViewType(position: Int): Int {
+        return if (items.size <= position) {
+            UNKNOWN_VIEW_TYPE
+        } else {
+            items[position].run { (IdMap[javaClass] ?: error("unknown : $this")).viewType }
+        }
+    }
+
+    override fun getCount(): Int {
+        return items.size
+    }
+
+    override fun getViewTypeCount(): Int {
+        return 5
+    }
+
     override fun getViewAt(position: Int): RemoteViews {
         return when (getViewType(position)) {
             SIMPLE_HEADER -> createHeaderItem(items[position] as DailySimpleHeaderItem)
@@ -115,7 +148,6 @@ private class TaskItemRemoteViewsFactory(
             TODO_ITEM -> createTodoItem(items[position] as DailyTodo)
             HABIT_ITEM -> createHabitItem(items[position] as DailyHabitWithCheckStatus)
             else -> RemoteViews(app.packageName, R.layout.widget_todo_item)
-            //throw IllegalStateException("Unknown View-type :${getViewType(position)}")
         }
     }
 
@@ -195,14 +227,6 @@ private class TaskItemRemoteViewsFactory(
         }
     }
 
-    override fun getCount(): Int {
-        return items.size
-    }
-
-    override fun getViewTypeCount(): Int {
-        return 5
-    }
-
     override fun onDestroy() {
         mainScope.launch {
             itemModel.data.removeObserver(this@TaskItemRemoteViewsFactory)
@@ -236,25 +260,31 @@ private class TaskItemRemoteViewsFactory(
     }
 
     override fun onChanged(list: List<ItemModel>) {
+        val diffResult = DiffUtil.calculateDiff(ItemModelDiffCallback(items, list))
+
         items.clear()
         items.addAll(list)
 
-        val appWidgetManager = AppWidgetManager.getInstance(app)
-        val appWidgetIds = appWidgetManager.getAppWidgetIds(
-            ComponentName(
-                app,
-                WidgetProvider::class.java
-            )
-        )
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.task_list)
-        logD { "ItemModel was changed:${list.size}" }
+        diffResult.dispatchUpdatesTo(this)
     }
 
-    fun getViewType(position: Int): Int {
-        return if (items.size <= position) {
-            UNKNOWN_VIEW_TYPE
-        } else {
-            items[position].run { (IdMap[javaClass] ?: error("unknown : $this")).viewType }
-        }
+    override fun onInserted(position: Int, count: Int) {
+        mainHandler.removeCallbacks(updateRunnable)
+        mainHandler.post(updateRunnable)
+    }
+
+    override fun onRemoved(position: Int, count: Int) {
+        mainHandler.removeCallbacks(updateRunnable)
+        mainHandler.post(updateRunnable)
+    }
+
+    override fun onChanged(position: Int, count: Int, payload: Any?) {
+        mainHandler.removeCallbacks(updateRunnable)
+        mainHandler.post(updateRunnable)
+    }
+
+    override fun onMoved(fromPosition: Int, toPosition: Int) {
+        mainHandler.removeCallbacks(updateRunnable)
+        mainHandler.post(updateRunnable)
     }
 }

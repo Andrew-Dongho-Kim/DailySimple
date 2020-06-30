@@ -36,8 +36,8 @@ class DailyItemModels(viewModelStoreOwner: ViewModelStoreOwner) : ViewModel() {
     val data = MediatorLiveData<List<ItemModel>>().apply {
         models.forEach { liveData ->
             addSource(liveData) {
-                dumpWho(it)
-                if (needUpdates(liveData)) {
+                if (needUpdates(liveData) && dataReady()) {
+                    dumpWho(it)
                     value = createModel()
                 }
             }
@@ -50,19 +50,35 @@ class DailyItemModels(viewModelStoreOwner: ViewModelStoreOwner) : ViewModel() {
         } else {
             obj.javaClass.simpleName
         }
-        logD { "updated : $clazz" }
+        logD { "updated by : $clazz" }
     }
 
     fun postDate(date: Long) {
-        scheduleVm.selectedDate.postValue(date)
-        todoVm.selectedDate.postValue(date)
-        habitsVm.selectedDate.postValue(date)
-        waitUpdates = mutableListOf(scheduleVm.schedule, todoVm.wholeTodo, habitsVm.allHabits)
+        waitUpdates = mutableListOf()
+        if (scheduleVm.selectedDate.value != date) {
+            scheduleVm.selectedDate.postValue(date)
+            waitUpdates.add(scheduleVm.schedule)
+        }
+        if (todoVm.selectedDate.value != date) {
+            todoVm.selectedDate.postValue(date)
+            waitUpdates.add(todoVm.wholeTodo)
+        }
+        if (habitsVm.selectedDate.value != date) {
+            habitsVm.selectedDate.postValue(date)
+            waitUpdates.add(habitsVm.allHabits)
+        }
     }
 
     private fun needUpdates(source: LiveData<*>): Boolean {
         waitUpdates.remove(source)
         return waitUpdates.size == 0
+    }
+
+    private fun dataReady(): Boolean {
+        models.forEach {
+            it.value ?: return false
+        }
+        return true
     }
 
     private fun createModel(): List<ItemModel> =
