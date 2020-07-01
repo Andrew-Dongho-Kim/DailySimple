@@ -171,7 +171,7 @@ data class TodoSubTask(
     )
     @ColumnInfo(name = "todo_id")
     var todoId: Long,
-    var title: String,
+    var title: String = "",
     var done: Long = ONGOING
 ) : ItemModel {
 

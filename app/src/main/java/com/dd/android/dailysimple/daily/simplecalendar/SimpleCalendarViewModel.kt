@@ -16,17 +16,15 @@ import com.dd.android.dailysimple.daily.DayDateItemModel
 
 class SimpleCalendarViewModel(application: Application) : AndroidViewModel(application) {
 
-    val selectedDate = liveData {
-        emit(msDateFrom())
-    } as MutableLiveData<Long>
+    val selectedDate = MutableLiveData<Long>()
 
     val selectedDateDistinct = Transformations.distinctUntilChanged(selectedDate)
 
-    val year = Transformations.map(selectedDate) {
+    val year = Transformations.map(selectedDateDistinct) {
         year(it)
     }
 
-    val month = Transformations.map(selectedDate) {
+    val month = Transformations.map(selectedDateDistinct) {
         month(it)
     }
 

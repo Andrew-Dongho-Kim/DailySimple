@@ -2,23 +2,21 @@ package com.dd.android.dailysimple.daily.simplecalendar
 
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.dd.android.dailysimple.daily.DayDateItemModel
 
-typealias scrollTo = (Int) -> Unit
-
 class SimpleCalendarAdapter(
     private val lifecycleOwner: LifecycleOwner,
-    private val scrollTo: scrollTo
+    private val viewModelStoreOwner: ViewModelStoreOwner
 ) : PagedListAdapter<DayDateItemModel, SimpleCalendarViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        SimpleCalendarViewHolder(
-            parent, scrollTo
-        ).also {
-            it.bind.lifecycleOwner = lifecycleOwner
-        }
+        SimpleCalendarViewHolder(parent, viewModelStoreOwner)
+            .also {
+                it.bind.lifecycleOwner = lifecycleOwner
+            }
 
     override fun onBindViewHolder(holder: SimpleCalendarViewHolder, position: Int) {
         holder.bindTo(getItem(position)!!)

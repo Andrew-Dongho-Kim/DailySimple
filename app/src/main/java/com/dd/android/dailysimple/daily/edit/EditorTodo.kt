@@ -6,20 +6,24 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.di.systemLocale
 import com.dd.android.dailysimple.common.utils.DateUtils.strYmdToLong
+import com.dd.android.dailysimple.common.widget.recycler.ItemModelDiffCallback
 import com.dd.android.dailysimple.daily.AppConst.NO_ID
 import com.dd.android.dailysimple.daily.edit.observable.AlarmObservable
 import com.dd.android.dailysimple.daily.edit.subtask.EditableTodoSubTask
 import com.dd.android.dailysimple.daily.edit.subtask.TodoSubTaskAdapter
+import com.dd.android.dailysimple.daily.edit.subtask.TodoSubTaskViewModel
 import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
 import com.dd.android.dailysimple.databinding.FragmentMakeAndEditBinding
 import com.dd.android.dailysimple.db.data.Alarm
 import com.dd.android.dailysimple.db.data.DailyTodo
 import com.dd.android.dailysimple.db.data.DoneState.Companion.ONGOING
-import com.dd.android.dailysimple.db.data.TodoSubTask
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 private const val TAG = "EditorTodo"
 
@@ -34,21 +38,27 @@ class EditorTodo(
 ) : Editable {
 
     private val todoVm = ViewModelProvider(viewModelStoreOwner).get(TodoViewModel::class.java)
+    private lateinit var subTaskVm: TodoSubTaskViewModel
     private lateinit var model: DailyTodo
-    private var id = 0L
-
-    private val alarmObservable = AlarmObservable(Alarm())
 
     private val subTaskAdapter by lazy {
         TodoSubTaskAdapter(lifecycleOwner).apply { setHasStableIds(true) }
     }
-    private val subTasks = mutableListOf<EditableTodoSubTask>()
+
+    private val alarmObservable = AlarmObservable(Alarm())
 
     override var alarmTime: Long
         get() = alarmObservable.alarmTime
         set(value) {
             alarmObservable.alarmTime = value
         }
+
+    private fun ensureAlarm(todoId: Long, alarm: Alarm?) = alarm?.also { it ->
+        alarmObservable.alarm = it
+        alarmObservable.isOn = true
+        logD { "Todo(${todoId}) alarm : $it" }
+    } ?: alarmObservable.alarm
+
 
     override fun bind(id: Long) {
         todoVm.getTodo(id).observe(lifecycleOwner, Observer { model ->
@@ -74,72 +84,24 @@ class EditorTodo(
             adapter = subTaskAdapter
         }
 
-        // TODO DataBinding
-        bind.subTask.setOnClickListener {
-            EditableTodoSubTask(
-                TodoSubTask(id++, todoId, ""),
-                subTasks.size,
-                this::onRequestRemoveSubJob,
-                true
-            ).run {
-                subTasks.add(this)
-                subTaskAdapter.items.add(this)
-            }
-            subTaskAdapter.notifyItemInserted(subTasks.size - 1)
-            logD { "Sub Task Added : $id" }
-        }
-
-        // TODO DiffUtil
         if (todoId == NO_ID) return
-        todoVm.getSubTasks(todoId).observe(lifecycleOwner, Observer { list ->
-            subTasks.clear()
-            subTasks.addAll(list.mapIndexed { index, task ->
-                EditableTodoSubTask(
-                    task,
-                    index,
-                    this::onRequestRemoveSubJob
-                )
-            })
+        subTaskVm = TodoSubTaskViewModel(todoId)
+        bind.subTask.setOnClickListener { subTaskVm.newEmptyTask() }
 
-            id = subTasks.map { it.id + 1 }.max() ?: NO_ID
+        subTaskVm.liveDataSubTasks.observe(lifecycleOwner, Observer { list ->
+            val diffResult =
+                DiffUtil.calculateDiff(ItemModelDiffCallback(subTaskAdapter.items, list))
+
             with(subTaskAdapter) {
                 items.clear()
-                items.addAll(subTasks)
-                notifyDataSetChanged()
+                items.addAll(list)
+                diffResult.dispatchUpdatesTo(this)
             }
         })
     }
 
-    private fun ensureAlarm(todoId: Long, alarm: Alarm?) = alarm?.also { it ->
-        alarmObservable.alarm = it
-        alarmObservable.isOn = true
-        logD { "Todo(${todoId}) alarm : $it" }
-    } ?: alarmObservable.alarm
-
-    private fun onRequestRemoveSubJob(editable: EditableTodoSubTask) {
-        if (editable.task.title.isEmpty()) {
-            if (editable.added) {
-
-            } else {
-                todoVm.deleteSubTask(editable.id)
-            }
-        }
-        logD { "onRequestRemoveSubJob : $editable" }
-    }
-
     override fun edit() {
-        editTodoWith { newIds ->
-            subTasks
-                .filter { it.edited && it.task.title.isNotEmpty() }
-                .forEach {
-                    with(it.task) {
-                        todoId = newIds[0]
-                        id = if (it.added) 0L else id
-                        todoVm.insertSubTask(this)
-                    }
-                    logD { "SubTask(inserted) : $it" }
-                }
-        }
+        editTodoWith { newIds -> GlobalScope.launch { subTaskVm.saveTasks(newIds[0]) } }
     }
 
     private fun editTodoWith(block: (newIds: List<Long>) -> Unit) = todoVm.insertTodo(

@@ -25,7 +25,7 @@ import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.widget.adjustBigScreenWidth
 import com.dd.android.dailysimple.common.widget.recycler.ItemModelDiffCallback
 import com.dd.android.dailysimple.daily.simplecalendar.SelectedDateInfo
-import com.dd.android.dailysimple.daily.simplecalendar.SimpleCalendarController
+import com.dd.android.dailysimple.daily.simplecalendar.SimpleCalendarHelper
 import com.dd.android.dailysimple.daily.simplecalendar.SimpleCalendarViewModel
 import com.dd.android.dailysimple.daily.viewmodel.HabitViewModel
 import com.dd.android.dailysimple.daily.viewmodel.ScheduleViewModel
@@ -35,6 +35,7 @@ import com.dd.android.dailysimple.google.GoogleAccountViewModel
 import com.dd.android.dailysimple.maker.BottomTaskCreator
 import com.dd.android.dailysimple.maker.FabViewModel
 import com.dd.android.dailysimple.plan.ScheduleCardItemDecoration
+import java.util.*
 import kotlin.reflect.KClass
 
 private const val TAG = "DailyMain"
@@ -57,7 +58,7 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
     private lateinit var simpleCalendarVm: SimpleCalendarViewModel
     private val itemModel by lazy { DailyItemModels(viewModelStoreOwner) }
 
-    private lateinit var calendarController: SimpleCalendarController
+    private lateinit var calendarController: SimpleCalendarHelper
     private var hasCalendarPermission = false
 
     override val layout: Int = R.layout.fragment_daily
@@ -96,9 +97,12 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
     }
 
     private fun setUpArguments() {
-        arguments?.getLong(ARG_DATE, msDateFrom())?.also {
-            simpleCalendarVm.selectedDate.postValue(it)
-            logD { "setUpArguments date : $it" }
+        val date = arguments?.getLong(ARG_DATE, 0L) ?: 0L
+
+        if (date != 0L) {
+            arguments?.putLong(ARG_DATE, 0L)
+            simpleCalendarVm.selectedDate.value = date
+            logD { "setUpArguments date : ${Date(date)}" }
         }
     }
 
@@ -126,7 +130,7 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
         }
 
         calendarController =
-            SimpleCalendarController(
+            SimpleCalendarHelper(
                 bind.customToolbar.calendar, viewLifecycleOwner, viewModelStoreOwner
             ) {
                 itemModel.postDate(it)
@@ -151,7 +155,7 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
 
         itemModel.data.observe(viewLifecycleOwner, Observer { list ->
             with(adapter) {
-                val diffResult = DiffUtil.calculateDiff( ItemModelDiffCallback(items, list))
+                val diffResult = DiffUtil.calculateDiff(ItemModelDiffCallback(items, list))
                 items.clear()
                 items.addAll(list)
                 diffResult.dispatchUpdatesTo(this)
@@ -182,7 +186,7 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
     }
 
     override fun onDateChanged() {
-        simpleCalendarVm.selectedDate.postValue(msDateFrom())
+        simpleCalendarVm.selectedDate.value = msDateFrom()
         calendarController.invalidate()
     }
 

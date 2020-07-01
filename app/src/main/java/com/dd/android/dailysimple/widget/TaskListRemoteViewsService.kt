@@ -43,6 +43,7 @@ import com.dd.android.dailysimple.db.data.DailyHabitWithCheckStatus
 import com.dd.android.dailysimple.db.data.DailySchedule
 import com.dd.android.dailysimple.db.data.DailyTodo
 import com.dd.android.dailysimple.db.data.DoneState.Companion.isDone
+import com.dd.android.dailysimple.db.data.UNKNOWN_ID
 import com.dd.android.dailysimple.setting.SettingManager
 import kotlinx.coroutines.*
 import java.lang.Runnable
@@ -120,14 +121,22 @@ private class TaskItemRemoteViewsFactory(
 
     override fun hasStableIds() = true
 
-    override fun getItemId(position: Int) =
-        items[position].run { (IdMap[javaClass] ?: error("unknown : $this")).idBase + id }
+    override fun getItemId(position: Int): Long {
+        return if (items.size <= position) {
+            UNKNOWN_ID
+        } else {
+            val item = items[position]
+            val idBase = IdMap[item.javaClass]?.idBase ?: return UNKNOWN_ID
+            idBase + item.id
+        }
+    }
 
     fun getViewType(position: Int): Int {
         return if (items.size <= position) {
             UNKNOWN_VIEW_TYPE
         } else {
-            items[position].run { (IdMap[javaClass] ?: error("unknown : $this")).viewType }
+            val item = items[position]
+            IdMap[item.javaClass]?.viewType ?: UNKNOWN_VIEW_TYPE
         }
     }
 
