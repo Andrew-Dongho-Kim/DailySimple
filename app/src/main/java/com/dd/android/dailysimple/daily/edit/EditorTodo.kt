@@ -2,10 +2,7 @@ package com.dd.android.dailysimple.daily.edit
 
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dd.android.dailysimple.common.Logger
@@ -14,7 +11,6 @@ import com.dd.android.dailysimple.common.utils.DateUtils.strYmdToLong
 import com.dd.android.dailysimple.common.widget.recycler.ItemModelDiffCallback
 import com.dd.android.dailysimple.daily.AppConst.NO_ID
 import com.dd.android.dailysimple.daily.edit.observable.AlarmObservable
-import com.dd.android.dailysimple.daily.edit.subtask.EditableTodoSubTask
 import com.dd.android.dailysimple.daily.edit.subtask.TodoSubTaskAdapter
 import com.dd.android.dailysimple.daily.edit.subtask.TodoSubTaskViewModel
 import com.dd.android.dailysimple.daily.viewmodel.TodoViewModel
@@ -34,7 +30,7 @@ class EditorTodo(
     private val context: Context,
     private val bind: FragmentMakeAndEditBinding,
     private val lifecycleOwner: LifecycleOwner,
-    viewModelStoreOwner: ViewModelStoreOwner
+    private val viewModelStoreOwner: ViewModelStoreOwner
 ) : Editable {
 
     private val todoVm = ViewModelProvider(viewModelStoreOwner).get(TodoViewModel::class.java)
@@ -75,7 +71,7 @@ class EditorTodo(
 
         bindSubTasks(id)
         bind.alarmModel = alarmObservable
-        bind.featuers = EditFeatures(supportRepeat = false)
+        bind.features = EditFeatures(supportRepeat = false)
     }
 
     private fun bindSubTasks(todoId: Long) {
@@ -85,8 +81,15 @@ class EditorTodo(
         }
 
         if (todoId == NO_ID) return
-        subTaskVm = TodoSubTaskViewModel(todoId)
-        bind.subTask.setOnClickListener { subTaskVm.newEmptyTask() }
+
+        subTaskVm = ViewModelProvider(viewModelStoreOwner, object : ViewModelProvider.Factory {
+            @Suppress("unchecked_cast")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return TodoSubTaskViewModel(todoId) as T
+            }
+        }).get(todoId.toString(), TodoSubTaskViewModel::class.java)
+
+        bind.subTask.setOnClickListener { subTaskVm.newTask() }
 
         subTaskVm.liveDataSubTasks.observe(lifecycleOwner, Observer { list ->
             val diffResult =

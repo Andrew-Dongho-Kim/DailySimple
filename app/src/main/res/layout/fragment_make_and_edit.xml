@@ -25,7 +25,7 @@
             type="com.dd.android.dailysimple.daily.edit.EditContent" />
 
         <variable
-            name="featuers"
+            name="features"
             type="com.dd.android.dailysimple.daily.edit.EditFeatures" />
     </data>
 
@@ -154,7 +154,7 @@
                         android:layout_marginTop="@dimen/basic_view_margin_vertical"
                         android:text="@string/repeat"
                         android:textColor="@color/basic_header_text_color"
-                        android:visibility="@{featuers.supportRepeat ? View.VISIBLE : View.GONE}"
+                        android:visibility="@{features.supportRepeat ? View.VISIBLE : View.GONE}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/end" />
 
@@ -361,7 +361,7 @@
                             android:background="?android:attr/selectableItemBackgroundBorderless"
                             android:src="@drawable/ic_gallery"
                             android:tint="@color/basic_icon_background"
-                            android:visibility="@{featuers.supportAttachments ? View.VISIBLE : View.GONE}"
+                            android:visibility="@{features.supportAttachments ? View.VISIBLE : View.GONE}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -373,7 +373,7 @@
                             android:background="?android:attr/selectableItemBackgroundBorderless"
                             android:src="@drawable/ic_check_box"
                             android:tint="@color/basic_icon_background"
-                            android:visibility="@{featuers.supportSubTasks ? View.VISIBLE : View.GONE}"
+                            android:visibility="@{features.supportSubTasks ? View.VISIBLE : View.GONE}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@id/gallery" />
                     </androidx.constraintlayout.widget.ConstraintLayout>

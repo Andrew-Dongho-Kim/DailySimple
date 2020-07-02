@@ -24,6 +24,7 @@ import com.dd.android.dailysimple.common.OnDateChangedListener
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.widget.adjustBigScreenWidth
 import com.dd.android.dailysimple.common.widget.recycler.ItemModelDiffCallback
+import com.dd.android.dailysimple.daily.scroll.BottomBarScroll
 import com.dd.android.dailysimple.daily.simplecalendar.SelectedDateInfo
 import com.dd.android.dailysimple.daily.simplecalendar.SimpleCalendarHelper
 import com.dd.android.dailysimple.daily.simplecalendar.SimpleCalendarViewModel
@@ -168,7 +169,7 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
             this.adapter = adapter
             setUpCache()
 
-            //addOnScrollListener(BottomBarScroll(requireActivity().findViewById(R.id.bottom_navigation_bar)))
+            addOnScrollListener(BottomBarScroll(bind.fabLayout.root))
             addItemDecoration(ScheduleCardItemDecoration(activity))
 //            addItemDecoration(
 //                StickyHeaderItemDecoration(

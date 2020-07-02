@@ -50,7 +50,7 @@ class EditorHabit(
             logD { "habitId : $id, model:${this.model}" }
         })
         bind.alarmModel = alarmObservable
-        bind.featuers =
+        bind.features =
             EditFeatures(supportRepeat = true, supportAttachments = false, supportSubTasks = false)
     }
 

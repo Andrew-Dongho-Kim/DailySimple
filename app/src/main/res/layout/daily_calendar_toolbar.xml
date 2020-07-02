@@ -20,7 +20,7 @@
         android:background="@drawable/daily_simple_calendar_background"
         android:minHeight="@dimen/daily_calendar_toolbar_height_min"
         app:layoutDescription="@xml/scene_daily_tool_bar"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+        app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/profile_thumbnail"

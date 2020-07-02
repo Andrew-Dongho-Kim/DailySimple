@@ -4,9 +4,7 @@
 
     <Transition
         app:constraintSetEnd="@+id/end"
-        app:constraintSetStart="@+id/start"
-        app:duration="1000"
-        app:motionInterpolator="easeInOut" />
+        app:constraintSetStart="@+id/start" />
 
     <ConstraintSet android:id="@+id/start">
         <Constraint

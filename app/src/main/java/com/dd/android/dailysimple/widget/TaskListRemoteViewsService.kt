@@ -231,7 +231,7 @@ private class TaskItemRemoteViewsFactory(
             )
             setOnClickFillInIntent(
                 R.id.root_view,
-                AppDeepLink.intentToEdit(EditType.SCHEDULE, habitItem.id)
+                AppDeepLink.intentToEdit(EditType.HABIT, habitItem.id)
             )
         }
     }

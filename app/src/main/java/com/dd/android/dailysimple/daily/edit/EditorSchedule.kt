@@ -49,7 +49,7 @@ class EditorSchedule(
         })
 
         bind.alarmModel = alarmObservable
-        bind.featuers =
+        bind.features =
             EditFeatures(supportRepeat = true, supportSubTasks = false, supportAttachments = false)
 
     }

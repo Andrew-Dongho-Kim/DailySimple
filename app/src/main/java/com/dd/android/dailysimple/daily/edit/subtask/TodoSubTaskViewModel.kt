@@ -1,8 +1,10 @@
 package com.dd.android.dailysimple.daily.edit.subtask
 
+import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.dd.android.dailysimple.BR
 import com.dd.android.dailysimple.common.di.appDb
 import com.dd.android.dailysimple.db.DailyTodoRepository
 import com.dd.android.dailysimple.db.data.DoneState
@@ -20,7 +22,7 @@ class TodoSubTaskViewModel(private val todoId: Long) : ViewModel() {
         Transformations.map(repository.getSubTasksById(todoId)) { subTasks ->
 
             val editableTasks = subTasks.mapIndexed { idx, subTask ->
-                EditableTodoSubTask(subTask, idx)
+                createEditableTask(subTask, idx)
             }
 
             inMemorySubTasks.removeAll { old -> editableTasks.find { new -> old.id == new.id } != null }
@@ -36,9 +38,23 @@ class TodoSubTaskViewModel(private val todoId: Long) : ViewModel() {
     // It would be used newly created task for temporary id because of stableId
     private var subTaskId = 0L
 
-    fun newEmptyTask(): EditableTodoSubTask {
+    private val onPropertyChanged = object : Observable.OnPropertyChangedCallback() {
+        override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+            if (propertyId == BR.done) {
+                sortTasks()
+                _liveDataSubTasks.postValue(inMemorySubTasks)
+            }
+        }
+    }
+
+    private fun createEditableTask(subTask: TodoSubTask, position: Int, added: Boolean = false) =
+        EditableTodoSubTask(subTask, position).apply {
+            addOnPropertyChangedCallback(onPropertyChanged)
+        }
+
+    fun newTask(): EditableTodoSubTask {
         val insertPos = inMemorySubTasks.indexOfFirst { DoneState.isDone(it.done) }
-        val subTask = EditableTodoSubTask(TodoSubTask(subTaskId++, todoId), insertPos, added = true)
+        val subTask = createEditableTask(TodoSubTask(subTaskId++, todoId), insertPos, added = true)
 
         inMemorySubTasks.add(if (insertPos < 0) inMemorySubTasks.size else insertPos, subTask)
         _liveDataSubTasks.postValue(inMemorySubTasks)
