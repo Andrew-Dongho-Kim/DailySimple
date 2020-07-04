@@ -14,6 +14,8 @@ data class DayDateItemModel(
     override val id: Long
 ) : ItemModel {
 
+    override val selected = MutableLiveData<Boolean>()
+
     val year = calendar(id).get(YEAR).toString()
 
     val month = getString(MONTHS[calendar(id).get(MONTH)])

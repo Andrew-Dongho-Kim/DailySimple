@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.widget.CenterScrollLinearLayoutManager
-import com.dd.android.dailysimple.common.widget.recycler.findChildViewUnder2
+import com.dd.android.dailysimple.common.extensions.findChildViewUnder2
 import com.dd.android.dailysimple.daily.DayDateItemModel
 import java.util.*
 

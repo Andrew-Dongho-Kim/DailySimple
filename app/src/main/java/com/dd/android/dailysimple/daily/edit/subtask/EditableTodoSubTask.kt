@@ -5,6 +5,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo.IME_ACTION_PREVIOUS
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
+import androidx.lifecycle.MutableLiveData
 import com.dd.android.dailysimple.BR
 import com.dd.android.dailysimple.common.utils.DateUtils.msFrom
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
@@ -18,7 +19,10 @@ data class EditableTodoSubTask(
     val added: Boolean = false,
     var edited: Boolean = false
 ) : BaseObservable(), ItemModel {
+
     override val id = task.id
+
+    override val selected = MutableLiveData<Boolean>()
 
     // @formatter:off
     @get:Bindable val done get() = task.done

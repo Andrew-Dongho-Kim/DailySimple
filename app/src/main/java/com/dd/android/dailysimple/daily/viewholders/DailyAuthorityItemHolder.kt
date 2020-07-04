@@ -7,6 +7,7 @@ import android.provider.Settings
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.library.baseAdapters.BR
+import androidx.lifecycle.MutableLiveData
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2
@@ -35,4 +36,6 @@ class DailyAuthorityItemHolder(parent: ViewGroup) :
 data class DailyAuthorityItem(
     override val id: Long,
     val description: String
-) : ItemModel
+) : ItemModel {
+    override val selected = MutableLiveData<Boolean>()
+}

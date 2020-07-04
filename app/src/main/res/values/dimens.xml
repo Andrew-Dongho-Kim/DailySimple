@@ -51,6 +51,7 @@
     <!-- Daily Fragment -->
     <dimen name="daily_calendar_toolbar_down_movement">80dp</dimen>
     <dimen name="daily_calendar_toolbar_height_min">120dp</dimen>
+    <dimen name="daily_list_padding_bottom">60dp</dimen>
 
     <!-- Daily Todo -->
     <dimen name="daily_todo_check_box_padding">10dp</dimen>

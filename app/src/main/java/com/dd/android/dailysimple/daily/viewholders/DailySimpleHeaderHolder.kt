@@ -3,6 +3,7 @@ package com.dd.android.dailysimple.daily.viewholders
 import android.view.ViewGroup
 import android.view.ViewOutlineProvider
 import androidx.databinding.library.baseAdapters.BR
+import androidx.lifecycle.MutableLiveData
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2
@@ -31,4 +32,6 @@ class DailySimpleHeaderHolder(parent: ViewGroup) :
 data class DailySimpleHeaderItem(
     override val id: Long,
     val headerTitle: String
-) : ItemModel
+) : ItemModel {
+    override val selected = MutableLiveData<Boolean>()
+}

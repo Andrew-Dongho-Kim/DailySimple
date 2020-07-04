@@ -13,9 +13,9 @@ import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.utils.DateUtils.strYmdToLong
 import com.dd.android.dailysimple.common.utils.DateUtils.toTime
 import com.dd.android.dailysimple.common.utils.DateUtils.toYMD
-import com.dd.android.dailysimple.common.utils.setUnderlineText
+import com.dd.android.dailysimple.common.extensions.setUnderlineText
 import com.dd.android.dailysimple.common.widget.TimePickerDialogFragment
-import com.dd.android.dailysimple.common.widget.adjustBigScreenWidth
+import com.dd.android.dailysimple.common.extensions.adjustBigScreenWidth
 import com.dd.android.dailysimple.daily.AppConst.NO_ID
 import com.dd.android.dailysimple.databinding.FragmentMakeAndEditBinding
 import com.jaredrummler.android.colorpicker.ColorPickerDialog

@@ -1,4 +1,4 @@
-package com.dd.android.dailysimple.common.widget
+package com.dd.android.dailysimple.common.extensions
 
 import android.view.View
 import android.view.ViewGroup.LayoutParams

@@ -1,4 +1,4 @@
-package com.dd.android.dailysimple.common.utils
+package com.dd.android.dailysimple.common.extensions
 
 import android.text.SpannableString
 import android.text.style.UnderlineSpan

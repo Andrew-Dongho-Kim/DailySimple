@@ -14,7 +14,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dd.android.dailysimple.HomeFragmentDirections.Companion.homeToDailyCalendar
 import com.dd.android.dailysimple.R
@@ -22,8 +21,8 @@ import com.dd.android.dailysimple.common.BaseFragment
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.OnDateChangedListener
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
-import com.dd.android.dailysimple.common.widget.adjustBigScreenWidth
-import com.dd.android.dailysimple.common.widget.recycler.ItemModelDiffCallback
+import com.dd.android.dailysimple.common.extensions.adjustBigScreenWidth
+import com.dd.android.dailysimple.common.widget.recycler.StickyHeaderItemDecoration
 import com.dd.android.dailysimple.daily.scroll.BottomBarScroll
 import com.dd.android.dailysimple.daily.simplecalendar.SelectedDateInfo
 import com.dd.android.dailysimple.daily.simplecalendar.SimpleCalendarHelper
@@ -155,12 +154,7 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
             }
 
         itemModel.data.observe(viewLifecycleOwner, Observer { list ->
-            with(adapter) {
-                val diffResult = DiffUtil.calculateDiff(ItemModelDiffCallback(items, list))
-                items.clear()
-                items.addAll(list)
-                diffResult.dispatchUpdatesTo(this)
-            }
+            adapter.submitList(list)
         })
 
         with(bind.recycler) {
@@ -171,11 +165,11 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
 
             addOnScrollListener(BottomBarScroll(bind.fabLayout.root))
             addItemDecoration(ScheduleCardItemDecoration(activity))
-//            addItemDecoration(
-//                StickyHeaderItemDecoration(
-//                    this
-//                ) { pos -> adapter.getItemViewType(pos) < 0 }
-//            )
+            addItemDecoration(
+                StickyHeaderItemDecoration(
+                    this
+                ) { pos -> adapter.getItemViewType(pos) < 0 }
+            )
             setUpCache()
             adjustBigScreenWidth()
         }
@@ -187,7 +181,9 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
     }
 
     override fun onDateChanged() {
-        simpleCalendarVm.selectedDate.value = msDateFrom()
+        val newDate = msDateFrom()
+
+        simpleCalendarVm.selectedDate.value = newDate
         calendarController.invalidate()
     }
 

@@ -2,6 +2,7 @@ package com.dd.android.dailysimple.db.data
 
 import android.content.Context
 import androidx.core.content.ContextCompat.getColor
+import androidx.lifecycle.MutableLiveData
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.di.appContext
 import com.dd.android.dailysimple.common.di.getString
@@ -21,6 +22,8 @@ data class DailySchedule(
     val memo: String? = null,
     val color: Int
 ) : ItemModel {
+
+    override val selected = MutableLiveData<Boolean>()
 
     private val locale by lazy { systemLocale() }
     private val hourMinuteFormat by lazy { SimpleDateFormat("hh:mm a", locale) }

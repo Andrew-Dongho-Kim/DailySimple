@@ -35,7 +35,7 @@
                 android:layout_gravity="center_horizontal|top"
                 android:background="@color/basic_common_background"
                 android:clipToPadding="false"
-                android:paddingBottom="@dimen/basic_view_margin_vertical"
+                android:paddingBottom="@dimen/daily_list_padding_bottom"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             <com.google.android.material.appbar.AppBarLayout

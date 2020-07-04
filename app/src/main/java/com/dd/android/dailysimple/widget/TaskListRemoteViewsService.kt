@@ -19,10 +19,10 @@ import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.AppDeepLink
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
-import com.dd.android.dailysimple.common.widget.createRemoteViews
+import com.dd.android.dailysimple.common.extensions.createRemoteViews
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.common.widget.recycler.ItemModelDiffCallback
-import com.dd.android.dailysimple.common.widget.setViewBackground
+import com.dd.android.dailysimple.common.extensions.setViewBackground
 import com.dd.android.dailysimple.daily.DailyItemModels
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.AUTHORITY_ITEM
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.EMPTY_ITEM
@@ -161,18 +161,21 @@ private class TaskItemRemoteViewsFactory(
     }
 
     fun createHeaderItem(headerItem: DailySimpleHeaderItem) =
-        createRemoteViews(R.layout.widget_header_item).apply {
+        createRemoteViews(R.layout.widget_header_item)
+            .apply {
             setTextViewText(R.id.header_text, headerItem.headerTitle)
         }
 
     fun createEmptyItem(emptyItem: DailyEmptyItem) =
-        createRemoteViews(R.layout.widget_empty_item).apply {
+        createRemoteViews(R.layout.widget_empty_item)
+            .apply {
             setTextViewText(R.id.description_text, emptyItem.description)
         }
 
 
     fun createAuthorityItem(authorityItem: DailyAuthorityItem) =
-        createRemoteViews(R.layout.widget_authority_item).apply {
+        createRemoteViews(R.layout.widget_authority_item)
+            .apply {
             setOnClickFillInIntent(
                 R.id.root_view,
                 Intent(
@@ -185,7 +188,8 @@ private class TaskItemRemoteViewsFactory(
 
 
     fun createScheduleItem(scheduleItem: DailySchedule): RemoteViews {
-        return createRemoteViews(R.layout.widget_schedule_item).apply {
+        return createRemoteViews(R.layout.widget_schedule_item)
+            .apply {
             setTextViewText(R.id.title, scheduleItem.title)
             setTextViewText(R.id.begin, scheduleItem.beginTime)
             setTextViewText(R.id.end, scheduleItem.endTime)
@@ -199,7 +203,8 @@ private class TaskItemRemoteViewsFactory(
     }
 
     fun createTodoItem(todoItem: DailyTodo): RemoteViews {
-        return createRemoteViews(R.layout.widget_todo_item).apply {
+        return createRemoteViews(R.layout.widget_todo_item)
+            .apply {
             setTextViewText(R.id.title, todoItem.title)
             setViewBackground(R.id.color, todoItem.color)
             setImageViewResource(

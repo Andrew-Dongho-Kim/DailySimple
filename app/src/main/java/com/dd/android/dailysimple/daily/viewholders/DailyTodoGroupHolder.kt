@@ -49,6 +49,8 @@ data class DailyTodoGroup(
     private val todoList: List<DailyTodo>
 ) : DailyExpandableItem(todoList, expanded) {
 
+    override val selected = MutableLiveData<Boolean>()
+
     val isAnimating = liveData {
         emit(false)
     } as MutableLiveData<Boolean>

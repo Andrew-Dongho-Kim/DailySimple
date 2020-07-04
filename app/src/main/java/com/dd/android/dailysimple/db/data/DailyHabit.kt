@@ -3,6 +3,7 @@ package com.dd.android.dailysimple.db.data
 import android.content.Context
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.room.*
 import com.dd.android.dailysimple.R
@@ -12,7 +13,7 @@ import com.dd.android.dailysimple.common.di.systemLocale
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.utils.DateUtils.msFrom
 import com.dd.android.dailysimple.common.utils.DateUtils.toYMD
-import com.dd.android.dailysimple.common.utils.htmlTextColor
+import com.dd.android.dailysimple.common.extensions.htmlTextColor
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.db.data.DailyHabit.CheckTerm.*
 
@@ -45,6 +46,9 @@ data class DailyHabit(
     var until: Long? = null,
     @Embedded var alarm: Alarm? = null
 ) : ItemModel {
+
+    @Ignore
+    override val selected = MutableLiveData<Boolean>()
 
     @get:Ignore
     val formattedStart
@@ -101,6 +105,9 @@ data class CheckStatus(
 
     @Ignore
     override val id = date
+
+    @Ignore
+    override val selected = MutableLiveData<Boolean>()
 }
 
 
@@ -112,6 +119,9 @@ data class DailyHabitWithCheckStatus(
 
     @Ignore
     override val id = habit.id
+
+    @Ignore
+    override val selected = MutableLiveData<Boolean>()
 
     @Ignore
     val terms = getString(
@@ -134,6 +144,9 @@ data class DailyHabitWithCheckStatus(
         } else {
             R.color.appBlack
         }
-        "${htmlTextColor(it.size.toString(), getColor(color))}/${habit.checkLimits}"
+        "${htmlTextColor(
+            it.size.toString(),
+            getColor(color)
+        )}/${habit.checkLimits}"
     }
 }

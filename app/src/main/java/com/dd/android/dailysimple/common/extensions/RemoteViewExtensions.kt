@@ -1,4 +1,4 @@
-package com.dd.android.dailysimple.common.widget
+package com.dd.android.dailysimple.common.extensions
 
 import android.widget.RemoteViews
 import androidx.annotation.ColorRes

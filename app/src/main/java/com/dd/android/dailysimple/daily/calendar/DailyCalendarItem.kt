@@ -2,18 +2,25 @@ package com.dd.android.dailysimple.daily.calendar
 
 import android.content.Context
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import com.dd.android.dailysimple.R
-import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
+import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import java.util.*
 import java.util.Calendar.*
 
+/**
+ * TODO CLEAN CODE
+ */
 data class DailyCalendarItem(
     val context: Context,
     val msTime: Long,
     val isCurrMonth: Boolean
 ) : ItemModel {
+
     override val id = msTime
+
+    override val selected = MutableLiveData<Boolean>()
 
     private val dayOfWeek = Calendar.getInstance().run {
         timeInMillis = msTime

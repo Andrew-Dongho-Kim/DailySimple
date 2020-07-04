@@ -10,7 +10,7 @@ import android.widget.RemoteViews
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.AppDeepLink
 import com.dd.android.dailysimple.common.CalendarConst
-import com.dd.android.dailysimple.common.widget.setImageViewImageAlpha
+import com.dd.android.dailysimple.common.extensions.setImageViewImageAlpha
 import com.dd.android.dailysimple.widget.TaskListRemoteViewsService
 import com.dd.android.dailysimple.widget.WidgetConst.ACTION_TO_NEXT_DATE
 import com.dd.android.dailysimple.widget.WidgetConst.ACTION_TO_PREV_DATE

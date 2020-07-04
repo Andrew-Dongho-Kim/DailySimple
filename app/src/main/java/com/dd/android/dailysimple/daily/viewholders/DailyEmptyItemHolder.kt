@@ -2,6 +2,7 @@ package com.dd.android.dailysimple.daily.viewholders
 
 import android.view.ViewGroup
 import androidx.databinding.library.baseAdapters.BR
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.dd.android.dailysimple.HomeFragmentDirections.Companion.homeToMakeAndEdit
 import com.dd.android.dailysimple.R
@@ -40,4 +41,6 @@ data class DailyEmptyItem(
     override val id: Long,
     @DailyViewType val type: Int,
     val description: String
-) : ItemModel
+) : ItemModel {
+    override val selected = MutableLiveData<Boolean>()
+}

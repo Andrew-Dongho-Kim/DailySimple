@@ -7,6 +7,7 @@ import android.text.Spanned
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.liveData
 import androidx.room.*
@@ -22,7 +23,7 @@ import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.utils.DateUtils.msFrom
 import com.dd.android.dailysimple.common.utils.DateUtils.toMD
 import com.dd.android.dailysimple.common.utils.DateUtils.toYMD
-import com.dd.android.dailysimple.common.utils.htmlTextColor
+import com.dd.android.dailysimple.common.extensions.htmlTextColor
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
 import com.dd.android.dailysimple.daily.ChildItemModel
 import com.dd.android.dailysimple.db.data.DoneState.Companion.ONGOING
@@ -52,9 +53,13 @@ data class DailyTodo(
     @Embedded var alarm: Alarm? = null
 ) : ChildItemModel {
 
-    // @formatter:off
-    @Ignore override var hasParent = false
+    @Ignore
+    override val selected = MutableLiveData<Boolean>()
 
+    @Ignore
+    override var hasParent = false
+
+    // @formatter:off
     @Ignore val isOverdue = msDateFrom() >= until
     @Ignore val isUpcoming = msDateFrom(1) <= start
 
@@ -109,12 +114,22 @@ data class DailyTodo(
         return if (colorResId == 0) {
             SpannableString(timeText)
         } else {
-            Html.fromHtml(htmlTextColor(timeText, getColor(colorResId)))
+            Html.fromHtml(
+                htmlTextColor(
+                    timeText,
+                    getColor(colorResId)
+                )
+            )
         }
     }
 
     private fun toDoneText(): Spanned {
-        return Html.fromHtml(htmlTextColor(getString(R.string.done), getColor(R.color.appPrimary)))
+        return Html.fromHtml(
+            htmlTextColor(
+                getString(R.string.done),
+                getColor(R.color.appPrimary)
+            )
+        )
     }
 
     private fun hms(time: Long) =
@@ -175,6 +190,10 @@ data class TodoSubTask(
     var done: Long = ONGOING
 ) : ItemModel {
 
+    @Ignore
+    override val selected = MutableLiveData<Boolean>()
+
+    // TODO Rename it ;)
     val doneMD get() = toMD(done, systemLocale())
 }
 

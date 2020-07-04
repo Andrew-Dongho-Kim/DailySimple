@@ -11,7 +11,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.dd.android.dailysimple.common.utils.setUnderlineText
+import com.dd.android.dailysimple.common.extensions.setUnderlineText
 
 
 @BindingAdapter("thumbnail")

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.*
 import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.Logger
+import com.dd.android.dailysimple.common.extensions.findChildViewUnder2
 
 
 private const val TAG = "StickyHeaderItemDecoration"

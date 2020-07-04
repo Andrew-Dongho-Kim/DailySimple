@@ -1,4 +1,4 @@
-package com.dd.android.dailysimple.common.widget.recycler
+package com.dd.android.dailysimple.common.extensions
 
 import android.graphics.Rect
 import android.view.View
