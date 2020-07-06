@@ -14,6 +14,9 @@
         <item name="android:navigationBarColor">@color/basic_common_background</item>
         <item name="android:statusBarColor">@color/basic_common_background</item>
         <item name="dialogTheme">@style/AppDialogTheme</item>
+        <item name="actionModeStyle">@style/ContextualActionBar</item>
+        <item name="android:actionModeBackground">@android:color/transparent</item>
+        <item name="windowActionModeOverlay">false</item>
     </style>
 
     <style name="AppTheme.Transparent">
@@ -24,6 +27,12 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="ContextualActionBar" parent="@style/Widget.AppCompat.ActionMode">
+        <item name="homeAsUpIndicator">@null</item>
+        <item name="actionBarDivider">@null</item>
+        <item name="height">0dp</item>
     </style>
 
     <style name="Widget.AppCompat.DropDownItem.Spinner" parent="android:Widget.Material.DropDownItem.Spinner" tools:override="true">

@@ -20,7 +20,8 @@ class DailyEmptyItemHolder(parent: ViewGroup, private val navController: NavCont
     ViewHolder2<DailyEmptyItemBinding, DailyEmptyItem>(
         parent,
         R.layout.daily_empty_item,
-        BR.itemModel
+        BR.itemModel,
+        supportActionMode = false
     ) {
     init {
         itemClickListener = { _ -> onClick() }
@@ -42,5 +43,6 @@ data class DailyEmptyItem(
     @DailyViewType val type: Int,
     val description: String
 ) : ItemModel {
+
     override val selected = MutableLiveData<Boolean>()
 }

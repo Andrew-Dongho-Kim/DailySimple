@@ -19,7 +19,8 @@ class DailyTodoGroupHolder(parent: ViewGroup) :
     ViewHolder2<DailyTodoGroupItemBinding, DailyTodoGroup>(
         parent,
         R.layout.daily_todo_group_item,
-        BR.itemModel
+        BR.itemModel,
+        supportActionMode = false
     ) {
     init {
         itemClickListener = ::onClick

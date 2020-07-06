@@ -1,6 +1,7 @@
 package com.dd.android.dailysimple.daily
 
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelStoreOwner
@@ -8,6 +9,7 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.widget.recycler.ItemModel
+import com.dd.android.dailysimple.common.widget.recycler.RecyclerViewActionMode
 import com.dd.android.dailysimple.common.widget.recycler.RecyclerViewAdapter2
 import com.dd.android.dailysimple.common.widget.recycler.ViewHolder2
 import com.dd.android.dailysimple.daily.DailyViewType.Companion.AUTHORITY_ITEM
@@ -37,11 +39,13 @@ fun RecyclerView.setUpCache() {
 
 
 class DailyAdapter(
+    private val activity: AppCompatActivity,
     lifecycleOwner: LifecycleOwner,
     private val viewModelStoreOwner: ViewModelStoreOwner,
-    private val navController: NavController
+    private val navController: NavController,
+    actionModeCallback: RecyclerViewActionMode.Callback
 ) :
-    RecyclerViewAdapter2(lifecycleOwner) {
+    RecyclerViewAdapter2(lifecycleOwner, RecyclerViewActionMode(activity, actionModeCallback)) {
 
     override fun onCreateViewHolder2(
         parent: ViewGroup,
@@ -56,9 +60,7 @@ class DailyAdapter(
             SCHEDULE_ITEM -> DailyScheduleItemHolder(parent, navController)
             TODO_ITEM -> DailyTodoItemHolder(parent, viewModelStoreOwner, navController)
             OVERDUE_TODO_GROUP -> DailyTodoGroupHolder(parent)
-            HABIT_ITEM -> DailyHabitItemHolder2(
-                parent, viewModelStoreOwner, navController
-            )
+            HABIT_ITEM -> DailyHabitItemHolder2(parent, viewModelStoreOwner, navController)
             else -> throw IllegalArgumentException("Unknown viewType:$viewType")
         }
     }

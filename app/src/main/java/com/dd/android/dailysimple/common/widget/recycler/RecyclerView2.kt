@@ -8,9 +8,11 @@ import androidx.appcompat.view.ActionMode
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.dd.android.dailysimple.BR
 
 interface ItemModel {
     val id: Long
@@ -64,7 +66,8 @@ abstract class RecyclerViewAdapter2(
 open class ViewHolder2<B : ViewDataBinding, M : ItemModel>(
     parent: ViewGroup,
     @LayoutRes layoutResId: Int,
-    val variableId: Int = 0
+    val variableId: Int = 0,
+    val supportActionMode: Boolean = true
 ) :
     RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(layoutResId, parent, false)
@@ -77,8 +80,7 @@ open class ViewHolder2<B : ViewDataBinding, M : ItemModel>(
             // Header item is not related to action mode item.
             // This is constraints for this class
             when {
-                isHeader() -> itemClickListener?.invoke(view)
-                isActionMode() -> actionMode?.selectItem(model)
+                supportActionMode && isActionMode() -> actionMode?.selectItem(model)
                 else -> itemClickListener?.invoke(view)
             }
         }
@@ -87,12 +89,17 @@ open class ViewHolder2<B : ViewDataBinding, M : ItemModel>(
     var actionMode: RecyclerViewActionMode? = null
         set(value) {
             field = value
-            field?.let { callback ->
+            field?.let { actionMode ->
                 itemLongClickListener = View.OnLongClickListener {
-                    callback.startActionMode(model)
-                    return@OnLongClickListener true
+                    return@OnLongClickListener if (supportActionMode) {
+                        actionMode.startActionMode(model)
+                        true
+                    } else {
+                        false
+                    }
                 }
             }
+            bind.setVariable(BR.actionMode, value)
         }
 
     var itemClickListener: ((View) -> Unit)? = null
@@ -145,16 +152,20 @@ class ItemModelDiffCallback(
 
 class RecyclerViewActionMode(
     private val activity: AppCompatActivity,
-    private val recyclerView: RecyclerView,
     private val callback: Callback
 ) : ActionMode(), ActionMode.Callback {
 
     private val selected = mutableSetOf<ItemModel>()
     private var actionMode: ActionMode? = null
 
+    private val _liveDataIsActionMode = MutableLiveData<Boolean>()
+    val liveDataIsActionMode: LiveData<Boolean> = _liveDataIsActionMode
+
     val isActionMode get() = actionMode != null
 
     fun startActionMode(item: ItemModel?) {
+        item ?: return
+
         selected.clear()
         selectItem(item)
 
@@ -175,6 +186,7 @@ class RecyclerViewActionMode(
 
     override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
         actionMode = mode
+        _liveDataIsActionMode.postValue(true)
         return callback.onCreateActionMode(this, menu, selected)
     }
 
@@ -187,9 +199,12 @@ class RecyclerViewActionMode(
     }
 
     override fun onDestroyActionMode(mode: ActionMode) {
+        callback.onDestroyActionMode(this)
         actionMode = null
+        selected.forEach { it.selected.postValue(false) }
         selected.clear()
-        recyclerView.adapter?.notifyDataSetChanged()
+
+        _liveDataIsActionMode.postValue(false)
     }
 
     override fun getMenu() = actionMode?.menu
@@ -231,22 +246,32 @@ class RecyclerViewActionMode(
     }
 
     interface Callback {
+
         fun onCreateActionMode(
             mode: RecyclerViewActionMode,
             menu: Menu,
             selected: Set<ItemModel>
-        ): Boolean
+        ): Boolean {
+            return true
+        }
 
         fun onPrepareActionMode(
             mode: RecyclerViewActionMode,
             menu: Menu,
             selected: Set<ItemModel>
-        ): Boolean
+        ): Boolean {
+            return true
+        }
+
+        fun onDestroyActionMode(mode: RecyclerViewActionMode) {
+        }
 
         fun onActionItemClicked(
             mode: RecyclerViewActionMode,
             item: MenuItem,
             selected: Set<ItemModel>
-        ): Boolean
+        ): Boolean {
+            return true
+        }
     }
 }

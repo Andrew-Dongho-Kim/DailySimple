@@ -17,6 +17,16 @@
         <item name="android:statusBarColor">@color/basic_common_background</item>
         <item name="android:windowLightNavigationBar">@bool/windowLightNavigationBar</item>
         <item name="android:windowLightStatusBar">@bool/windowLightStatusBar</item>
+
+        <!-- Contextual Action Bar Style-->
+        <item name="actionModeStyle">@style/ContextualActionBar</item>
+        <item name="actionModeCloseDrawable">@null</item>
+        <item name="actionModeBackground">@android:color/transparent</item>
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+
+    <style name="ContextualActionBar" parent="@style/Widget.AppCompat.ActionMode">
+        <item name="actionBarDivider">@null</item>
     </style>
 
 </resources>

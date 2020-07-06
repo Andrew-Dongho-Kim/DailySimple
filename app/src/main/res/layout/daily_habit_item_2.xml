@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,6 +10,10 @@
         <import type="com.dd.android.dailysimple.daily.simplecalendar.SelectedDateInfo" />
 
         <import type="com.dd.android.dailysimple.daily.AppConst" />
+
+        <variable
+            name="actionMode"
+            type="com.dd.android.dailysimple.common.widget.recycler.RecyclerViewActionMode" />
 
         <variable
             name="itemModel"
@@ -24,21 +29,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_view_background"
-        android:foreground="@drawable/ripple_list_item"
-        android:paddingStart="@dimen/basic_view_margin_horizontal"
-        android:paddingTop="@dimen/basic_view_margin_vertical_small"
-        android:paddingEnd="@dimen/basic_view_margin_horizontal"
-        android:paddingBottom="@dimen/basic_view_margin_vertical_small">
+        android:foreground="@drawable/ripple_list_item">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal_small"
+            android:checked="@{itemModel.selected}"
+            android:visibility="@{actionMode.liveDataIsActionMode ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/terms_type"
             style="@style/BasicTextDpNormal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal"
+            android:layout_marginEnd="@dimen/basic_view_margin_horizontal"
             android:alpha="@{itemModel.done ? AppConst.DIM_ALPHA : AppConst.NORMAL_ALPHA}"
             android:text="@{itemModel.terms}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/selected"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -47,6 +62,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/basic_view_margin_horizontal_tiny_small"
+            android:layout_marginTop="@dimen/basic_view_margin_vertical_small"
+            android:layout_marginBottom="@dimen/basic_view_margin_vertical_small"
             android:alpha="@{itemModel.done ? AppConst.DIM_ALPHA : AppConst.NORMAL_ALPHA}"
             android:background="@drawable/rounded_view_background"
             android:enabled="@{dateInfo.state == SelectedDateInfo.TODAY}"
@@ -69,7 +86,9 @@
             android:background="@{itemModel.habit.color}"
             app:layout_constraintBottom_toBottomOf="@id/habit_title"
             app:layout_constraintStart_toEndOf="@id/checked"
-            app:layout_constraintTop_toTopOf="@id/habit_title" />
+            app:layout_constraintTop_toTopOf="@id/habit_title"
+            app:layout_goneMarginEnd="@dimen/basic_view_margin_horizontal"
+            app:layout_goneMarginStart="@dimen/basic_view_margin_horizontal" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/habit_title"

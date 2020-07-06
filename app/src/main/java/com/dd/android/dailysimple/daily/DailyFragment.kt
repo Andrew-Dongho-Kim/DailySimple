@@ -20,8 +20,10 @@ import com.dd.android.dailysimple.R
 import com.dd.android.dailysimple.common.BaseFragment
 import com.dd.android.dailysimple.common.Logger
 import com.dd.android.dailysimple.common.OnDateChangedListener
-import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
 import com.dd.android.dailysimple.common.extensions.adjustBigScreenWidth
+import com.dd.android.dailysimple.common.utils.DateUtils.msDateFrom
+import com.dd.android.dailysimple.common.widget.recycler.ItemModel
+import com.dd.android.dailysimple.common.widget.recycler.RecyclerViewActionMode
 import com.dd.android.dailysimple.common.widget.recycler.StickyHeaderItemDecoration
 import com.dd.android.dailysimple.daily.scroll.BottomBarScroll
 import com.dd.android.dailysimple.daily.simplecalendar.SelectedDateInfo
@@ -46,7 +48,8 @@ private inline fun logD(crossinline message: () -> String) = Logger.d(TAG, messa
  */
 private const val ARG_DATE = "date"
 
-class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListener {
+class DailyFragment : BaseFragment<FragmentDailyBinding>(), RecyclerViewActionMode.Callback,
+    OnDateChangedListener {
     /**
      * View Models & ViewModel Store Owner
      */
@@ -61,10 +64,13 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
     private lateinit var calendarController: SimpleCalendarHelper
     private var hasCalendarPermission = false
 
+    private val toolbar by lazy { bind.customToolbar.toolbar }
+
     override val layout: Int = R.layout.fragment_daily
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setStatusBarColor(R.color.basic_common_background)
+        setUpToolbar()
         setUpCalendarPermission()
         setUpViewModel()
         setUpObserver()
@@ -73,12 +79,21 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
         setUpBottomTaskCreator()
         setUpContent()
         setUpArguments()
-
-        setHasOptionsMenu(true)
     }
 
     private fun <T : ViewModel> viewModel(kclass: KClass<T>) =
         ViewModelProvider(viewModelStoreOwner).get(kclass.java)
+
+    private fun setUpToolbar() {
+        setSupportActionBar(toolbar)
+        with(getSupportActionBar()!!) {
+            setDisplayHomeAsUpEnabled(false)
+            setDisplayShowTitleEnabled(false)
+            setDisplayShowHomeEnabled(false)
+            setDisplayShowCustomEnabled(false)
+        }
+        setHasOptionsMenu(true)
+    }
 
     /**
      * Set up calendar permission to get schedule information for the user
@@ -148,10 +163,11 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
     }
 
     private fun setUpContent() {
-        val adapter = DailyAdapter(viewLifecycleOwner, viewModelStoreOwner, navController)
-            .apply {
-                setHasStableIds(true)
-            }
+        val adapter =
+            DailyAdapter(activity, viewLifecycleOwner, viewModelStoreOwner, navController, this)
+                .apply {
+                    setHasStableIds(true)
+                }
 
         itemModel.data.observe(viewLifecycleOwner, Observer { list ->
             adapter.submitList(list)
@@ -178,6 +194,23 @@ class DailyFragment : BaseFragment<FragmentDailyBinding>(), OnDateChangedListene
         //        ItemTouchHelper(
 //            DailyItemTouchAction(activity, adapter, navController)
 //        ).attachToRecyclerView(recycler)
+    }
+
+
+    override fun onCreateActionMode(
+        mode: RecyclerViewActionMode,
+        menu: Menu,
+        selected: Set<ItemModel>
+    ): Boolean {
+        toolbar.menu.clear()
+        mode.titleOptionalHint = false
+        mode.menuInflater?.inflate(R.menu.daily_action_menu, toolbar.menu)
+        return true
+    }
+
+    override fun onDestroyActionMode(mode: RecyclerViewActionMode) {
+        toolbar.menu.clear()
+        mode.menuInflater?.inflate(R.menu.daily_menu, toolbar.menu)
     }
 
     override fun onDateChanged() {

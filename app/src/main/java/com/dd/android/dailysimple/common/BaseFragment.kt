@@ -13,6 +13,7 @@ import androidx.annotation.CallSuper
 import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -122,6 +123,10 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    fun getSupportActionBar() = activity.supportActionBar
+
+    fun setSupportActionBar(toolbar: Toolbar) = activity.setSupportActionBar(toolbar)
 
     fun setStatusBarColor(@ColorRes colorResId: Int) {
         val window = activity.window

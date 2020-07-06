@@ -18,7 +18,8 @@ class DailyAuthorityItemHolder(parent: ViewGroup) :
     ViewHolder2<DailyAuthorityItemBinding, DailyAuthorityItem>(
         parent,
         R.layout.daily_authority_item,
-        BR.itemModel
+        BR.itemModel,
+        supportActionMode = false
     ) {
     init {
         itemClickListener = ::onClick

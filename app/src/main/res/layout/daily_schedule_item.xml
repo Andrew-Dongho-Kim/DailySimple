@@ -9,24 +9,39 @@
         <import type="java.text.SimpleDateFormat" />
 
         <variable
+            name="actionMode"
+            type="com.dd.android.dailysimple.common.widget.recycler.RecyclerViewActionMode" />
+
+        <variable
             name="itemModel"
             type="com.dd.android.dailysimple.db.data.DailySchedule" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/basic_view_margin_horizontal"
-        android:paddingEnd="@dimen/basic_zero_dp">
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal_small"
+            android:checked="@{itemModel.selected}"
+            android:visibility="@{actionMode.liveDataIsActionMode ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/begin"
             style="@style/BasicTextDpTinySmall"
             android:layout_width="@dimen/schedule_item_title_width"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_view_margin_horizontal"
+            android:layout_marginEnd="@dimen/basic_zero_dp"
             android:text="@{itemModel.beginTime}"
             app:layout_constraintBottom_toTopOf="@id/end"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/selected"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView

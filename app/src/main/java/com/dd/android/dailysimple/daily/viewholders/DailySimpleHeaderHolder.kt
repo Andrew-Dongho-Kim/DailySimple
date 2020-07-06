@@ -13,7 +13,8 @@ class DailySimpleHeaderHolder(parent: ViewGroup) :
     ViewHolder2<SimpleHeaderItemBinding, DailySimpleHeaderItem>(
         parent,
         R.layout.simple_header_item,
-        BR.model
+        BR.model,
+        supportActionMode = false
     ) {
 
     init {
